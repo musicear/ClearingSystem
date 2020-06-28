@@ -1,0 +1,41 @@
+<CFX>
+	<MSG>
+		<Head2202>
+			<FinOrgCode />
+			<TreCode />
+			<AgentBnkCode />
+			<EntrustDate />
+			<PackNo />
+			<PayoutVouType />
+			<PayMode />
+			<Bill2202 iterance="true">
+				<TraNo />
+				<OriTraNo />
+				<OriVouNo />
+				<OriVouDate />
+				<OriPayerAcct />
+				<OriPayerName />
+				<OriPayeeAcct />
+				<OriPayeeName />
+				<PayMsgNo />
+				<PayEntrustDate />
+				<PaySndBnkNo />
+				<BudgetType />
+				<TrimSign />
+				<OfYear />
+				<Detail2202 iterance="true">
+					<SeqNo />
+					<BdgOrgCode />
+					<FuncSbtCode />
+					<EcnomicSubjectCode />
+					<Amt />
+					<AcctProp />
+				</Detail2202>
+				<Amt />
+				<StatInfNum />
+			</Bill2202>
+			<AllNum />
+			<AllAmt />
+		</Head2202>
+	</MSG>
+</CFX>

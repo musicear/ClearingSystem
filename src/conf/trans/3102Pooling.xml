@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--批量业务扣款处理。由轮询发起-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--轮询批量包，取出要扣款的信息-->
+    <activity name="resoft.tips.action.PoolingBatchPackDeduct">
+        <transition on="-1" to="return"/>
+    </activity>
+    <!--检查是否已止付-->
+    <activity name="resoft.tips.action.CheckPackDelApply">
+        <transition on="-1" to="return"/>
+    </activity>
+    <!--取出明细扣款信息，进行扣款-->
+    <activity name="resoft.tips.action.QueryPackDetails"/>
+    <!--更新处理标志为“扣税完毕”-->
+    <activity name="resoft.tips.action.UpdateProcFlagAsPayFinish" />
+    <label name="return"/>
+</transaction>

@@ -1,0 +1,47 @@
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+</head>
+
+<body>
+<OBJECT id=Grid1 height="100%" width="100%"
+classid=clsid:07A4659E-1B9F-4289-A2CB-D7FD71640959><PARAM NAME="_ExtentX" VALUE="8043"><PARAM NAME="_ExtentY" VALUE="5477"><PARAM NAME="AllowUserReorderColumn" VALUE="0"><PARAM NAME="AllowUserResizing" VALUE="-1"><PARAM NAME="AllowUserSort" VALUE="0"><PARAM NAME="Appearance" VALUE="1"><PARAM NAME="BackColor1" VALUE="16777215"><PARAM NAME="BackColor2" VALUE="16777215"><PARAM NAME="BackColorFixed" VALUE="-2147483633"><PARAM NAME="BackColorFixedSel" VALUE="-2147483633"><PARAM NAME="BackColorBkg" VALUE="-2147483636"><PARAM NAME="BackColorScrollBar" VALUE="-2147483633"><PARAM NAME="BackColorSel" VALUE="13811126"><PARAM NAME="BorderColor" VALUE="0"><PARAM NAME="CellBorderColor" VALUE="0"><PARAM NAME="Cols" VALUE="5"><PARAM NAME="DefaultFontName" VALUE="Tahoma"><PARAM NAME="DefaultFontSize" VALUE="8.25"><PARAM NAME="DefaultFontBold" VALUE="0"><PARAM NAME="DefaultFontItalic" VALUE="0"><PARAM NAME="DefaultFontUnderline" VALUE="0"><PARAM NAME="DefaultFontStrikethrough" VALUE="0"><PARAM NAME="DisplayFocusRect" VALUE="-1"><PARAM NAME="DisplayRowIndex" VALUE="0"><PARAM NAME="DefaultRowHeight" VALUE="18"><PARAM NAME="ShowResizeTips" VALUE="-1"><PARAM NAME="Enabled" VALUE="-1"><PARAM NAME="FixedRowColStyle" VALUE="1"><PARAM NAME="ForeColorFixed" VALUE="0"><PARAM NAME="GridColor" VALUE="-2147483633"><PARAM NAME="ReadOnly" VALUE="0"><PARAM NAME="ReadOnlyFocusRect" VALUE="1"><PARAM NAME="Rows" VALUE="30"><PARAM NAME="ScrollBars" VALUE="3"><PARAM NAME="ScrollBarStyle" VALUE="1"><PARAM NAME="SelectionMode" VALUE="0"><PARAM NAME="FixedRows" VALUE="1"><PARAM NAME="FixedCols" VALUE="1"><PARAM NAME="DateFormat" VALUE="1"><PARAM NAME="EnterKeyMoveTo" VALUE="0"></OBJECT>
+#set ( $request = $reportSheet.getProperty("request") )
+#set ( $user = $request.getAttribute("user") )
+<script language="VBSCRIPT">
+    Grid1.AutoRedraw = False
+    Grid1.Rows = ${data.size()} + 10
+    #set ( $elementList = $reportSheet.listAllVisibleElements() )
+    Grid1.Cols = ${elementList.size()} + 2
+    row = 1
+#foreach ($p in $headParagraphs)
+    Grid1.Cell(row,1).Text = "${p.text}"
+    #if (${p.style.align}=='center')
+    align = 10
+    #elseif (${p.style.align}=="left")
+    align = 6
+    #else
+    align = 14
+    #end
+    Grid1.Cell(row,1).Alignment = align
+    Grid1.Cell(row,1).Font.Name = "${p.style.fontFamily}"
+    Grid1.Cell(row,1).Font.Size = "${p.style.fontSize}"
+    Grid1.Range(row,1,row,${elementList.size()}).Merge()
+    row = row + 1
+#end
+    //data
+#foreach ($rowMap in $data)
+    col = 1
+  #foreach ($cellData in $rowMap)
+    Grid1.Cell(row,col).Text = "$cellData"
+    col = col + 1
+  #end
+    row = row + 1
+#end
+
+    Grid1.AutoRedraw = True
+    Grid1.Refresh
+</script>
+</body>
+</html>

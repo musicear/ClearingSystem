@@ -1,0 +1,18 @@
+<CFX>
+	<HEAD>
+		<VER/>
+		<SRC/>
+		<DES/>
+		<APP/>
+		<MsgNo/>
+		<MsgID/>
+		<MsgRef/>
+		<WorkDate/>
+	</HEAD>
+	<MSG>
+		<MsgReturn9005>
+            <Result/>            
+            <AddWord/>			
+		</MsgReturn9005>
+	</MSG>
+</CFX>

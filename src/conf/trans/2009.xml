@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!-- 重庆信合三方协议录入 -->
+<transaction>
+	<transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!-- 初始化ACE报文 -->
+    <activity name="resoft.tips.chqxh.ACEInit"/>
+    <!-- 三方协议查询 -->
+    <activity name="resoft.tips.chqxh.SfxyCx"/>
+    <!-- 返回ACE报文 -->
+    <activity name="resoft.tips.chqxh.ACEReturn"/>
+</transaction>

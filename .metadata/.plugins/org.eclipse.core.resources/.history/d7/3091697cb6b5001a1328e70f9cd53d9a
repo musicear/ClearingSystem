@@ -1,0 +1,227 @@
+package resoft.tips.chqsh;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.zerone.jdbc.QueryUtil;
+
+import resoft.basLink.Configuration;
+import resoft.basLink.util.DBUtil;
+import resoft.tips.bankImpl.qhdyh.SelectChargeInfoPack;
+import resoft.tips.chqxh.ACEPackUtil;
+import resoft.tips.util.CurrencyUtil;
+import resoft.tips.util.FTPUtil;
+import resoft.xlink.core.Action;
+import resoft.xlink.core.Message;
+/**
+ * 
+ * @author fanchengwei
+ *
+ */
+public class FileTax implements Action{
+
+	/**
+	 * 根据Tips工作日期来查询PayCheck表，将对账信息发送到柜面
+	 * @param args
+	 */
+	private static final Log logger = LogFactory.getLog(FileTax.class);
+	private static Configuration conf = Configuration.getInstance();
+	private String fileName = "";
+	private String tmpPath = conf.getProperty("BankSysConfig", "TempFilePath");
+	private String PayAcct = "";
+	private String BegineDate = "";
+	private String EndDate = "";
+	private String RET_STATUS="",SEQ_NO="",SOURCE_BRANCH_NO="",DEST_BRANCH_NO="",BRANCH_ID="",RET_CODE="",RET_MSG="";
+	private String TaxAmt = "";
+	private String ReturnResult = "";
+	private String BranchNo = "";
+	List rtqueryList = null;
+	List bpqueryList = null;
+	SelectChargeInfoPack chargeinfopack=new SelectChargeInfoPack();
+	Calendar date = Calendar.getInstance();
+	private String MESSAGE_TYPE;
+	private String MESSAGE_CODE;
+	private String TRAN_DATE;
+	private String TRAN_TIMESTAMP;
+	private String SERVICE_CODE;
+	private String TAXORGCODE; 
+	private String protocolNo;
+	
+	public int execute(Message msg){
+		// TODO Auto-generated method stub  
+		PayAcct = msg.getString("PAYACCT").trim();
+		BegineDate = msg.getString("BEGINDATE").trim();		
+		EndDate = msg.getString("ENDDATE").trim();	
+		SEQ_NO=msg.getString("SEQ_NO"); 
+		protocolNo=msg.getString("PROTOCOLNO").trim();
+		TAXORGCODE=msg.getString("TAXORGCODE").trim();
+		try
+		{
+			SOURCE_BRANCH_NO=msg.getString("SOURCE_BRANCH_NO");
+			DEST_BRANCH_NO=msg.getString("DEST_BRANCH_NO");
+			BRANCH_ID=msg.getString("BRANCH_ID");
+			MESSAGE_TYPE=Integer.parseInt(msg.getString("MESSAGE_TYPE"))+10+"";
+			MESSAGE_CODE=msg.getString("MESSAGE_CODE");
+			TRAN_DATE=msg.getString("TRAN_DATE");
+			TRAN_TIMESTAMP="";
+			SERVICE_CODE=msg.getString("SERVICE_CODE");
+		}
+		catch(Exception e)
+		{
+			
+		}
+		BegineDate = BegineDate.trim();
+		EndDate = EndDate.trim(); 
+		fileName = "DZ" + (System.currentTimeMillis() + "").substring(5).trim() + PayAcct;
+		Selctinfo(msg); 
+		chargeinfopack.CreateSystemHeadData(RET_STATUS, BRANCH_ID, SOURCE_BRANCH_NO, DEST_BRANCH_NO,MESSAGE_TYPE,MESSAGE_CODE,TRAN_DATE,TRAN_TIMESTAMP, RET_CODE, RET_MSG, SEQ_NO,SERVICE_CODE);
+		 String sendMsg = chargeinfopack.MakeUpCheckPackager(RET_STATUS);
+		msg.set("packFile", "T5100returnsm");
+		msg.set("sendMsg", sendMsg);
+		 
+		 	    	
+		return SUCCESS;
+	}
+	public String makeProveinfoDeatil(String PayAcct,String BegineDate,String EndDate,Message msg)
+	{
+		File f = new File(tmpPath, fileName);
+		try
+		{
+			Writer writer = new FileWriter(f);
+			FileTaxMessage message = new FileTaxMessage();
+			
+			
+			String returnmsg=message.initTaxFileInfo(PayAcct, BegineDate, EndDate,msg);
+			writer.write(returnmsg);
+			writer.flush();
+			writer.close();
+			if(returnmsg.contains("没有查询到相关记录"))
+			{
+				return "F";
+				
+			}
+		}
+		catch(Exception e)
+		{
+//			e.printStackTrace();
+			logger.info("生成文件出错");
+			return "N";
+		}
+		return "Y";
+	}
+	public void Selctinfo(Message msg)
+	{
+		try
+		{
+			String rtsql = "select * from realtimepayment where result='90000' and PayAcct='"+ PayAcct +"' and BANKTRADATE>='"+ BegineDate +"' and BANKTRADATE<='"+ EndDate +"' and checkstatus='1' and taxOrgCode='"+TAXORGCODE+"' and PROTOCOLNO='"+protocolNo+"'";
+			logger.info("实时缴税SQL is:"+rtsql);
+			rtqueryList=QueryUtil.queryRowSet(rtsql); 
+			logger.info("rtqueryListcount   "+rtqueryList.size());
+		}
+		catch(Exception e)
+		{
+			RET_STATUS="F";
+			e.printStackTrace();
+			logger.info("查询实时缴税结果出错！！");
+			RET_CODE="333333";
+			RET_MSG="查询实时缴税结果出错！！";
+			
+		}
+		try
+		{  
+			String bpsql = "select * from batchpackdetail " +
+			"where result='90000' and PayAcct='"+ PayAcct +"' and BANKTRADATE>='"+ BegineDate +"' and BANKTRADATE<='"+ EndDate +"' and checkstatus='1' and taxOrgCode='"+TAXORGCODE+"' and PROTOCOLNO='"+protocolNo+"'";
+	
+			logger.info("批量缴税SQL is:"+bpsql);
+			bpqueryList = QueryUtil.queryRowSet(bpsql);
+			logger.info("bpqueryListcount   "+bpqueryList.size());
+		}
+		catch(Exception e)
+		{
+			RET_STATUS="F";
+			logger.info("查询批量缴税结果出错！！");
+			msg.set("AddWord", "查询批量缴税结果出错！！");
+			RET_CODE="222222";
+			RET_MSG="查询批量缴税结果出错！！";
+		}
+		if(rtqueryList.size()+bpqueryList.size()>0)
+		{
+			int arraylen=rtqueryList.size()+bpqueryList.size();
+			logger.info("          "+arraylen);
+			chargeinfopack.body_data=new String[arraylen][8];
+		}
+		else 
+		{
+			RET_STATUS="F";
+			RET_CODE="444444";
+			RET_MSG="没有查询记录";
+			return ;
+		}
+		if (rtqueryList.size()>0) 
+		{			
+			for (int i=0;i<rtqueryList.size();i++) 
+			{  
+				Map row=(Map)rtqueryList.get(i); 
+				String BANKTRADATE =(String)row.get("BANKTRADATE");
+				String banktratime=(String)row.get("banktratime"); 
+				String TRANO =(String)row.get("trano");
+				String TRAAMT = (String)row.get("traamt"); 
+				if(TRAAMT==null||"".equals(TRAAMT))
+					TRAAMT="0.00";  
+				String TAXPAYCODE = (String)row.get("taxpaycode"); 
+				String TAXNAME =(String)row.get("taxpayname"); 
+				String PRINTCOUNT =(String)row.get("printtimes"); 
+				String ACCT_NAME=(String)row.get("handorgname"); 
+				TAXORGCODE=(String)row.get("TAXORGCODE");
+				chargeinfopack.CreateBodyData(i,BANKTRADATE+" "+banktratime, TRANO, TRAAMT, TAXPAYCODE, TAXNAME, PRINTCOUNT, ACCT_NAME,TAXORGCODE);
+			}		 
+		}
+		
+		int basesize=rtqueryList.size();
+		if (bpqueryList.size()>0) 
+		{			
+			for (int i=0;i<bpqueryList.size();i++) 
+			{				
+				Map row=(Map)bpqueryList.get(i); 
+				String BANKTRADATE =(String)row.get("BANKTRADATE");
+				String banktratime=(String)row.get("banktratime"); 
+				String TRANO =(String)row.get("trano");
+				String TRAAMT = (String)row.get("traamt"); 
+				if(TRAAMT==null||"".equals(TRAAMT))
+					TRAAMT="0.00";  
+				String TAXPAYCODE = (String)row.get("taxpaycode"); 
+				String ACCT_NAME =(String)row.get("handorgname"); 
+				String PRINTCOUNT =(String)row.get("printtimes"); 
+				String TAXNAME=(String)row.get("TaxPayName"); 
+				TAXORGCODE=(String)row.get("taxorgcode");
+				chargeinfopack.CreateBodyData(basesize+i,BANKTRADATE+" "+banktratime, TRANO, TRAAMT, TAXPAYCODE, TAXNAME, PRINTCOUNT, ACCT_NAME,TAXORGCODE);  
+			}
+		} 
+			RET_STATUS="S";
+			RET_CODE="000000";
+			RET_MSG="查询成功";
+		 
+	}
+	public void ftpUpload(String filename) throws IOException{
+		FTPUtil ftp = new FTPUtil();
+		ftp.setServer(conf.getProperty("SXBankFtp", "FtpServer"));
+		ftp.setPort(Integer.parseInt(conf.getProperty("SXBankFtp", "FtpPort")));
+		ftp.setPath(conf.getProperty("SXBankFtp", "FtpPath"));
+		ftp.setUser(conf.getProperty("SXBankFtp", "FtpUser"));
+		ftp.setPassword(conf.getProperty("SXBankFtp", "FtpPassword"));
+		ftp.setLocalpath(conf.getProperty("SXBankFtp", "TempFilePath"));
+		try {
+			ftp.upload(filename);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}

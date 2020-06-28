@@ -1,0 +1,22 @@
+<reportSheet>
+    <cube code="16"/>
+    <head>
+        <paragraph font-size="14" align="center">划款申请包查询</paragraph>
+    </head>
+    <fields>
+		<field friendlyName="委托日期"/>
+		<field friendlyName="包流水号"/>
+		<field friendlyName="代理银行行号"/>
+		<field friendlyName="财政机关代码"/>
+		<field friendlyName="国库主体代码"/>
+		<field friendlyName="总金额"/>
+		<field friendlyName="总笔数"/>
+		<field friendlyName="申请状态"/>
+		
+		
+    </fields>
+    <properties>
+        <property name="customConditionPage" value="/pages/payOrderPack.jsp"/>
+        <property name="width" value="780"/>
+    </properties>
+</reportSheet>

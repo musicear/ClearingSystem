@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="GB2312"?>
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--集中支付相关业务处理-->
+    <activity name="resoft.tips.action2.Process6000"/>
+</transaction>

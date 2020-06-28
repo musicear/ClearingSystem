@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+<struts-config>
+  <action-mappings>
+    <action path="/dofile/GetReportSheet" type="org.zerone.easyMining.www.struts.action.GetReportSheetAction">
+      <forward name="SUCCESS" path="/dofile/ShowCondition.do" />
+      <forward name="FAIL" path="/common/showMessage.jsp" />
+    </action>
+    <action path="/dofile/ShowCondition" type="org.zerone.easyMining.www.struts.action.ShowConditionAction">
+      <forward name="SUCCESS" path="/csjsp/ShowCondition.jsp" />
+    </action>
+    <action path="/dofile/ProcessCondition" type="org.zerone.easyMining.www.struts.action.ProcessConditionAction">
+      <forward name="SUCCESS" path="/servlet/GenReport" />
+      <forward name="FAIL" path="/common/showMessage.jsp" />
+    </action>    
+  </action-mappings>
+</struts-config>

@@ -1,0 +1,10 @@
+<!--停运启用通知-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--更新系统状态-->
+    <activity name="resoft.tips.action.UpdateTroubleInfo">
+        <transition on="-1" to="return" />
+    </activity>    
+    <label name="return" />
+</transaction>

@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.1.1//EN" "http://www.opensymphony.com/xwork/xwork-1.1.1.dtd">
+
+<xwork>
+    <include file="webwork-default.xml"/>
+    <include file="xwork-common.xml"/>
+    <package name="actions" extends="webwork-default">
+        <default-interceptor-ref name="defaultStack"/>
+        <global-results>
+            <result name="error">/common/showMessage.jsp</result>
+        </global-results>
+        <action name="ChangeTipsPassword" class="resoft.tips.web.action.ChangeTipsPassword">
+            <result name="success">/common/showMessage.jsp</result>
+        </action>
+        <action name="PreProveInfo" class="resoft.tips.web.action.PreProveInfo">
+            <result name="success">/pages/preProveInfo.jsp</result>
+        </action>
+        <action name="ShowProveInfo" class="resoft.tips.web.action.ShowProveInfo">
+            <result name="success">/pages/showProveInfo.jsp</result>
+        </action>
+        <action name="DelProveInfo" class="resoft.tips.web.action.DelProveInfo">
+            <result name="success">/common/showMessage.jsp</result>
+        </action>
+        <action name="SubmitProveInfo" class="resoft.tips.web.action.SubmitProveInfo">
+            <result name="success">/common/showMessage.jsp</result>
+        </action>
+
+        <action name="ShowVoucherInfo" class="resoft.tips.web.action.ShowVoucherInfo">
+            <result name="success">/pages/showVoucherInfo.jsp</result>
+        </action>
+
+        <action name="QueryMsgNo" class="resoft.tips.web.action.QueryMsgNo">
+            <result name="success">/pages/recvLogs.jsp</result>
+        </action>
+        <action name="TipsConText" class="resoft.tips.web.action.TipsConTest">
+            <result name="success">/common/showMessage.jsp</result>
+        </action>
+        
+        <action name="SaveCommonInfo" class="resoft.tips.action.SaveCommonInfo">
+            <result name="success">/common/showMessage.jsp</result>
+        </action>
+        
+        
+        <action name="ForceLogTips" class="resoft.tips.web.action.ForceLogTips">
+            <result name="success">/common/showMessage.jsp</result>
+        </action>
+        <action name="ForceExitTips" class="resoft.tips.web.action.ForceExitTips">
+            <result name="success">/common/showMessage.jsp</result>
+        </action>
+        <action name="QueryNodeMng" class="resoft.tips.web.action.QueryNodeMng">
+            <result name="freeFormatMessage">/pages/freeFormatMessage.jsp</result>
+            <result name="sendFreeMessage">/pages/sendFreeMessage.jsp</result>
+        </action>
+        <action name="QueryTaxOrg" class="resoft.tips.web.action.QueryTaxOrg">
+            <result name="rushApply">/pages/rushApply.jsp</result>
+            <result name="delApply">/pages/delApply.jsp</result>
+           
+            <result name="batchPackage">/pages/batchPackage.jsp</result>
+            <result name="realtimePayment">/pages/realtimePayment.jsp</result>
+            <result name="batchPackDetail">/pages/batchPackDetail.jsp</result>
+
+        </action>
+        <action name="PreInputProve" class="resoft.tips.web.action.QueryTaxOrg">
+            <result name="success">/pages/inputProve.jsp</result>
+        </action>
+        <action name="QueryDeclareMng" class="resoft.tips.web.action.QueryDeclareMng">
+            <result name="success">/pages/inputDeclareQuery.jsp</result>
+        </action>
+        <action name="QueryDeclareInfo" class="resoft.tips.web.action.QueryDeclareInfo">
+            <result name="success">/pages/showDeclareInfo.jsp</result>
+        </action>
+        <action name="DeclarePayConfirm" class="resoft.tips.web.action.DeclarePayConfirm">
+            <result name="success">/common/showMessage.jsp</result>
+        </action>
+        <action name="QuerySysStatus" class="resoft.tips.web.action.QuerySysStatus">
+            <result name="success">/pages/SysStatus.jsp</result>
+        </action>
+
+        <action name="SendFreeMessage" class="resoft.tips.web.action.SendFreeMessage">
+            <result name="success">/common/showMessage.jsp</result>
+        </action>
+       <action name="ApplyChkResend" class="resoft.tips.web.action.ApplyChkResend">
+           <result name="success">/common/showMessage.jsp</result>
+        </action>
+    </package>
+</xwork>

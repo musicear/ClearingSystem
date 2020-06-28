@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--批量业务扣款处理。发送批量数据-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--轮询批量包，取出要扣款的信息-->
+    <activity name="resoft.tips.action.BatchPackDeduct">
+        <transition on="-1" to="return"/>
+    </activity>
+    <!--检查是否已止付-->
+    <activity name="resoft.tips.action.CheckPackDelApply">
+        <transition on="-1" to="return"/>
+    </activity>
+    <!--检查批量包中可发送扣税的记录-->
+    <activity name="resoft.tips.action.DealBatchStop"/>
+    <!--更新批量包发送成功与否状态-->
+    <activity name="resoft.tips.action.SaveBatchStatus" />
+    <label name="return"/>
+</transaction>

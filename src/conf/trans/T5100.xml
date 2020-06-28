@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="GB2312"?>
+<transaction>
+	<activity name="resoft.tips.chqsh.FileTax">
+    </activity>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--缴税情况查询-->
+    <activity name="resoft.tips.chqsh.FileTax">
+    </activity> 
+</transaction>

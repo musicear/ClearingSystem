@@ -1,0 +1,15 @@
+<reportSheet>
+    <cube code="02"/>
+    <head>
+        <paragraph font-size="14" align="center">对账查询</paragraph>
+    </head>
+    <fields>
+        <field friendlyName="登录TIPS状态"/>
+		<field friendlyName="工作日期"/>
+		<field friendlyName="当前系统状态"/>
+    </fields>
+    <properties>
+        <property name="customConditionPage" value="/pages/sysStatus.jsp"/>
+        <property name="width" value="600"/>
+    </properties>
+</reportSheet>

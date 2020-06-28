@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--接受公共数据更新报文-->
+<transaction>
+	<transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--记录到公共数据暂存表中-->
+    <activity name="resoft.tips.action.SaveCommonInfo">
+        <transition on="-1" to="return" />
+    </activity>
+</transaction>

@@ -1,0 +1,23 @@
+<CFX>
+	<HEAD>
+		<VER/>
+		<SRC/>
+		<DES/>
+		<APP/>
+		<MsgNo/>
+		<MsgID/>
+		<MsgRef/>
+		<WorkDate/>
+		<Reserve/>
+	</HEAD>
+	<MSG>
+		<MsgReturn9121>
+            <OriMsgNo/>
+            <OriSendOrgCode/>
+            <OriEntrustDate/>
+            <OriRequestNo/>
+            <Result/>            
+            <AddWord/>			
+		</MsgReturn9121>
+	</MSG>
+</CFX>

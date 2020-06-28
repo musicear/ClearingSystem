@@ -1,0 +1,7 @@
+#
+# Automatically generated script for RetroGuard bytecode obfuscator.
+# To be used with Java JAR-file: C:\myWork\development\resoft\deploy\CommClient.jar
+# 2005-10-14 10:13:31
+#
+.class resoft/basLink/util/BasLinkClient public
+.class resoft/basLink/Message public

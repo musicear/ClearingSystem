@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--键值转换。将共用键值转换为各银行公共键值。-->
+<!--其中name是银行键值，value为从Message中取值(${TaxOrgCode}表示读取Messag中的TaxOrgCode，直接写1，则表示取固定值1)。-->
+<properties>
+    <!--转账交易-->
+    <category name="1000">
+        <property name="_jym" value="5713" />
+        <property name="jyzl" value="3" />
+        <property name="jyrq" value="${TraDate}" />
+        <property name="_gyh" value="999999" />
+    </category>
+    <!--转账交易返回-->
+    <category name="1000Return">
+        <property name="RespCode" value="${RespCode}" />
+        <property name="RespDesc" value="${_errmsg}" />
+        <property name="TransNo" value="${_lsh}" />
+        <property name="TraDate" value="${xtrq}" />
+        <property name="TraTime" value="${xtsj}" />
+    </category>
+    <!--交易撤销（冲正）-->
+    <category name="1100">
+
+    </category>
+</properties>

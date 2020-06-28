@@ -1,0 +1,17 @@
+<reportSheet>
+    <cube code="07"/>
+    <head>
+        <paragraph font-size="14" align="center">接收报文日志查询</paragraph>
+    </head>
+    <fields>
+        <field friendlyName="报文标识号"/>
+		<field friendlyName="工作日期"/>
+		<field friendlyName="报文参考号"/>
+		<field friendlyName="报文种类"/>
+		<field friendlyName="接收时间"/>
+    </fields>
+    <properties>
+        <property name="customConditionPage" value="/actions/QueryMsgNo.action"/>
+        <property name="width" value="600"/>
+    </properties>
+</reportSheet>

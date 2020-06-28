@@ -1,0 +1,15 @@
+<reportSheet>
+    <cube code="01"/>
+    <head>
+        <paragraph font-size="14" align="center">对账查询</paragraph>
+    </head>
+    <fields>
+        <field friendlyName="对账日期"/>
+		<field friendlyName="对账批次"/>
+		<field friendlyName="对账类型"/>
+    </fields>
+    <properties>
+        <property name="customConditionPage" value="/pages/payCheck.jsp"/>
+        <property name="width" value="600"/>
+    </properties>
+</reportSheet>

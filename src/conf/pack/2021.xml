@@ -1,0 +1,24 @@
+<CFX>
+	<HEAD>
+		<VER/>
+		<SRC/>
+		<DES/>
+		<APP/>
+		<MsgNo/>
+		<MsgID/>
+		<MsgRef/>
+		<WorkDate/>
+		<Reserve/>
+	</HEAD>
+	<MSG>
+		<RushReturn2021>
+            <TaxOrgCode/>
+            <OriCancelNo/>
+            <OriCancelDate/>
+            <OriTraNo/>
+            <OriEntrustDate/>
+            <CancelAnswer/>
+            <AddWord/>			
+		</RushReturn2021>
+	</MSG>
+</CFX>

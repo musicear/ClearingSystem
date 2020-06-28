@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="GB2312"?>
+<properties>
+    <!--服务-->
+    <category name="services">
+        <property name="CommService" value="resoft.xlink.comm.services.CommService"/>
+        <property name="HBCommService" value="resoft.xlink.comm.services.CommService"/>
+        <property name="TimerService" value="resoft.xlink.comm.services.TimerService"/>
+        <property name="MQService" value="resoft.basLink.mq.MQService"/>
+    </category>
+    <!--TCP通讯服务配置-->
+    <category name="CommService">
+        <property name="listenPort" value="1300"/>
+        <property name="dispatcher" value="resoft.tips.util.TipsTellerDispatcher"/>
+        <property name="nameOfTransCode" value="交易码"/>
+        <property name="globalPropertiesReader" value="resoft.basLink.util.GlobalPropertiesReaderImpl" />
+    </category>
+    <!--哈尔滨用于柜面业务发起的通讯服务-->
+    <category name="HBCommService">
+        <property name="listenPort" value="1500"/>
+        <property name="dispatcher" value="resoft.tips.bankImpl.hbbank.HBBankDispatcher"/>
+        <property name="nameOfTransCode" value="交易码"/>
+        <property name="globalPropertiesReader" value="resoft.basLink.util.GlobalPropertiesReaderImpl" />
+    </category>
+
+    <!--定时任务定义-->
+    <category name="TimerService">
+        <property name="globalPropertiesReader" value="resoft.basLink.util.GlobalPropertiesReaderImpl" />
+        <!--定时扣款处理-->
+        <property name="job:3102Pooling" value="0 0/1 * * * ?"/>
+        <!--返回批量扣税回执-->
+        <property name="job:2102" value="0 0/1 * * * ?"/>
+        <!--公共数据更新-->
+        <property name="job:updateCommonInfo" value="0 0/1 * * * ?"/>
+        <!--发送自由格式报文-->
+        <property name="job:send9105" value="0 0/1 * * * ?"/>
+    </category>
+
+    <!--商业银行接口实现
+    <category name="bankImpl">
+        <property name="className" value="resoft.tips.bankImpl.qzbank.EasyNetMessageSender"/>
+        <property name="keyMap" value="false"/>
+    </category> -->
+
+    <!--哈尔滨的接口实现-->
+   
+    <category name="bankImpl">
+        <property name="className" value="resoft.tips.bankImpl.SyncSocketMessageSender"/>
+        <property name="packager" value="resoft.tips.bankImpl.hbbank.HBBankPackager"/>        
+        <property name="host" value="127.0.0.1"/>
+        <property name="port" value="8272"/>
+        <property name="lengthAccessor" value="resoft.tips.bankImpl.AsciiLengthAccessor" />
+    </category>
+  
+
+    <!--Web与交易子系统通讯配置-->
+    <category name="tcpTrans">
+        <property name="host" value="16.51.10.143"/>
+        <property name="port" value="1300"/>
+    </category>
+
+    <!--MQ通讯设置-->
+    <category name="MQ">
+        <!-- 银行前置MQ队列管理器 -->
+        <property name="QueueManager" value="QM_TIPS_613033500001_01" />
+        <!-- 银行前置MQ发送实时队列 -->
+        <property name="SyncSendQueue" value="PBC.EXT.ONLINE.IN" />
+        <!-- 银行前置MQ接收实时队列 -->
+        <property name="SyncRecvQueue" value="PBC.613033500001.ONLINE.OUT"/>
+        <!-- 银行前置MQ发送批量队列 -->
+        <property name="BatchSendQueue" value="PBC.EXT.BATCH.IN"/>
+        <!-- 银行前置MQ接收批量队列 -->
+        <property name="BatchRecvQueue" value="PBC.613033500001.BATCH.OUT"/>
+    </category>
+
+    <!--与核心系统通讯的实现Action-->
+    <category name="commWithBank">
+        <!--实时转账-->
+        <property name="transferAcct" value="resoft.tips.action.mock.TransferAcctMock" />
+        <!--账户查询-->
+        <property name="queryAcct" value="resoft.tips.action.mock.QueryAcctMock" />
+		<!--对帐-->
+        <property name="requestBankChkInfo" value="resoft.tips.action.RequestBankChkInfo" />
+    </category>
+
+    <!--其他设置-->
+    <category name="general">
+        <property name="globalPropertiesReader" value="resoft.basLink.util.GlobalPropertiesReaderImpl" />
+        <!--临时文件存放位置-->
+        <property name="tmpPath" value="../classes/temp"/>
+        <!--密钥配置文件位置 -->
+        <property name="keyPath" value="../classes/key/ServerConfig/dsign.properties"/>
+        <!--密钥DN -->
+        <property name="DN" value="C=CN, O=PBC Test CA, OU=789456@1, OU=Web Servers, CN=PBCTIPS"/>
+        <!-- 银行节点代码 -->
+        <property name="BankSrcNodeCode" value="613033500001"/>
+        <!-- TIPS节点代码 -->
+        <property name="TIPSDesNodeCode" value="100000000000" />
+
+    </category>
+
+</properties>

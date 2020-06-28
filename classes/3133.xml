@@ -1,0 +1,33 @@
+<CFX>
+	<HEAD>
+		<VER/>
+		<SRC/>
+		<DES/>
+		<APP/>
+		<MsgNo/>
+		<MsgID/>
+		<MsgRef/>
+		<WorkDate/>
+		<Reserve/>
+	</HEAD>
+	<MSG>
+		<BatchHead3133>
+            <TreCode/>
+            <EntrustDate/>
+            <PackNo/>
+            <BillOrg/>
+            <OriEntrustDate/>            
+            <OriPackNo/>
+            <PayoutVouType/>			
+		</BatchHead3133>
+		<BatchReturn3133 iterance="true">
+			<VouNo/>
+			<VouDate/>
+			<OriTraNo/>
+			<SumAmt/>
+			<AcctDate/>
+			<Result/>
+			<Description/>
+		</BatchReturn3133>
+	</MSG>
+</CFX>

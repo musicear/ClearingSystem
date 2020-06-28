@@ -1,0 +1,431 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   Query.java
+
+package org.zerone.easyMining.engine;
+
+import java.io.OutputStream;
+import java.sql.*;
+import java.text.*;
+import java.util.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.zerone.common.BeanFactory;
+import org.zerone.easyMining.dialect.Dialect;
+import org.zerone.easyMining.domain.*;
+import org.zerone.jdbc.DatabaseHelper;
+
+// Referenced classes of package org.zerone.easyMining.engine:
+//            QueryException, QueryProcessor, QueryUtil, CellFormatter
+
+public class Query
+{
+
+    private Query(ReportSheet sheet)
+    {
+        outputStream = null;
+        firstResult = 1;
+        maxResults = 0;
+        this.sheet = sheet;
+        String value = (String)sheet.getProperty("pageSize");
+        try
+        {
+            int pageSize = Integer.parseInt(value);
+            setMaxResults(pageSize);
+        }
+        catch(Exception e) { }
+    }
+
+    public static Query createQuery(ReportSheet sheet)
+    {
+        return new Query(sheet);
+    }
+
+    public void setOutputStream(OutputStream os)
+    {
+        outputStream = os;
+    }
+
+    public void setOutputStyle(String style)
+    {
+        outputStyle = style;
+    }
+
+    public void setFirstResult(int firstResult)
+    {
+        this.firstResult = firstResult;
+    }
+
+    public void setMaxResults(int maxResults)
+    {
+        this.maxResults = maxResults;
+    }
+
+    public void execute()
+        throws QueryException
+    {
+        QueryProcessor queryProcessor;
+        boolean hasRotation;
+        Column colRotation;
+        List originalElements;
+        ReportElement elements[];
+        Connection conn;
+        Statement stmt;
+        ResultSet rs;
+        long currentRow;
+        List matrix;
+        if(outputStream == null)
+        {
+            logger.fatal("\u672A\u8BBE\u7F6E\u76EE\u6807\u6D41");
+            throw new QueryException();
+        }
+        queryProcessor = new QueryProcessor(sheet);
+        queryProcessor.setOutputStream(outputStream);
+        queryProcessor.setOutputStyle(outputStyle);
+        hasRotation = sheet.getRotationElement() != null;
+        if(hasRotation)
+        {
+            ReportElement element = sheet.getRotationElement();
+            sheet.removeElement(element);
+            sheet.addElement(element);
+            maxResults = 0;
+        }
+        sql = QueryUtil.getQueryDataSql(sheet);
+        colRotation = null;
+        if(hasRotation)
+            colRotation = sheet.getRotationElement().getColumn();
+        originalElements = new ArrayList();
+        originalElements.addAll(sheet.listAllElements());
+        elements = getElements();
+        sheet.clearAllElements();
+        for(int i = 0; i < elements.length; i++)
+            sheet.addElement(elements[i]);
+
+        queryProcessor.beginProcess();
+        conn = DatabaseHelper.getConnection();
+        if(conn == null)
+        {
+            logger.error("\u8FDE\u63A5\u6570\u636E\u5E93\u5931\u8D25");
+            throw new QueryException();
+        }
+        stmt = null;
+        rs = null;
+        currentRow = 0L;
+        try
+        {
+            if(firstResult == 1)
+            {
+                stmt = conn.createStatement();
+                rs = stmt.executeQuery(sql);
+            } else
+            if(dialect.supportsLimit())
+            {
+                stmt = conn.createStatement();
+                if(maxResults > 0)
+                    rs = stmt.executeQuery(dialect.getLimitString(sql, firstResult, firstResult + maxResults));
+                else
+                    rs = stmt.executeQuery(sql);
+            } else
+            if(maxResults > 0)
+            {
+                stmt = conn.createStatement(1004, 1007);
+                rs = stmt.executeQuery(sql);
+                if(firstResult > 1)
+                    rs.absolute(firstResult - 1);
+            } else
+            {
+                stmt = conn.createStatement();
+                rs = stmt.executeQuery(sql);
+            }
+        }
+        catch(SQLException e)
+        {
+            logger.error("\u67E5\u8BE2Sql\u5931\u8D25:[" + sql + "]", e);
+            DatabaseHelper.clearup(rs, stmt, conn);
+            throw new QueryException();
+        }
+        matrix = new ArrayList();
+        try
+        {
+            while(rs.next() && (maxResults <= 0 || currentRow < (long)maxResults)) 
+            {
+                currentRow++;
+                List data = new ArrayList();
+                for(int elementIndex = 0; elementIndex < originalElements.size(); elementIndex++)
+                {
+                    ReportElement element = (ReportElement)originalElements.get(elementIndex);
+                    DataType dataType = element.getColumn().getDataType();
+                    int columnIndex = elementIndex + 1;
+                    String cellValue;
+                    if(dataType.equals(DataType.DATETIME))
+                    {
+                        Timestamp timestamp = rs.getTimestamp(columnIndex);
+                        if(timestamp == null)
+                        {
+                            cellValue = "";
+                        } else
+                        {
+                            Date dateValue = new Date(timestamp.getTime());
+                            cellValue = CellFormatter.format(element, dateValue);
+                        }
+                    } else
+                    if(dataType.equals(DataType.NUMBER))
+                    {
+                        if(elements[elementIndex].getFormat().equals(""))
+                        {
+                            cellValue = rs.getString(columnIndex);
+                        } else
+                        {
+                            double doubleValue;
+                            try
+                            {
+                                doubleValue = rs.getDouble(columnIndex);
+                            }
+                            catch(SQLException doubleE)
+                            {
+                                logger.error("\u8F6C\u5316double\u9519\u8BEF:colCode" + element.getColumn().getColCode() + ":value='" + rs.getString(columnIndex) + "':columnINdex='" + columnIndex + "'", doubleE);
+                                throw doubleE;
+                            }
+                            cellValue = CellFormatter.format(element, doubleValue);
+                        }
+                    } else
+                    {
+                        cellValue = rs.getString(columnIndex);
+                    }
+                    if(cellValue == null)
+                        cellValue = "";
+                    if(elements[elementIndex].getColumn().hasCodeTable())
+                        cellValue = element.getColumn().getDisplayByValue(cellValue);
+                    data.add(cellValue);
+                }
+
+                if(!hasRotation)
+                    queryProcessor.processRow(Arrays.asList(elements), data);
+                else
+                if(matrix.size() > 0)
+                {
+                    List lastData = (List)matrix.get(matrix.size() - 1);
+                    boolean newRow = false;
+                    int dataIndex = 0;
+                    do
+                    {
+                        if(dataIndex >= data.size() - 2)
+                            break;
+                        if(!data.get(dataIndex).equals(lastData.get(dataIndex)))
+                        {
+                            newRow = true;
+                            break;
+                        }
+                        dataIndex++;
+                    } while(true);
+                    if(newRow)
+                    {
+                        List newData = rotationMatrix(colRotation, matrix);
+                        queryProcessor.processRow(Arrays.asList(elements), newData);
+                        matrix.clear();
+                        matrix.add(data);
+                    } else
+                    {
+                        matrix.add(data);
+                    }
+                } else
+                {
+                    matrix.add(data);
+                }
+            }
+            if(hasRotation)
+            {
+                if(matrix.size() > 0)
+                {
+                    List newData = rotationMatrix(colRotation, matrix);
+                    queryProcessor.processRow(Arrays.asList(elements), newData);
+                }
+                sheet.removeAllFooterRows();
+                sheet.addFooterCell(new TableCell("\u5408\u8BA1", originalElements.size() - 2));
+                ReportElement elementAggragate = getAggregateElement();
+                TableCell tableCell = new TableCell("#sum_" + elementAggragate.getColumn().getColCode());
+                tableCell.getStyle().setAlign(elementAggragate.getStyle().getAlign());
+                sheet.addFooterCell(tableCell);
+                for(int i = 0; i < colRotation.getRotateColumnValues().size(); i++)
+                {
+                    tableCell = new TableCell("#" + (i + 1) + "sum_" + elementAggragate.getColumn().getColCode());
+                    tableCell.getStyle().setAlign(elementAggragate.getStyle().getAlign());
+                    sheet.addFooterCell(tableCell);
+                }
+
+            }
+        }
+        catch(SQLException e)
+        {
+            logger.fatal("Task {" + sql + "} query fail", e);
+            throw new QueryException();
+        }
+        catch(Exception e)
+        {
+            logger.fatal("Task {" + sql + "} other error", e);
+            throw new QueryException();
+        }
+        DatabaseHelper.clearup(rs, stmt, conn);
+        break MISSING_BLOCK_LABEL_1376;
+        Exception exception;
+        exception;
+        DatabaseHelper.clearup(rs, stmt, conn);
+        throw exception;
+        queryProcessor.endProcess(currentRow);
+        if(hasRotation)
+            recoveryReportSheet(originalElements);
+        return;
+    }
+
+    private List rotationMatrix(Column colRotation, List matrix)
+    {
+        List firstRow = (List)matrix.get(0);
+        List newData = new ArrayList();
+        for(int dataIndex = 0; dataIndex < firstRow.size() - 2; dataIndex++)
+            newData.add(firstRow.get(dataIndex));
+
+        newData.add("0");
+        double sum = 0.0D;
+        List values = (List)colRotation.getRotateColumnValues();
+        String format = getAggregateElement().getFormat();
+        for(Iterator itrValues = values.iterator(); itrValues.hasNext(); itrValues.next())
+            newData.add(CellFormatter.format(format, 0.0D));
+
+        for(int rowIndex = 0; rowIndex < matrix.size(); rowIndex++)
+        {
+            List dataOfMatrix = (List)matrix.get(rowIndex);
+            String key = (String)dataOfMatrix.get(dataOfMatrix.size() - 1);
+            String value = (String)dataOfMatrix.get(dataOfMatrix.size() - 2);
+            int index = values.indexOf(key);
+            newData.set((firstRow.size() - 1) + index, value);
+            double dbValue = 0.0D;
+            if(format.equals(""))
+            {
+                dbValue = Double.parseDouble(value);
+            } else
+            {
+                NumberFormat nf = new DecimalFormat(format);
+                try
+                {
+                    dbValue = nf.parse(value).doubleValue();
+                }
+                catch(ParseException e)
+                {
+                    logger.error("parse error:[" + value + "]", e);
+                }
+            }
+            sum += dbValue;
+        }
+
+        newData.set(firstRow.size() - 2, CellFormatter.format(format, sum));
+        return newData;
+    }
+
+    private void recoveryReportSheet(Collection originalElements)
+    {
+        sheet.clearAllElements();
+        for(Iterator itr = originalElements.iterator(); itr.hasNext(); sheet.addElement((ReportElement)itr.next()));
+        sheet.removeAllFooterRows();
+    }
+
+    private ReportElement[] getElements()
+    {
+        ReportElement rotationElement = sheet.getRotationElement();
+        if(rotationElement != null)
+        {
+            sheet.removeElement(rotationElement);
+            sheet.addElement(rotationElement);
+        }
+        int size = sheet.listAllElements().size();
+        Collection rotationValues = new ArrayList();
+        if(rotationElement != null)
+        {
+            rotationValues = rotationElement.getColumn().getRotateColumnValues();
+            size += rotationValues.size() - 1;
+        }
+        ReportElement elements[] = new ReportElement[size];
+        int i = 0;
+label0:
+        for(Iterator itr = sheet.listAllElements().iterator(); itr.hasNext(); i++)
+        {
+            ReportElement element = (ReportElement)itr.next();
+            if(element.isRotate())
+            {
+                Column colAggregate = getAggregateElement().getColumn();
+                sheet.registerComputeField("sum_" + colAggregate.getColCode(), colAggregate, "sum");
+                int valueNo = 0;
+                Iterator itrValues = rotationValues.iterator();
+                do
+                {
+                    if(!itrValues.hasNext())
+                        continue label0;
+                    Column colRotateAggregate = (Column)colAggregate.clone();
+                    colRotateAggregate.setColCode(i + colRotateAggregate.getColCode());
+                    ReportElement additionElement = new ReportElement(colRotateAggregate);
+                    if(element.getColumn().hasCodeTable())
+                        additionElement.setFriendlyName(element.getColumn().getDisplayByValue((String)itrValues.next()));
+                    else
+                        additionElement.setFriendlyName((String)itrValues.next());
+                    elements[i] = additionElement;
+                    i++;
+                    sheet.registerComputeField((valueNo + 1) + "sum_" + colAggregate.getColCode(), colRotateAggregate, "sum");
+                    valueNo++;
+                } while(true);
+            }
+            elements[i] = element;
+        }
+
+        return elements;
+    }
+
+    public String getCompletedSql()
+    {
+        return sql;
+    }
+
+    private ReportElement getAggregateElement()
+    {
+        for(Iterator itr = sheet.listAllVisibleElements().iterator(); itr.hasNext();)
+        {
+            ReportElement element = (ReportElement)itr.next();
+            Column col = element.getColumn();
+            if(col.getColType().equals("A"))
+                return element;
+        }
+
+        return null;
+    }
+
+    public int getRowCount()
+        throws QueryException
+    {
+        String rowCountSql = QueryUtil.getQueryCountSql(sheet);
+        return QueryUtil.getRowCount(rowCountSql, dialect.supportsFastCount());
+        SQLException e;
+        e;
+        throw new QueryException(e);
+    }
+
+    static Class _mthclass$(String x0)
+    {
+        return Class.forName(x0);
+        ClassNotFoundException x1;
+        x1;
+        throw new NoClassDefFoundError(x1.getMessage());
+    }
+
+    private static Log logger;
+    private static Dialect dialect = (Dialect)BeanFactory.getBean("dialect");
+    private ReportSheet sheet;
+    private String outputStyle;
+    private OutputStream outputStream;
+    private int firstResult;
+    private int maxResults;
+    private String sql;
+
+    static 
+    {
+        logger = LogFactory.getLog(org.zerone.easyMining.engine.Query.class);
+    }
+}

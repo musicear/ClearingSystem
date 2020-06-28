@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--连接测试请求-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>    
+	
+	<!-- 检索是否有连接测试信息 -->
+	<activity name="resoft.tips.action.SendConnTest">
+		<transition on="-1" to="return" />
+	</activity>
+	
+    <!--设置报文头--> 
+    <activity name="resoft.tips.action.SetHeadValue">
+        <properties>
+            <property name="msgNo" value="9005"/>
+        </properties>
+    </activity>
+    <!--设置MsgId及MsgRef-->
+    <activity name="resoft.tips.action.SetMsgId" />
+     <!--设置打包格式-->
+    <activity name="resoft.tips.action.SetPackFile">
+        <properties>
+            <property name="packFile" value="./conf/pack/9005.xml"/>
+        </properties>
+    </activity>
+    <!--打印出要发送的XML-->
+    <activity name="resoft.tips.action.PrintPacket"/>
+    <!--准备发送MQ-->
+    <activity name="resoft.tips.action.PrepareForSendMQ"/>
+    <!--设置发起的correlationId-->
+    <activity name="resoft.tips.action.SetCorrelationIdAsREQ" />
+    <!--发送MQ-->
+    <activity name="resoft.tips.action.SendToMQ">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.SyncSendQueue}" />
+        </properties>
+    </activity>
+    <!--接收MQ响应-->
+    <activity name="resoft.tips.action.ReceiveReplyFromTips">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.SyncRecvQueue}" />
+        </properties>
+    </activity>
+    <!--检查结果-->
+    <activity name="resoft.tips.action.CheckTestResult" />
+    
+    <label name="return" />
+</transaction>

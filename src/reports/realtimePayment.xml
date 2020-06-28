@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="GBK"?>
+<reportSheet>
+    <cube code="10"/>
+    <head>
+        <paragraph font-size="14" align="center">实时扣税查询</paragraph>
+    </head>
+    <fields>
+        <field friendlyName="流水号"/>
+		<field friendlyName="征收机关名称"/>
+		<field friendlyName="委托日期"/>
+		<field friendlyName="账号"/>
+		<field friendlyName="开户行行号"/>
+		<field friendlyName="缴款单位名称"/>
+		<field friendlyName="交易金额"/>
+		<field friendlyName="税票号码"/>
+		<field friendlyName="银行交易流水号"/>
+		<field friendlyName="扣款日期"/>
+		<field friendlyName="附言"/>	
+		<field friendlyName="对账状态"/>
+    </fields>
+    <properties>
+        <property name="customConditionPage" value="/actions/QueryTaxOrg.action?maptype=realtimePayment"/>
+        <property name="width" value="750"/>
+    </properties>
+</reportSheet>

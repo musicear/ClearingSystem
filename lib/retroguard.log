@@ -1,0 +1,95 @@
+# If this log is to be used for incremental obfuscation / patch generation, 
+# add any '.class', '.method', '.field' and '.attribute' restrictions here:
+
+
+#-DO-NOT-EDIT-BELOW-THIS-LINE------------------DO-NOT-EDIT-BELOW-THIS-LINE--
+#
+# RetroGuard Bytecode Obfuscator, v2.0.5, a product of Retrologic Systems - www.retrologic.com
+#
+# Logfile created on Fri Oct 14 10:26:44 CST 2005
+#
+# Jar file to be obfuscated:           CommClient.jar
+# Target Jar file for obfuscated code: CommClient.jar
+# RetroGuard Script file used:         commClient.rgs
+#
+#
+# Memory in use after class data structure built: 354152 bytes
+# Total memory available                        : 2031616 bytes
+#
+#
+# Obfuscated name overloading frequency:
+#  'a'   	used 14 times	(46%)
+#  'if'   	used 7 times	(23%)
+#  'do'   	used 4 times	(13%)
+#  'for'   	used 2 times	(6%)
+#  'b'   	used 2 times	(6%)
+#  'c'   	used 1 times	(3%)
+#  Other names (each used in <1% of mappings) used a total of 0 times (3%)
+#
+#
+# Names reserved from obfuscation:
+#
+.class resoft/basLink/util/BasLinkClient
+.method resoft/basLink/util/BasLinkClient/send (Ljava/lang/String;ILjava/lang/String;Lresoft/basLink/Message;)Lresoft/basLink/Message;
+.method resoft/basLink/util/BasLinkClient/send (Ljava/lang/String;Lresoft/basLink/Message;)Lresoft/basLink/Message;
+.class resoft/basLink/Message
+.method resoft/basLink/Message/setSysProperty (Ljava/lang/String;Ljava/lang/String;)V
+.method resoft/basLink/Message/getValue (Ljava/lang/String;)Ljava/lang/String;
+.method resoft/basLink/Message/findAll ()Ljava/util/Collection;
+.method resoft/basLink/Message/forEach (Ljava/lang/String;Lresoft/basLink/MessageVariableIterator;)V
+.method resoft/basLink/Message/getSysProperty (Ljava/lang/String;)Ljava/lang/String;
+.method resoft/basLink/Message/getHeadValue (Ljava/lang/String;)Ljava/lang/String;
+.method resoft/basLink/Message/putAll (Ljava/util/Map;)V
+.method resoft/basLink/Message/setValue (Ljava/lang/String;Ljava/lang/String;)V
+.method resoft/basLink/Message/setHeadValue (Ljava/lang/String;Ljava/lang/String;)V
+.method resoft/basLink/Message/remove (Ljava/lang/String;)V
+.method resoft/basLink/Message/listAllHeadKeys ()Ljava/util/Collection;
+.method resoft/basLink/Message/findByPrefix (Ljava/lang/String;)Ljava/util/Collection;
+#
+#
+# Obfuscated name mappings (some of these may be unchanged due to polymorphism constraints):
+#
+.field_map resoft/basLink/util/BasLinkClient/packer a
+.package_map resoft/basLink/packer a
+.class_map resoft/basLink/packer/CfxPacker$UnpackReader a
+.field_map resoft/basLink/packer/CfxPacker$UnpackReader/this$0 this$0
+.field_map resoft/basLink/packer/CfxPacker$UnpackReader/currentHasChild a
+.field_map resoft/basLink/packer/CfxPacker$UnpackReader/xml if
+.field_map resoft/basLink/packer/CfxPacker$UnpackReader/currentSection do
+.field_map resoft/basLink/packer/CfxPacker$UnpackReader/msg for
+.method_map resoft/basLink/packer/CfxPacker$UnpackReader/endElement (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V endElement
+.method_map resoft/basLink/packer/CfxPacker$UnpackReader/endDocument ()V endDocument
+.method_map resoft/basLink/packer/CfxPacker$UnpackReader/startElement (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/xml/sax/Attributes;)V startElement
+.method_map resoft/basLink/packer/CfxPacker$UnpackReader/startDocument ()V startDocument
+.class_map resoft/basLink/packer/CfxPacker$PackReader b
+.field_map resoft/basLink/packer/CfxPacker$PackReader/this$0 this$0
+.field_map resoft/basLink/packer/CfxPacker$PackReader/headKey a
+.field_map resoft/basLink/packer/CfxPacker$PackReader/isHead if
+.field_map resoft/basLink/packer/CfxPacker$PackReader/msg do
+.method_map resoft/basLink/packer/CfxPacker$PackReader/endElement (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V endElement
+.method_map resoft/basLink/packer/CfxPacker$PackReader/characters ([CII)V characters
+.method_map resoft/basLink/packer/CfxPacker$PackReader/startElement (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/xml/sax/Attributes;)V startElement
+.class_map resoft/basLink/packer/CfxPacker a
+.field_map resoft/basLink/packer/CfxPacker/spf a
+.field_map resoft/basLink/packer/CfxPacker/ADD_CRCF if
+.method_map resoft/basLink/packer/CfxPacker/parse (Lresoft/basLink/Message;Ljava/lang/String;)Lresoft/basLink/Message; a
+.method_map resoft/basLink/packer/CfxPacker/unpack (Lresoft/basLink/Message;)[B a
+.method_map resoft/basLink/packer/CfxPacker/pack ([B)Lresoft/basLink/Message; a
+.method_map resoft/basLink/packer/CfxPacker/replaceAll (Ljava/lang/StringBuffer;Ljava/lang/String;Ljava/lang/String;)V a
+.method_map resoft/basLink/packer/CfxPacker/unpackByFile (Lresoft/basLink/Message;Ljava/lang/String;)[B if
+.method_map resoft/basLink/packer/CfxPacker/unpackByFile (Lresoft/basLink/Message;)[B if
+.class_map resoft/basLink/PackerFactory a
+.method_map resoft/basLink/PackerFactory/getCfxPacker ()Lresoft/basLink/Packer; a
+.method_map resoft/basLink/PackerFactory/getCtaisPacker ()Lresoft/basLink/Packer; if
+.method_map resoft/basLink/PackerFactory/getTagPacker ()Lresoft/basLink/Packer; do
+.field_map resoft/basLink/Message/sysProp a
+.field_map resoft/basLink/Message/values if
+.field_map resoft/basLink/Message/keys do
+.field_map resoft/basLink/Message/headMap for
+.class_map resoft/basLink/PackException b
+.class_map resoft/basLink/Packer c
+.method_map resoft/basLink/Packer/parse (Lresoft/basLink/Message;Ljava/lang/String;)Lresoft/basLink/Message; a
+.method_map resoft/basLink/Packer/unpack (Lresoft/basLink/Message;)[B a
+.method_map resoft/basLink/Packer/pack ([B)Lresoft/basLink/Message; a
+.method_map resoft/basLink/Packer/unpackByFile (Lresoft/basLink/Message;Ljava/lang/String;)[B if
+.method_map resoft/basLink/Packer/unpackByFile (Lresoft/basLink/Message;)[B if

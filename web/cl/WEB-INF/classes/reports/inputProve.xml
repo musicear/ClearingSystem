@@ -1,0 +1,10 @@
+<reportSheet>
+    <cube code="04"/>
+    <head>
+        <paragraph font-size="14" align="center">–≠“È¬º»Î</paragraph>
+    </head>
+    <properties>
+        <property name="customConditionPage" value="/actions/QueryTaxOrg.action?maptype=inputProve"/>
+        <property name="width" value="700"/>
+    </properties>
+</reportSheet>

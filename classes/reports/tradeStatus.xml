@@ -1,0 +1,10 @@
+<reportSheet>
+    <cube code="04"/>
+    <head>
+        <paragraph font-size="14" align="center">½»Ò××´Ì¬²éÑ¯</paragraph>
+    </head>
+    <properties>
+        <property name="customConditionPage" value="/pages/tradeStatus.jsp"/>
+        <property name="width" value="700"/>
+    </properties>
+</reportSheet>

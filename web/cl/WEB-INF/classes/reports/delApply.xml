@@ -1,0 +1,21 @@
+<reportSheet>
+    <cube code="05"/>
+    <head>
+        <paragraph font-size="14" align="center">止付查询</paragraph>
+    </head>
+    <fields>
+        <field friendlyName="征收机关名称"/>
+		<field friendlyName="委托日期"/>
+		<field friendlyName="止付申请序号"/>
+		<field friendlyName="止付类型"/>
+		<field friendlyName="原委托日期"/>
+		<field friendlyName="原包流水号"/>
+		<field friendlyName="原交易流水号"/>
+		<field friendlyName="止付原因"/>
+		<field friendlyName="附言"/>
+    </fields>
+    <properties>
+        <property name="customConditionPage" value="/actions/QueryTaxOrg.action?maptype=delApply"/>
+        <property name="width" value="600"/>
+    </properties>
+</reportSheet>

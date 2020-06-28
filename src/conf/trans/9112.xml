@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--银行对账信息重发请求-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>    
+
+    <!--设置报文头--> 
+    <activity name="resoft.tips.action.SetHeadValue">
+        <properties>
+            <property name="msgNo" value="9112"/>
+        </properties>
+    </activity>
+    <!--设置MsgId及MsgRef-->
+    <activity name="resoft.tips.action.SetMsgId" />
+    <!--设置发起机构代码-->
+    <activity name="resoft.tips.action.SetSendOrgCode">
+        <properties>
+            <property name="sendOrgCodeNodePath" value="//CFX/MSG/GetMsg9112/SendOrgCode"/>
+        </properties>
+    </activity>
+    <!--设置委托日期-->
+    <activity name="resoft.tips.action.SetEntrustDate">
+        <properties>
+            <property name="entrustNodePath" value="//CFX/MSG/GetMsg9112/EntrustDate"/>
+        </properties>
+    </activity>
+    <!--设置"银行对账信息重发请求"信息-->
+    <activity name="resoft.tips.action.SetGetMsg9112Info" />
+     <!--设置打包格式-->
+    <activity name="resoft.tips.action.SetPackFile">
+        <properties>
+            <property name="packFile" value="./conf/pack/9112.xml"/>
+        </properties>
+    </activity>
+    <!--打印出要发送的XML-->
+    <activity name="resoft.tips.action.PrintPacket"/>
+    <!--准备发送MQ-->
+    <activity name="resoft.tips.action.PrepareForSendMQ"/>
+    <!--设置发起的correlationId-->
+    <activity name="resoft.tips.action.SetCorrelationIdAsREQ" />
+    <!--发送MQ-->
+    <activity name="resoft.tips.action.SendToMQ">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.SyncSendQueue}" />
+        </properties>
+        <transition on="-1" to="return" />
+    </activity>
+    <!--接收MQ响应-->
+    <activity name="resoft.tips.action.ReceiveReplyFromTips">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.SyncRecvQueue}" />
+        </properties>
+        <transition on="-1" to="return" />
+    </activity>
+    <!--检查结果-->
+    <!--<activity name="resoft.tips.action.CheckTestResult" />-->
+    <label name="return" />
+    <activity name="resoft.tips.action.SetPackFile">
+        <properties>
+            <property name="packFile" value="./conf/pack/send9005Return.xml"/>
+        </properties>
+    </activity>
+</transaction>

@@ -1,0 +1,46 @@
+六月 27, 2020 8:23:52 下午 resoft.xlink.XLinkServer startup
+信息: XLinkServer is running...
+六月 27, 2020 8:23:52 下午 resoft.xlink.comm.services.CommService start
+信息: XLinkServer listening on port 30015
+六月 27, 2020 8:23:52 下午 org.quartz.simpl.SimpleThreadPool initialize
+信息: Job execution threads will use class loader of thread: Thread-2
+六月 27, 2020 8:23:52 下午 org.quartz.simpl.RAMJobStore initialize
+信息: RAMJobStore initialized.
+六月 27, 2020 8:23:52 下午 org.quartz.impl.StdSchedulerFactory instantiate
+信息: Quartz scheduler 'DefaultQuartzScheduler' initialized from default resource file in Quartz package: 'quartz.properties'
+六月 27, 2020 8:23:52 下午 org.quartz.impl.StdSchedulerFactory instantiate
+信息: Quartz scheduler version: 1.4.5
+六月 27, 2020 8:23:52 下午 org.quartz.core.QuartzScheduler start
+信息: Scheduler DefaultQuartzScheduler_$_NON_CLUSTERED started.
+六月 27, 2020 8:23:52 下午 resoft.xlink.comm.services.TimerService start
+信息: Job Service is running
+六月 27, 2020 8:23:52 下午 resoft.xlink.comm.helper.JobManager addJob
+信息: Job "9112" started
+六月 27, 2020 8:23:52 下午 resoft.xlink.comm.helper.JobManager addJob
+信息: Job "updateCommonInfo" started
+六月 27, 2020 8:23:52 下午 resoft.xlink.comm.helper.JobManager addJob
+信息: Job "CheckSftp" started
+六月 27, 2020 8:23:52 下午 resoft.xlink.comm.helper.JobManager addJob
+信息: Job "2201" started
+六月 27, 2020 8:23:52 下午 resoft.xlink.comm.helper.JobManager addJob
+信息: Job "2102" started
+六月 27, 2020 8:23:52 下午 resoft.xlink.comm.helper.JobManager addJob
+信息: Job "Check2201" started
+六月 27, 2020 8:23:52 下午 resoft.xlink.comm.helper.JobManager addJob
+信息: Job "3102Pooling" started
+六月 27, 2020 8:24:00 下午 resoft.xlink.comm.helper.Controller execute
+严重: 轮询任务:CheckSftp未定义
+六月 27, 2020 8:24:00 下午 resoft.xlink.comm.helper.Controller execute
+严重: 轮询任务:Check2201未定义
+六月 27, 2020 8:24:00 下午 resoft.xlink.comm.helper.Controller execute
+严重: 轮询任务:2102未定义
+六月 27, 2020 8:24:00 下午 resoft.xlink.comm.helper.Controller execute
+严重: 轮询任务:3102Pooling未定义
+六月 27, 2020 8:25:00 下午 resoft.xlink.comm.helper.Controller execute
+严重: 轮询任务:2102未定义
+六月 27, 2020 8:25:00 下午 resoft.xlink.comm.helper.Controller execute
+严重: 轮询任务:3102Pooling未定义
+六月 27, 2020 8:25:00 下午 resoft.xlink.comm.helper.Controller execute
+严重: 轮询任务:CheckSftp未定义
+六月 27, 2020 8:25:00 下午 resoft.xlink.comm.helper.Controller execute
+严重: 轮询任务:2201未定义

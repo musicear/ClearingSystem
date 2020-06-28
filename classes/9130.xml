@@ -1,0 +1,18 @@
+<CFX>
+	<HEAD>
+		<VER/>
+		<SRC/>
+		<DES/>
+		<APP/>
+		<MsgNo/>
+		<MsgID/>
+		<MsgRef/>
+		<WorkDate/>
+		<Reserve/>
+	</HEAD>
+	<MSG>
+        <FileInfo9130>
+            <FilePath/>
+        </FileInfo9130>
+    </MSG>
+</CFX>

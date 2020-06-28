@@ -1,0 +1,17 @@
+INDEX VERSION 1.131
+D:\workspace\Tips\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2502742882.index
+\tips_qhd\src
+D:\workspace\Tips\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1067243823.index
+\tips_qhd\src
+D:\workspace\Tips\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2326370208.index
+\tips_qhd\src
+D:\workspace\Tips\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1255159747.index
+\tips_qhd\src
+D:\workspace\Tips\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3628155306.index
+\tips_qhd\src
+D:\workspace\Tips\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2358982697.index
+\tips_qhd\src
+D:\workspace\Tips\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1375626214.index
+\tips_qhd\src
+D:\workspace\Tips\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2317572464.index
+\tips_qhd\src

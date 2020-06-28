@@ -1,0 +1,25 @@
+<CFX>
+	<HEAD>
+		<VER/>
+		<SRC/>
+		<DES/>
+		<APP/>
+		<MsgNo/>
+		<MsgID/>
+		<MsgRef/>
+		<WorkDate/>
+		<Reserve/>
+	</HEAD>
+	<MSG>
+		<SingleReturn2108>
+            <BankNo/>
+            <TaxVouNo/>
+            <OriTaxOrgCode/>
+            <OriEntrustDate/>
+            <OriTraNo/>
+            <TaxDate/>
+            <Result/>
+            <AddWord/>            
+        </SingleReturn2108>
+    </MSG>
+</CFX>

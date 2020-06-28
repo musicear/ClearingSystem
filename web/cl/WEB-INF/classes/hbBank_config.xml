@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="GB2312"?>
+<properties>
+    <!--2100账户查询-->
+    <category name="transElements">
+        <property name="Teller" value="2611" />
+        <property name="BankNo" value="210300009980" />
+         <property name="T2100" value="交易码,TaxPayCode,TaxOrgCode,PayOpBkCode,PayAcct,HandOrgName,OuterLevyNo,TraAmt,DetailNum,TaxTypeCode1,TaxStartDate1,TaxEndDate1,TaxType1,TaxTypeAmt1,Subdetailnum1,TaxSubjectCode11,TaxNumber11,TaxAmt11,FactTaxAmt11,TaxSubjectCode12,TaxNumber12,TaxAmt12,FactTaxAmt12,TaxSubjectCode13,TaxNumber13,TaxAmt13,FactTaxAmt13,TaxTypeCode2,TaxStartDate2,TaxEndDate2,TaxType2,TaxTypeAmt2,Subdetailnum2,TaxSubjectCode21,TaxNumber21,TaxAmt21,FactTaxAmt21,TaxSubjectCode22,TaxNumber22,TaxAmt22,FactTaxAmt22" />
+         <!-- <property name="T2100" value="交易码,TaxPayCode,TaxOrgCode,PayOpBkCode,PayAcct,HandOrgName,LevyState,OuterLevyNo,TraAmt,DetailNum,TaxTypeCode1,TaxStartDate1,TaxEndDate1,TaxType1,TaxTypeAmt1,Subdetailnum1,TaxSubjectCode11,TaxNumber11,TaxAmt11,FactTaxAmt11,TaxSubjectCode12,TaxNumber12,TaxAmt12,FactTaxAmt12,TaxSubjectCode13,TaxNumber13,TaxAmt13,FactTaxAmt13,TaxTypeCode2,TaxStartDate2,TaxEndDate2,TaxType2,TaxTypeAmt2,Subdetailnum2,TaxSubjectCode21,TaxNumber21,TaxAmt21,FactTaxAmt21,TaxSubjectCode22,TaxNumber22,TaxAmt22,FactTaxAmt22" />-->
+        <property name="T21001" value="交易码,ReturnResult,AddWord,PayeeBankNo,PayeeAcct,PayeeName,HandOrgName,TraAmt,TaxVouNo,BillDate,TaxPayCode,TaxPayName,CorpCode,BudgetType,TrimSign,CorpType,PrintVouSign,Remark,Remark1,Remark2,DetailNum,BudgetSubjectCode1,LimitDate1,TaxTypeName1,BudgetLevelCode1,BudgetLevelName1,TaxStartDate1,TaxEndDate1,ViceSign1,TaxType1,TaxSubjectCode1,TaxSubjectName1,TaxNumber1,TaxAmt1,TaxRate1,ExpTaxAmt1,DiscountTaxAmt1,FactTaxAmt1" />
+        <property name="T8001" value="交易码,TaxOrgCode" />
+        <property name="T80011" value="交易码,ReturnResult,AddWord,TaxOrgName" />
+        <property name="T1100" value="交易码,VcSign,TaxPayCode,TaxOrgCode,PayAcct,HandOrgName,ContectCode,PayBkCode,PayOpBkCode,TaxPayName" />
+        <property name="T11001" value="交易码,ReturnResult,AddWord,AddWord,AddWord" />
+        <property name="T1500" value="交易码,TaxPayCode,TaxOrgCode,PayAcct,HandOrgName,ContectCode,PayBkCode,PayOpBkCode,TaxPayName" />
+        <property name="T15001" value="交易码,ReturnResult,AddWord" />
+        <property name="T1200" value="交易码,ContectCode,TaxPayCode,PayAcct,Teller" />
+        <property name="T12001" value="交易码,ReturnResult,AddWord" />
+        <property name="T1300" value="交易码,AcctNo,TaxPayCode" />
+        <property name="T13001" value="交易码,ReturnResult,TaxPayCode,TaxOrgCode,TaxOrgName,PayBkCode,PayOpBkCode,PayAcctName,ProtocolNo,ContactDate" />
+        <property name="T2300" value="交易码,TaxOrgCode,TaxPayCode,CorpCode,OuterLevyNO,BankNo,PayOpBkCode,AcctNo,AcctName,BankTranDate,BankTranSeq" />
+        <!--柜台画面要求税目不超过十个，估计大部分也满足了-->
+        <property name="T23001" value="交易码,Result,AddWord,BankNo,PayOpBkCode,PayOpBkName,TaxOrgCode,CorpCode,TaxPayCode,TaxAmt,OuterLevyNO,DetailNum,BankTranDate,BankTranSeq,Detail1,Detail2,Detail3,Detail4,Detail5,Detail6,Detail7,Detail8,Detail9" />
+        
+        <!-- <property name="T2400" value="交易码,TaxVouNo,OriTaxOrgCode,OriEntrustDate,OriTraNo,TaxDate,Result,AddWord" />
+        <property name="T24001" value="交易码,ReturnResult,AddWord" /> -->
+         
+         <property name="T2400" value="交易码,TaxPayCode,TaxOrgCode,PayOpBkCode,PayAcct,HandOrgName,OuterLevyNo,TraAmt,BankTranDate,BankTranNo,DetailNum,TaxTypeCode1,TaxStartDate1,TaxEndDate1,TaxType1,TaxTypeAmt1,Subdetailnum1,TaxSubjectCode11,TaxNumber11,TaxAmt11,FactTaxAmt11,TaxSubjectCode12,TaxNumber12,TaxAmt12,FactTaxAmt12,TaxSubjectCode13,TaxNumber13,TaxAmt13,FactTaxAmt13,TaxTypeCode2,TaxStartDate2,TaxEndDate2,TaxType2,TaxTypeAmt2,Subdetailnum2,TaxSubjectCode21,TaxNumber21,TaxAmt21,FactTaxAmt21,TaxSubjectCode22,TaxNumber22,TaxAmt22,FactTaxAmt22" />
+         <!-- <property name="T2100" value="交易码,TaxPayCode,TaxOrgCode,PayOpBkCode,PayAcct,HandOrgName,LevyState,OuterLevyNo,TraAmt,DetailNum,TaxTypeCode1,TaxStartDate1,TaxEndDate1,TaxType1,TaxTypeAmt1,Subdetailnum1,TaxSubjectCode11,TaxNumber11,TaxAmt11,FactTaxAmt11,TaxSubjectCode12,TaxNumber12,TaxAmt12,FactTaxAmt12,TaxSubjectCode13,TaxNumber13,TaxAmt13,FactTaxAmt13,TaxTypeCode2,TaxStartDate2,TaxEndDate2,TaxType2,TaxTypeAmt2,Subdetailnum2,TaxSubjectCode21,TaxNumber21,TaxAmt21,FactTaxAmt21,TaxSubjectCode22,TaxNumber22,TaxAmt22,FactTaxAmt22" />-->
+        <property name="T24001" value="交易码,ReturnResult,AddWord,BankTranDate,BankTranNo,TaxOrgCode,TreOrgName,VouchNo,PayAcct,TraAmt,Memo,TipsWorkDate,TipsTranNo" />
+            
+        <property name="1000" value="交易码,TransNo,TaxOrgCode,TraDate,AcctNo,TraAmt,ProToNo,TreOrgName,TransNo,VouchNo,TaxTypeNum,TaxTypeName1,TaxStartDate1,TaxEndDate1,TaxTypeAmt1,TaxTypeName2,TaxStartDate2,TaxEndDate2,TaxTypeAmt2,
+TaxTypeName3,TaxStartDate3,TaxEndDate3,TaxTypeAmt3,TaxTypeName4,TaxStartDate4,TaxEndDate4,TaxTypeAmt4,TaxTypeName5,TaxStartDate5,TaxEndDate5,TaxTypeAmt5,
+TaxTypeName6,TaxStartDate6,TaxEndDate6,TaxTypeAmt6,TaxTypeName7,TaxStartDate7,TaxEndDate7,TaxTypeAmt7,TaxTypeName8,TaxStartDate8,TaxEndDate8,TaxTypeAmt8,
+TaxTypeName9,TaxStartDate9,TaxEndDate9,TaxTypeAmt9,TaxTypeName10,TaxStartDate10,TaxEndDate10,TaxTypeAmt10" />        <!--<property name="P100" value="交易码,OrgCode,TraDate,AccctNo" />-->
+		<property name="10001" value="交易码,RespCode,RespDesc,TransNo,TraDate,TraTime" />
+        <property name="1100" value="交易码,TransDate,TransNo,Memo" />
+        <property name="11001" value="交易码,RespCode,RespDesc,TransNo,TraDate,TraTime" />
+        <property name="3000" value="交易码,TraDate" />
+        <property name="30001" value="交易码,RespCode,RespDesc" />
+        <property name="9114" value="交易码,VCSign,TaxOrgCode,TaxPayName,TaxPayCode,PayAcct,ProtocolNo" />
+        <property name="91141" value="交易码,RespCode,RespDesc" />
+    </category>
+</properties>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="GBK"?>
+<reportSheet>
+    <cube code="11"/>
+    <head>
+        <paragraph font-size="14" align="center">批量扣税查询</paragraph>
+    </head>
+    <fields>
+        <field friendlyName="流水号"/>
+		<field friendlyName="征收机关"/>
+		<field friendlyName="开户行行号"/>
+		<field friendlyName="缴款单位名称"/>
+		<field friendlyName="交易金额"/>
+		<field friendlyName="税票号码"/>
+		<field friendlyName="冲正标志"/>
+		<field friendlyName="扣款日期"/>
+		<field friendlyName="扣款结果"/>
+		<field friendlyName="附言"/>
+		<field friendlyName="对账状态"/>
+		<!--field friendlyName="银行交易流水号"/-->
+    </fields>
+    <properties>
+        <property name="customConditionPage" value="/pages/batchPackDetail.jsp"/>
+        <property name="width" value="780"/>
+    </properties>
+</reportSheet>

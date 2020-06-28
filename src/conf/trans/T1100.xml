@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--三方协议签订-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+   <!--查询是否已经签约,未签约则进行签约-->
+    <activity name="resoft.tips.chqsh.CheckProveInfoStatus"/> 
+    <label name="return"/>
+</transaction>

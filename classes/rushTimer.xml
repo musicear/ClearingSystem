@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--对对帐失败后的记录进行冲帐-->        
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+
+    <!--查询调帐表中需要冲帐的信息-->
+    <activity name="resoft.tips.action.RushCheckFailFromAdj">
+        <transition on="-1" to="return"/>
+    </activity>
+
+</transaction>

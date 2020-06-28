@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--发送自由格式报文-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <activity name="resoft.tips.action.CheckSendFreeMessage">
+        <transition on="-1" to="return"/>
+    </activity>
+	<activity name="resoft.tips.action.UpdateSentFreeMsg"/>
+    <activity name="resoft.tips.action.SetHeadValue">
+        <properties>
+            <property name="msgNo" value="9105"/>
+        </properties>
+    </activity>
+    <activity name="resoft.tips.action.SetMsgId" />
+    <activity name="resoft.tips.action.SetSendOrgCode">
+        <properties>
+            <property name="sendOrgCodeNodePath" value="//CFX/MSG/FreeFormat9105/SendOrgCode" />
+        </properties>
+    </activity>
+    <activity name="resoft.tips.action.SetSrcNodeCode" />
+    <activity name="resoft.tips.action.SetPackFile">
+        <properties>
+            <property name="packFile" value="./conf/pack/9105.xml"/>
+        </properties>
+    </activity>
+    <activity name="resoft.tips.action.PrintPacket"/>
+    <activity name="resoft.tips.action.PrepareForSendMQ"/>
+    <activity name="resoft.tips.action.SetCorrelationIdAsMessageId"/>
+    <activity name="resoft.tips.action.SendToMQ">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.SyncSendQueue}" />
+        </properties>        
+    </activity>
+	<label name="return" />
+</transaction>

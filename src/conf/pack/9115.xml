@@ -1,0 +1,31 @@
+<CFX>
+	<HEAD>
+		<VER/>
+		<SRC/>
+		<DES/>
+		<APP/>
+		<MsgNo/>
+		<MsgID/>
+		<MsgRef/>
+		<WorkDate/>
+		<Reserve/>
+	</HEAD>
+	<MSG>
+		<ProveReturn9115>
+			<OriSendOrgCode/>
+			<OriEntrustDate/>
+			<OriVCNo/>
+			<VCSign/>
+			<TaxOrgCode/>
+			<TaxPayName/>
+			<TaxPayCode/>
+			<PayOpBkCode/>
+			<PayBkCode/>
+			<PayAcct/>
+			<HandOrgName/>
+			<ProtocolNo/>
+			<VCResult/>
+			<AddWord/>
+		</ProveReturn9115>
+	</MSG>
+</CFX>

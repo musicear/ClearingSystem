@@ -1,0 +1,18 @@
+<CFX>
+	<HEAD>
+		<VER/>
+		<SRC/>
+		<DES/>
+		<APP/>
+		<MsgNo/>
+		<MsgID/>
+		<MsgRef/>
+		<WorkDate/>
+	</HEAD>
+	<MSG>
+		<LoginInfo9006>
+            <Password/>
+			<NewPassword/>
+		</LoginInfo9006>        
+    </MSG>
+</CFX>

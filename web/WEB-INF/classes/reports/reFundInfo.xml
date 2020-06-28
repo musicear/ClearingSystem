@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="GBK"?>
+<reportSheet>
+    <cube code="15"/>
+    <head>
+        <paragraph font-size="14" align="center">退款申请明细查询</paragraph>
+    </head>
+    <fields>
+    	<field friendlyName="委托日期"/>
+    	<field friendlyName="包流水号"/>
+        <field friendlyName="原凭证编码"/>
+		<field friendlyName="原凭证日期"/>
+		<field friendlyName="原付款人账号"/>
+		<field friendlyName="原付款人名称"/>
+		<field friendlyName="原收款人账号"/>
+		<field friendlyName="原收款人名称"/>
+		<field friendlyName="金额"/>
+		<field friendlyName="所属年度"/>
+		<field friendlyName="退款状态"/>
+		<!--field friendlyName="银行交易流水号"/-->
+    </fields>
+ <variables>
+                <variable name="sum_009" colCode="009" function="sum"/>
+   </variables>
+    <footer>
+     <col colSpan="8">合计交易金额</col>
+     <col align="right">#sum_009</col>
+   </footer>
+    <properties>
+        <property name="customConditionPage" value="/pages/reFundInfo.jsp"/>
+        <property name="width" value="780"/>
+    </properties>
+</reportSheet>

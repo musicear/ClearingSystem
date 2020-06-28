@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--更新公共信息。由轮询触发-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--查到生效日期到期的记录，更新到运行表中-->
+    <activity name="resoft.tips.action.UpdateCommonInfo">
+        <transition on="-1" to="return" />
+    </activity>
+</transaction>

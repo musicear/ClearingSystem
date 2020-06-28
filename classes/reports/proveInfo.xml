@@ -1,0 +1,20 @@
+<reportSheet>
+    <cube code="06"/>
+    <head>
+        <paragraph font-size="14" align="center">三方协议查询</paragraph>
+    </head>
+    <fields>
+		<field friendlyName="征收机关名称"/>
+		<field friendlyName="纳税人编码"/>
+		<field friendlyName="账号"/>
+		<field friendlyName="账户名称"/>
+		<field friendlyName="协议书号"/>
+		<field friendlyName="签订时间（发送时间）"/>
+		
+		
+    </fields>
+    <properties>
+        <property name="customConditionPage" value="/actions/QueryTaxOrg.action?maptype=proveInfo"/>
+        <property name="width" value="600"/>
+    </properties>
+</reportSheet>

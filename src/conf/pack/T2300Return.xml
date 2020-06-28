@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="GBK"?>
+<CFX>
+    <MSG>
+        <交易码/>
+        <ReturnResult/>
+        <AddWord/>
+        <ReturnFileName/>
+        <TaxPayCode/>
+        <TaxPayName/>        
+        <TraAmt/>
+        
+        
+        <DetailNum/>
+        <TaxTypeName1/>
+        <TaxTypeCode1/>
+        <TaxStartDate1/>
+        <TaxEndDate1/>
+        <TaxType1/>
+        <TaxTypeAmt1/>
+        <TaxDetailNum1/>
+        <TaxSubjectCode10/>
+        <TaxNumber10/>
+        <TaxAmt10/>
+        <FactTaxAmt10/>
+        <TaxSubjectCode11/>
+        <TaxNumber11/>
+        <TaxAmt11/>
+        <FactTaxAmt11/>
+        <TaxSubjectCode12/>
+        <TaxNumber12/>
+        <TaxAmt12/>        
+        <FactTaxAmt12/>
+        <TaxSubjectCode13/>
+        <TaxNumber13/>
+        <TaxAmt13/>
+        <FactTaxAmt13/>
+        <TaxSubjectCode14/>
+        <TaxNumber14/>
+        <TaxAmt14/>
+        <FactTaxAmt14/>          
+    </MSG>
+</CFX>

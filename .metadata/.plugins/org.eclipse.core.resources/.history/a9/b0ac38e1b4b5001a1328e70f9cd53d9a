@@ -1,0 +1,61 @@
+package resoft.tips.action;
+
+import org.apache.commons.net.ftp.FTPClient;
+
+/**
+ * <p>Title: </p>
+ * <p>从FTP上读取文件: </p>
+ * <p>Copyright: Copyright (c) 2007.9.11</p>
+ * <p>Company: </p>
+ * @author  zhuchangwu
+ */
+
+public class FtpDown
+{
+
+    public FtpDown()
+    {
+
+    }
+    public String getFileFromServer(String url,String username,String password,String filePath,String fileName){
+        String downPath="";
+    	try
+        {
+    		FTPClient ftpClient=new FTPClient();
+    		ftpClient.connect(url);
+            ftpClient.login(username,password);
+            if (filePath.length()!=0) ftpClient.changeWorkingDirectory(filePath);
+            ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
+            
+            TelnetInputStream is=ftpClient.get(fileName);
+            ClassLoader  loader  =  getClass().getClassLoader();
+            URL urlpath=loader.getResource("");            
+            downPath=urlpath.getFile()+"filedown/";
+            downPath=downPath.substring(1,downPath.length())+fileName;
+            File file_out=new File(downPath);
+            FileOutputStream os=new FileOutputStream(file_out);
+            byte[] bytes=new byte[1024];
+            int c;
+            while ((c=is.read(bytes))!=-1) {
+            os.write(bytes,0,c);
+            }
+            is.close();
+            os.close();
+            ftpClient.closeServer();
+
+        }
+        catch (IOException ex)
+        {
+
+            ex.printStackTrace();
+        }
+        return downPath;
+    }
+    public static void main(String[] args)
+    {
+
+
+    }
+}
+
+

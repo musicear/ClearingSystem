@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--处理9121报文"通用确认应答"-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+	<!--解析各要素-->
+    <activity name="resoft.tips.action.ProcessMsgReturnInfo" />
+    <!--若为2102交易回执，则更新批量扣税表中处理状态-->
+    <activity name="resoft.tips.action.UpdateProcFlagAsReturnSucc" />
+    
+    
+</transaction>

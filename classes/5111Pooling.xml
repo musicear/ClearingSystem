@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--批量支付额度文件处理-->
+<transaction>       
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+      
+      <!--轮训数据库找到未支付的包，进行处理-->
+    <activity name="resoft.tips.action2.CheckPackToPay">
+     <transition on="-1" to="end"/>
+    </activity>
+   <!--找到未支付的bill，进行处理-->
+    <activity name="resoft.tips.action2.CheckBillToPay">
+    </activity>
+      <!--更新处理标志为“支付完毕”-->
+    <activity name="resoft.tips.action2.UpdateFinProcFlag" />
+    <label name="end" />
+   
+</transaction>

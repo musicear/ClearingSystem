@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--与商业银行核对银行端缴款业务-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--设置报文头-->
+    <activity name="resoft.tips.action.SetHeadValue">
+        <properties>
+            <property name="msgNo" value="2108"/>
+        </properties>
+    </activity>
+    <!--设置MsgId及MsgRef-->
+    <activity name="resoft.tips.action.SetMsgId"/>
+    <!--设置发起机构代码-->
+    <activity name="resoft.tips.action.SetBankNo">
+        <properties>
+            <property name="bankNoNodePath" value="//CFX/MSG/SingleReturn2108/BankNo"/>
+        </properties>
+    </activity>
+    <!--设置银行端缴款确认报文要素-->
+    <activity name="resoft.tips.action.SetBankCheckReturn2108"/>
+    <!--设置打包格式-->
+    <activity name="resoft.tips.action.SetPackFile">
+        <properties>
+            <property name="packFile" value="./conf/pack/2108.xml"/>
+        </properties>
+    </activity>
+    <!--打印出要发送的XML-->
+    <activity name="resoft.tips.action.PrintPacket"/>
+    <!--准备发送MQ-->
+    <activity name="resoft.tips.action.PrepareForSendMQ"/>
+    <!--设置发起的correlationId-->
+    <activity name="resoft.tips.action.SetCorrelationIdAsREQ"/>
+    <!--发送MQ-->
+    <activity name="resoft.tips.action.SendToMQ">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.SyncSendQueue}" />
+        </properties>
+        <transition on="-1" to="return"/>
+    </activity>
+    <label name="return"/>
+</transaction>

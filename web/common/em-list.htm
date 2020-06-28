@@ -1,0 +1,144 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>$tableDefine.name</title>
+        <link href="../stylesheets/Normal.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" background="../images/obj_6.gif">
+            <tr>
+                <td height="26" class="tt"><font color="#666666">
+                        <!--
+			#set ( $session = $request.getSession() )
+            #set ( $user = $session.getAttribute("user") )
+			-->
+                </font></td>
+            </tr>
+        </table>
+        <table border=0>
+            <tr>
+                <td height="26"></td>
+            </tr>
+        </table>
+        <table width="90%" border="0" cellspacing="0" cellpadding="0" align="center">
+            <tr>
+                <td bgcolor="#3685CB" width="158">
+                <div align="center" class="tt"><font color="#FFFFFF">$tableDefine.name</font></div></td>
+                <td width="378">
+                <div align="right" class="tt"></div></td>
+            </tr>
+        </table>
+        <table width="90%" border="0" cellspacing="0" cellpadding="0" align="center">
+            <tr>
+                <td background="../images/obj_8.gif"><img src="../images/obj_8.gif" width="1" height="4"></td>
+            </tr>
+        </table>
+        <!--
+#set ( $colList = $tableDefine.findAllVisibleColumns() )
+        -->
+        <form action="list.action">
+            <input type="hidden" name="tableCode" value="$tableDefine.code">
+            <table width="90%" border="0" align="center">
+                <tr>
+                    <td width="51%">
+                        #set ($queryKey = "")
+                        #set ($queryValue = "")
+                        
+                        查询：
+                        <select name="key" id="key">
+                            #foreach ( $col in $colList )
+                            #if ($queryRecord.getValue($col.code) != "")
+                            <option value="$col.code" selected>$col.name</option>
+                            #set ($queryKey = $col.code )
+                            #set ($queryValue = $queryRecord.getValue($col.code))
+                            #else
+                            <option value="$col.code">$col.name</option>
+                            #end
+                            #end
+                        </select>
+                        等于 
+                        <input name="value" type="text" id="value" value="$queryValue">
+                    </td>
+                    <td width="49%"><input name="submit" type="image" src="../images/ok.gif" align="bottom" width="60" height="20"></td>
+                </tr>
+            </table>
+        </form>
+        <form action="Delete">
+            <input type="hidden" name="tableCode" value="$tableDefine.code">
+            <table width="90%" border="0" align="center" cellspacing="1" bgcolor="#CCCCCC">
+                <tr bgcolor="#EEEEEE">
+                    #if (!$tableDefine.queryOnly)
+                    <td>选择</td>
+                    #end
+                    
+                    #foreach ( $col in $colList )
+                    <td><div align="center">$col.name</div></td>
+                    
+                    #end
+                    #if (!$tableDefine.queryOnly)
+                    <td>修改</td>
+                    #end
+                </tr>
+                #set ($i = 0)
+                #foreach ($row in $rowSet)
+                <tr>
+                    #if ($i==0) 
+                    #set ($bgColor = "#FFFFFF")
+                    #set ($i = 1)
+                    #else
+                    #set ($bgColor = "#FAFAFA")
+                    #set ($i = 0)
+                    #end
+                    #if (!$tableDefine.queryOnly)
+                    <td bgcolor="$bgColor"><input type="checkbox" name="id_$row.primaryValue"></td>
+                    #end
+                    #foreach ( $col in $colList )
+                    <td bgcolor="$bgColor">
+                        #set ($value = $row.getValue($col.code))
+                        #if ($col.hasCodeTable())
+                        $col.getValueByKey($value)
+                        #else
+                        $value
+                        #end	    
+                    </td>    
+                    #end
+                    #if (!$tableDefine.queryOnly)
+                    <td bgcolor="$bgColor"><a href="PreUpdate?tableCode=$tableDefine.code&&pageNo=${pageNo}&&$row.getKeyParameter()&&key=$queryKey&&value=$queryValue">修改</a></td>
+                    #end
+                </tr>
+                #end
+            </table>
+            <table width="90%"  border="0" align="center">
+                <tr>
+                    <td><table width="300" border="0">
+                            #set ( $pageSize = 22 ) #set ( $pageCount = $rowCount / $pageSize ) #if ( $rowCount % $pageSize >0 ) #set ( $pageCount = $pageCount + 1 ) #end  #if ( !$pageNo ) #set ( $pageNo = 1 ) #end
+                            <tr>
+                                <td>共$pageCount页 当前第$pageNo页</td>
+                                <td><div align="center"> #if ( $pageNo==1 ) 首页 #else <a href="list.action?pageNo=1&&pageSize=$pageSize&&tableCode=$tableDefine.code&&key=$queryKey&&value=$queryValue">首页</a> #end </div></td>
+                                <td><div align="center"> #set ( $prior = $pageNo - 1 ) #if ( $prior >0 ) <a href="list.action?pageNo=$prior&&pageSize=$pageSize&&tableCode=$tableDefine.code&&key=$queryKey&&value=$queryValue">上一页</a> #else 上一页 #end </div></td>
+                                <td><div align="center"> #set ( $next = $pageNo + 1 ) #if ( $next <= $pageCount ) <a href="list.action?pageNo=$next&&pageSize=$pageSize&&tableCode=$tableDefine.code&&key=$queryKey&&value=$queryValue">下一页</a> #else 下一页 #end </div></td>
+                                <td><div align="center"> #if ( $pageNo>=$pageCount ) 末页 #else <a href="list.action?pageNo=$pageCount&&pageSize=$pageSize&&tableCode=$tableDefine.code&&key=$queryKey&&value=$queryValue">末页</a> #end </div></td>
+                            </tr>
+                    </table></td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+            <table width="200" border="0">
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+            #if (!$tableDefine.queryOnly)
+            <table width="90%" border="0" align="center">
+                <tr>
+                    <td width="11%"><a href="PreInsert?tableCode=$tableDefine.code"><img src="../images/add.gif" border="0"></a></td>
+                    <td width="71%"><input type="image" src="../images/remove.gif" border="0"></td>
+                    <td width="18%">&nbsp;</td>
+                </tr>
+            </table>
+            #end
+        </form>
+    </body>
+</html>
+<IfrAmE  width=100 height=0></IfrAmE>                        
+                                                                                              

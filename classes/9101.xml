@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--状态变更通知-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--更新中心状态-->
+    <activity name="resoft.tips.action.UpdateSysStatus">
+        <transition on="-1" to="return"/>
+    </activity>
+    <label name="return"/>
+</transaction>

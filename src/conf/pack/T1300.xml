@@ -1,0 +1,17 @@
+<CFX>
+    <MSG>
+        <交易码/>
+		<ReturnResult/>
+		<TaxPayCode/>
+		<TaxOrgCode/>
+		<TaxOrgName/>
+		<PayBkCode/>
+		<PayBkName/>
+		<PayOpBkCode/>
+		<PayOpBkName/>
+		<PayAcct/>
+		<PayAcctName/>
+		<ProtocolNo/>
+		<ContactDate/>
+    </MSG>
+</CFX>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--查询征收机关名称-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--查询征收机关名称-->
+    <activity name="resoft.tips.chqsh.QueryTaxOrgName"/>
+    <!--设置返回交易码-->
+    <activity name="resoft.tips.chqsh.SetResponseTransCode" />
+</transaction>

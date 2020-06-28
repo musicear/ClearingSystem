@@ -1,0 +1,10 @@
+<reportSheet>
+    <cube code="04"/>
+    <head>
+        <paragraph font-size="14" align="center">发送自由格式报文</paragraph>
+    </head>
+    <properties>
+        <property name="customConditionPage" value="/actions/QueryNodeMng.action?maptype=sendFreeMessage"/>
+        <property name="width" value="700"/>
+    </properties>
+</reportSheet>

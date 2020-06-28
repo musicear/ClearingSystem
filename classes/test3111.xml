@@ -1,0 +1,14 @@
+<!--对账测试-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--前置与TIPS首先核对-->
+    <activity name="resoft.tips.chqsh.ProcessCheckAcctWithTips"/>
+    <!-- 向AdjustAcct表中添加需要处理的错误信息 -->
+    <activity name="resoft.tips.chqsh.ProcessCheckAcctWrongMsg"/>
+    <!-- 与Tuxedo核心冲帐 -->
+    <activity name="resoft.tips.chqsh.ProcessCheckAcctChongZhang">
+    	<transition on="-1" to="return"/>
+    </activity>
+	<label name="return"/>
+</transaction>

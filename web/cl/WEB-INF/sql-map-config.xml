@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	<settings cacheModelsEnabled="true" enhancementEnabled="true"
+		lazyLoadingEnabled="true" errorTracingEnabled="true" maxRequests="32"
+		maxSessions="10" maxTransactions="5" useStatementNamespaces="true" />
+
+	<sqlMap resource="resoft/aml/domain/JNFXQ_ALERTTRADE_SqlMap.xml" />
+	<sqlMap resource="resoft/aml/domain/JNFXQ_ALERT_SqlMap.xml" />
+		<sqlMap resource="resoft/aml/domain/JNFXQ_ACCOUNT_SqlMap.xml" />
+		<sqlMap resource="resoft/aml/domain/JNFXQ_ALERTACCOUNT_SqlMap.xml" />
+		<sqlMap resource="resoft/aml/domain/JNFXQ_CASHTRADE_SqlMap.xml" />
+		<sqlMap resource="resoft/aml/domain/JNFXQ_TRANSFERTRADE_SqlMap.xml" />
+		<sqlMap resource="resoft/aml/domain/JNFXQ_RATEEXCHANGEMNG_SqlMap.xml" />
+		<sqlMap resource="resoft/common/domain/JNFXQ_COMMONCODETABLE_SqlMap.xml" />		
+</sqlMapConfig>

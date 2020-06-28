@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!-- 仿真测试配置 -->
+<properties>
+    <!--服务-->
+    <category name="services">
+        <property name="CommService" value="resoft.xlink.comm.services.CommService"/>
+        <property name="SXCommService" value="resoft.xlink.comm.services.CommService"/>
+        <property name="TimerService" value="resoft.xlink.comm.services.TimerService"/>
+        <property name="MQService" value="resoft.basLink.mq.MQService"/>
+    </category>
+    <!--TCP通讯服务配置-->
+    <category name="CommService">
+        <property name="listenPort" value="1300"/>
+        <property name="dispatcher" value="resoft.tips.util.TipsTellerDispatcher"/>
+        <property name="nameOfTransCode" value="交易码"/>
+        <property name="globalPropertiesReader" value="resoft.basLink.util.GlobalPropertiesReaderImpl" />
+    </category>   
+    
+    <category name="SXCommService">
+        <property name="listenPort" value="1500"/>
+        <property name="dispatcher" value="resoft.tips.bankImpl.sxbank.SXBankDispatcher"/>
+        <property name="nameOfTransCode" value="TransCode"/>
+        <property name="globalPropertiesReader" value="resoft.basLink.util.GlobalPropertiesReaderImpl" />
+    </category>
+    <!--定时任务定义-->
+    <category name="TimerService">
+        <property name="globalPropertiesReader" value="resoft.basLink.util.GlobalPropertiesReaderImpl" />
+        <!--登陆-->
+        <!-- property name="job:9006" value="0 0/1 * * * ?"/-->
+        <!--发送自由格式报文 -->
+        <!-- property name="job:send9105" value="0 0/1 * * * ?"/-->
+        <!-- 公共数据更新 -->
+        <!-- property name="job:updateCommonInfo" value="0 0/1 * * * ?"/-->
+        <!--定时扣款处理-->
+        <property name="job:3102Pooling" value="0 0/1 * * * ?"/>
+        <!--返回批量扣税回执-->
+        <property name="job:2102" value="0 0/1 * * * ?"/>
+        <!-- 测试记账 -->
+        <!--property name="job:2032" value="0 0/1 * * * ?"/-->
+        <!-- 测试冲帐 -->
+        <!--property name="job:2033" value="0 0/1 * * * ?"/-->
+        <!-- 测试对账 -->
+        <!--property name="job:2035" value="0 0/1 * * * ?"/-->
+        
+        <!-- 财政支付划款申请 -->
+        <!--property name="job:2201" value="0 0/1 * * * ?"/-->
+        <!-- 财政支付退款申请 -->
+        <!--property name="job:2202" value="0 0/1 * * * ?"/-->
+        
+    </category>
+
+    <!--MQ通讯设置-->
+    <category name="MQ">
+        <!-- 银行前置MQ队列管理器 -->
+        <property name="QueueManager" value="QM_TIPS_402100000010_01" />
+        <!-- 银行前置MQ发送实时队列 -->
+        <property name="SyncSendQueue" value="PBC.EXT.ONLINE.IN" />
+        <!-- 银行前置MQ接收实时队列 -->
+        <property name="SyncRecvQueue" value="PBC.402100000010.ONLINE.OUT"/>
+        <!-- 银行前置MQ发送批量队列 -->
+        <property name="BatchSendQueue" value="PBC.EXT.BATCH.IN"/>
+        <!-- 银行前置MQ接收批量队列 -->
+        <property name="BatchRecvQueue" value="PBC.402100000010.BATCH.OUT"/>
+    </category>
+    
+    <!-- 重庆商行后台Tuxedo核心交易配置，以及临时文件保存目录 -->
+	<category name="BankSysConfig">
+		<property name="BankPaySysHost" value="10.64.24.155" />
+        <property name="BankPaySysPort" value="7282" />
+        <property name="TempFilePath" value="/home/tips/tips_qz/classes/temp/"></property>
+        <property name="FtpServer" value="17.1.2.72" />
+        <property name="FtpPort" value="21" />
+        <property name="FtpPayInfoPath" value="/adpd/filepath/download/fss_pl/" />      
+        <property name="FtpUser" value="adpd" />
+        <property name="FtpPassword" value="cqsunrise72" />
+	</category>
+	
+	<!-- 三峡银行柜面 -->
+	<category name="SXBankFtp">
+		<property name="BankPaySysHost" value="17.1.2.72" />
+        <property name="BankPaySysPort" value="5555" />
+        <property name="TempFilePath" value="/home/tips/tips_qz/classes/tempftp/"></property>
+        <property name="FtpServer" value="10.64.2.110" />
+        <property name="FtpPort" value="21" />
+        <property name="FtpPath" value="/home/adpd/print/" />      
+        <property name="FtpUser" value="adpd" />
+        <property name="FtpPassword" value="sunrise" />
+	</category>
+	
+	<!--与核心系统通讯的实现Action-->
+    <category name="commWithBank">
+        <!--对帐-->
+        <property name="requestBankChkInfo" value="resoft.tips.bankImpl.sxbank.QequestBankChkInfo" />
+        <property name="checkInfoReader" value="resoft.tips.bankImpl.sxbank.DealCheAcctFromBank" />
+    </category>
+	
+    <!--其他设置-->
+    <category name="general">
+        <property name="globalPropertiesReader" value="resoft.basLink.util.GlobalPropertiesReaderImpl" />
+        <!--临时文件存放位置-->
+        <property name="tmpPath" value="c://temp"/>
+        <!--密钥配置文件位置 -->
+        <property name="keyPath" value="c://key/ServerConfig/dsign.properties"/>
+        <!--密钥DN -->
+        <property name="DN" value="C=CN, O=PBC Test CA, OU=789456@1, OU=Web Servers, CN=PBCTIPS"/>
+        <!-- 银行节点代码 -->
+        <property name="BankSrcNodeCode" value="402100000010"/>      
+        <!-- 银行机构代码 -->
+        <property name="BankSrcOrgCode" value="313653000013"/>
+        
+        <!-- TIPS节点代码 -->
+        <property name="TIPSDesNodeCode" value="100000000000" />
+		<!-- TIPS结构代码 -->
+		<property name="TIPSDesOrgCode" value="2200000000" />
+		
+		<!-- 日志文件删除日期 -->
+		<property name="DelLogFileDays" value="7" />
+    </category>
+
+</properties>

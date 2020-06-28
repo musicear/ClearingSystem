@@ -1,0 +1,17 @@
+<beans>
+    <bean id="dbConfig" class="org.zerone.jdbc.DefaultConnectionConfig"/>
+    <bean id="dialect" class="org.zerone.easyMining.dialect.ASADialect" />
+
+    <bean id="easyMining.html" class="org.zerone.easyMining.engine.impl.HtmlReportView" />
+    <bean id="easyMining.csv" class="org.zerone.easyMining.engine.impl.CsvReportView" />
+    <bean id="easyMining.xls" class="org.zerone.easyMining.engine.impl.XlsReportView" />
+    <bean id="easyMining.flexcell" class="org.zerone.easyMining.engine.impl.FlexCellReportView" />
+    <bean id="easyMining.pdf" class="org.zerone.easyMining.engine.impl.PdfReportView" />
+    <bean id="easyMining.custom" class="org.zerone.easyMining.engine.impl.CustomReportView" />
+    <bean id="easyMining.pagexls" class="org.zerone.easyMining.engine.impl.PageXlsReportView" />
+    <bean id="easyMining.chart" class="org.zerone.easyMining.engine.impl.ChartReportView" />
+
+    <bean id="columnReader" class="org.zerone.easyMining.metadata.impl.ColumnReaderImpl" />
+    <bean id="cubeReader" class="org.zerone.easyMining.metadata.impl.CubeReaderImpl" />
+    <bean id="reportSheetManager" class="org.zerone.easyMining.metadata.impl.ReportSheetManagerImpl" />
+</beans>

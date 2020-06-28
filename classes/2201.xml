@@ -1,0 +1,52 @@
+<CFX>
+	<HEAD>
+		<VER/>
+		<SRC/>
+		<DES/>
+		<APP/>
+		<MsgNo/>
+		<MsgID/>
+		<MsgRef/>
+		<WorkDate/>
+		<Reserve/>
+	</HEAD>
+	<MSG>
+		<BatchHead2201>
+            <AgentBnkCode/>
+            <FinOrgCode/>
+            <TreCode/>
+            <EntrustDate/>
+            <PackNo/>
+            <AllNum/>
+            <AllAmt/>
+            <PayoutVouType/>
+            <PayMode/>
+		</BatchHead2201>
+        <Bill2201 iterance="true" >
+            <TraNo/>
+            <VouNo/>
+            <VouDate/>
+            <PayerAcct/>
+            <PayerName/>
+            <PayerAddr/>  
+            <PayeeAcct/>
+            <PayeeName/>           
+            <PayeeAddr/>
+            <PayeeOpnBnkNo/>
+            <AddWord/>
+            <BudgetType/>
+            <TrimSign/>
+            <OfYear/>
+            <Amt/>
+            <StatInfNum/>
+            <Detail2201 iterance="true">
+            	<SeqNo/>
+            	<BdgOrgCode/>
+            	<FuncSbtCode/>
+            	<EcnomicSubjectCode/>
+            	<Amt/>
+            	<AcctProp/>
+            </Detail2201>  
+        </Bill2201>
+    </MSG>
+</CFX>

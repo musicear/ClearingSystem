@@ -1,0 +1,47 @@
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+.list {
+	border: 1px solid #c4d6ee;
+	line-height: 150%;
+}
+.list td {
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-right-color: #eeeeee;
+	border-bottom-color: #eeeeee;
+	font-size: 12px;
+	font-weight: normal;
+}
+.list th {
+	background-color: cae2fc;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-right-color: eeeeee;
+	border-bottom-color: eeeeee;
+	color: #263753;
+	font-size: 12px;
+	font-weight: normal;
+}
+.list input {
+	border: 1px solid #9cc0f0;
+}
+ .submit {
+	color: #253650;
+	background-image: url(../images/anniubg.gif);
+	border: 1px solid #6b8fb1;
+	height: 22px;
+}
+.title_zi {
+	font-size: 16px;
+	color: #2979ce;
+	font-weight: bold;
+	text-indent: 20px;
+}

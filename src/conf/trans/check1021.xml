@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--对对帐失败后的记录进行冲帐-->        
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--保存数据库-->
+    <activity name="resoft.tips.action.SaveDB1021">
+        <transition on="-1" to="return"/>
+    </activity>
+    <!--检查是否扣款成功-->
+    <!--activity name="resoft.tips.action.QueryAdjRushDetails">
+        <transition on="-1" to="return"/>
+    </activity-->
+   <!--发起冲正请求-->
+    <!--与银行核心系统通讯处理冲正请求-->
+    <activity name="resoft.tips.action.CommWithBank">
+        <properties>
+            <property name="className" value="${commWithBank.dealRushApply}" />
+        </properties>
+    </activity>
+    <!--更新冲正表状态，更新实时扣税的冲正标志-->
+    <label name="return"/>
+    <activity name="resoft.tips.action.UpdateRushApply" />
+    <activity name="resoft.tips.action.UpdateAdjustAcct" />
+
+</transaction>

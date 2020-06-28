@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="GBK"?>
+<reportSheet>
+    <cube code="12"/>
+    <head>
+        <paragraph font-size="14" align="center"></paragraph>
+    </head>
+    <fields>
+           <field friendlyName="银行扣款日期"/>
+		<field friendlyName="对账日期"/>
+		<field friendlyName="银行交易流水号"/>
+		<field friendlyName="征收机关名称"/>
+		<field friendlyName="委托日期"/>
+		<field friendlyName="原包流水号"/>
+		<field friendlyName="交易流水号"/>
+		<field friendlyName="付款账号"/>
+		<field friendlyName="金额"/>
+		<field friendlyName="原因"/>
+    </fields>
+    
+    <variables>
+                <variable name="sum_009" colCode="009" function="sum"/>
+   </variables>
+    <head>
+     <col colSpan="8">合计金额</col>
+     <col align="right">#sum_009</col>
+   </head>
+    
+    <properties>
+        <property name="customConditionPage" value="/pages/adjustAcct.jsp"/>
+        <property name="width" value="700"/>
+    </properties>
+</reportSheet>

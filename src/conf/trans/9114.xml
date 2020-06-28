@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--验证或删除三方协议-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>	
+    <!-- 操作标志 -->
+    <activity name="resoft.tips.action.OpFlag">        
+        <transition on="0" to="check" /> <!-- 三方协议验证 -->
+        <transition on="1" to="delete" /><!-- 三方协议删除 -->
+    </activity>
+    
+    <label name="check"/>
+    <!--三方协议的签订状态-->
+    <activity name="resoft.tips.action.CheckProveInfoStatusByTips"/>       
+	<!--查询三方协议信息-->	
+	
+	<activity name="resoft.tips.action.QueryProveInfoByTips">
+		<transition on="0" to="returnToSendMq" />
+	</activity>
+	
+	<!-- 删除三方协议 -->	
+	<label name="delete"/>
+    <activity name="resoft.tips.action.DeleteProveInfoByTips"/>  
+	
+	<label name="returnToSendMq"/>		         
+    <!--设置报文头-->
+    <activity name="resoft.tips.action.SetHeadValue">
+        <properties>
+            <property name="msgNo" value="9115"/>
+        </properties>
+    </activity>
+    <!--设置打包格式-->
+    <activity name="resoft.tips.action.SetPackFile">
+        <properties>
+            <property name="packFile" value="./conf/pack/9115.xml"/>
+        </properties>
+    </activity>
+    <!--打印出要发送的XML-->
+    <activity name="resoft.tips.action.PrintPacket"/>
+    <!--准备发送MQ-->
+    <activity name="resoft.tips.action.PrepareForSendMQ"/>
+    <!--设置correlationId-->
+    <activity name="resoft.tips.action.SetCorrelationIdAsMessageId"/>
+    <!--发送MQ-->
+    <activity name="resoft.tips.action.SendToMQ">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.SyncSendQueue}" />
+        </properties>        
+    </activity>
+</transaction>

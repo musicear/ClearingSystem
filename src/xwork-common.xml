@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.1.1//EN" "http://www.opensymphony.com/xwork/xwork-1.1.1.dtd">
+<xwork>
+    <include file="webwork-default.xml"/>
+    <package name="common" extends="webwork-default">
+        <default-interceptor-ref name="defaultStack"/>
+        <global-results>
+            <result name="error">/common/showMessage.jsp</result>
+        </global-results>
+        
+        <!--  ******************系 统 管 理****************** -->
+        <!--  登录管理 -->
+        <action name="login" class="resoft.common.web.aas.LoginAction">
+            <result name="success">/common/login.jsp</result>
+        </action>
+        <action name="auth" class="resoft.common.web.aas.AuthenticateAction">
+            <result name="success">/common/loginSuccess.jsp</result>
+        </action>
+        <action name="showMenu" class="resoft.common.web.aas.ShowMenuAction">
+            <result name="success">/common/left.jsp</result>
+        </action>       
+        <action name="list" class="resoft.common.web.entity.ListAction">
+            <result name="success" type="velocity">/common/em-list.htm</result>
+        </action>
+        <!-- 用户管理 -->
+        <action name="UserList" class="resoft.common.web.aas.UserListAction">
+            <result name="success" type="dispatcher">/common/UserList.jsp</result>
+        </action>   
+        <!-- 新增用户 -->
+        <action name="AddUser" class="resoft.common.web.aas.AddUserAction">
+            <result name="success" type="chain">UserList</result>  
+        </action> 
+        <action name="ToAddUser" class="resoft.common.web.aas.AddUserAction" method="toAddUser">
+            <result name="success" type="dispatcher">/common/UserCreate.jsp</result>
+        </action> 
+        <!-- 删除用户 -->
+        <action name="removeUser" class="resoft.common.web.aas.RemoveUserAction">
+            <result name="success" type="chain">UserList</result>
+        </action>
+        <!-- 修改用户 -->
+        <action name="ModifyUser" class="resoft.common.web.aas.ModifyUserAction">
+            <result name="success">/common/UserList.jsp</result>
+        </action> 
+        <action name="ToModifyUser" class="resoft.common.web.aas.ModifyUserAction" method="toModifyUser">
+            <result name="success" type="dispatcher">/common/UserModify.jsp</result>
+        </action> 
+        <!--角色管理-->
+        <action name="RoleList" class="resoft.common.web.aas.RoleListAction">
+            <result name="success" type="dispatcher">/common/RoleList.jsp</result>
+        </action>  
+        <!-- 新增角色 -->
+        <action name="AddRole" class="resoft.common.web.aas.AddRoleAction">
+            <result name="success" type="chain">RoleList</result>  
+        </action> 
+        <action name="ToAddRole" class="resoft.common.web.aas.AddRoleAction" method="toAddRole">
+            <result name="success" type="dispatcher">../common/RoleCreate.jsp</result>
+        </action> 
+        <!-- 删除角色 -->
+        <action name="RemoveRole" class="resoft.common.web.aas.RemoveRoleAction">
+            <result name="success" type="chain">RoleList</result>
+        </action> 
+        <!-- 修改角色 -->
+        <action name="ModifyRole" class="resoft.common.web.aas.ModifyRoleAction">
+            <result name="success">/common/showMessage.jsp</result>
+        </action> 
+        <action name="ToModifyRole" class="resoft.common.web.aas.ModifyRoleAction" method="toModifyRole">
+            <result name="success">/common/RoleModify.jsp</result>
+        </action> 
+        <!-- 修改权限 -->
+        <action name="ShowRolePermission" class="resoft.common.web.aas.ShowRolePermissionAction">
+            <result name="success">/common/ShowRolePermission.jsp</result>
+        </action> 
+        <action name="ShowPermission" class="resoft.common.web.aas.ShowPermissionAction">
+            <result name="success">/common/ShowPermission.jsp</result>
+        </action> 
+        <action name="ModifyPermission" class="resoft.common.web.aas.ModifyPermissionAction">
+            <result name="success">/common/showMessage.jsp</result>
+        </action>         
+        <action name="ModifyRolePermission" class="resoft.common.web.aas.ModifyPermissionAction" method="go">
+            <result name="success">/common/showMessage.jsp</result>
+        </action> 
+        <!-- 修改密码 -->
+        <action name="ChangePasswd" class="resoft.tips.web.action.ChangePasswd">
+           	<result name="success">/common/showMessage.jsp</result> 
+       </action> 
+
+        <!--报表管理-->
+        <action name="GetReportSheet" class="org.zerone.easyMining.www.action.GetReportSheetAction">
+            <result name="success" type="chain">ShowCondition</result>
+        </action>
+    </package>
+</xwork>

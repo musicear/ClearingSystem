@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--福建农信-->
+<properties>
+    <!--报文头-->
+    <category name="head">
+        <property name="信息类型" value="C2"/>
+        <property name="信息定义序列" value="C8"/>
+        <property name="最后标志" value="C1"/>
+        <property name="返回之要求" value="C1"/>
+        <property name="交易处理成功标志" value="C1"/>
+        <property name="交易流水号" value="C8"/>
+        <property name="信息格式类型" value="C1"/>
+        <property name="输出设备代码#1" value="C2"/>
+        <property name="格式号#1" value="C3"/>
+        <property name="输出设备代码#2" value="C2"/>
+        <property name="格式号#2" value="C3"/>
+        <property name="输出设备代码#3" value="C2"/>
+        <property name="格式号#3" value="C3"/>
+        <property name="输出设备代码#4" value="C2"/>
+        <property name="格式号#4" value="C3"/>
+        <property name="输出设备代码#5" value="C2"/>
+        <property name="格式号#5" value="C3"/>
+        <property name="保留" value="C1"/>
+        <property name="keys"
+                  value="信息类型,信息定义序列,最后标志,交易信息类型,返回之要求,交易处理成功标志,交易流水号,信息格式类型,输出设备代码#1,格式号#1,输出设备代码#2,格式号#2,输出设备代码#3,格式号#3,输出设备代码#4,格式号#4,输出设备代码#5,格式号#5,保留"/>
+        <property name="format" value="C2,C8,C1,C1,C1,C1,C8,C1,C2,C3,C2,C3,C2,C3,C2,C3,C2,C3,C1"/>
+    </category>
+    <!--账号户名校验-->
+    <category name="033100">
+        <property name="keys" value="ACCT" />
+        <property name="format" value="C32"/>
+    </category>
+    <!--账户户名校验返回信息-->
+    <category name="033100Return">
+        <property name="keys" value="NAME" />
+        <property name="format" value="C8" />
+    </category>
+    <!--实时扣税-->
+    <category name="030618">
+        <property name="keys" value="VCRDIFTXSQ,VCRDITXSRC,LI_ACCT,LI_CCY,LI_AMT,LI_MACCT,LI_MCCY,LI_ACCTP,LI_LTCD,LI_KKFS,LI_DFID,LI_DFLSH,LI_DFRQ,LI_YRZ,LI_AMT1" />
+        <property name="format" value="C8,C2,C32,C3,D17,C32,C3,C3,C3,C1,C20,C20,C8,C1,C17" />
+    </category>
+    <!--实时扣税返回报文-->
+    <category name="030618Return">
+        <property name="keys" value="LO_YKAMT,LO_SKAMT" />
+        <property name="format" value="D17,D17" />
+    </category>
+    <!--交易查询-->
+    <category name="030620">
+        <property name="keys" value="LI_DFID,LI_DFLSH,LI_DFRQ,LI_LTCD" />
+        <property name="format" value="C20,C20,C8,C3" />
+    </category>
+    <!--交易查询返回报文-->
+    <category name="030620Return">
+        <property name="keys" value="VFPSEQ" />
+        <property name="format" value="C8" />
+    </category>
+    <!--实时冲正-->
+    <category name="900902">
+    </category>
+    <!--实时冲正返回报文-->
+    <category name="900902Return">        
+    </category>
+    <!--批量扣税-->
+    <category name="030804">
+        <property name="keys" value="Dwbh,Dljybh,Wdlsh,Jybs,JYJE,SXF,Bzh,Dwzh,Zhlx,Dllx,Ssbz,Khbz,Zym,BatchSendDetails" />
+        <property name="format" value="C10,C5,C8,N10,D17,D17,C2,C32,C1,C1,C1,C1,C18,L" />
+    </category>
+    <!--批量扣税循环报文体-->
+    <category name="BatchSendDetails">
+        <property name="keys" value="记录头,最后一条标志,保留字段,Khbh,Sjrq,Khzh,Zhlx,Fse,Znj" />
+        <property name="format" value="C2,C1,C72,C50,C10,C32,C1,D17,D17" />
+    </category>
+    <!--批量扣税报文体-->
+    <category name="030803Return">
+        <property name="keys" value="BatchRecvDetails" />
+        <property name="format" value="L" />
+    </category>
+    <!--批量扣税返回循环报文体-->
+    <category name="BatchRecvDetails">
+        <property name="keys" value="记录头,最后一条标志,Khbh,Sjrq,Cgje,Xym,Xyxx" />
+        <property name="format" value="C2,C1,C50,C10,D17,C1,C50" />
+    </category>
+    <!--请求对账信息-->
+    <category name="030619">
+        <property name="keys" value="LI_DFRQ,LI_LTCD,LI_DFID" />
+        <property name="format" value="C8,C3,C20" />
+    </category>
+    <!--对账回执信息-->
+    <category name="030619Return">
+        <property name="keys" value="CheckInfoList" />
+        <property name="format" value="L" />
+    </category>
+    <!--对账回执信息内容-->
+    <category name="CheckInfoList">
+        <property name="keys" value="记录头,最后一条标志,LO_PTXSEQ,LO_TXDATE,LO_ACCT1,LO_ACCT2,LO_TXAMT,LO_TXSTAT,LO_TXTELL,LO_ORGNO" />
+        <property name="format" value="C2,C1,C8,C10,C32,C32,D17,C1,C10,C9" />
+    </category>
+</properties>

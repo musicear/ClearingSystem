@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='ISO-8859-1'  ?>
+<easyMining>
+    <config>
+        <showSql>
+            true
+        </showSql>
+    </config>
+    <tables>
+        <table category="Cube">
+            OR_REPORTINFO
+        </table>
+        <table category="Column">
+            OR_REPORTCOLUMN
+        </table>
+        <table category="ReportSheet">
+            OR_REPORTSHEET
+        </table>
+    </tables>
+    <connection>
+
+        <dbms>
+            asa
+        </dbms>
+
+        <driver>
+            sun.jdbc.odbc.JdbcOdbcDriver
+         </driver>
+        <url>
+            jdbc:odbc:school
+        </url>
+        <user>
+            dba
+        </user>
+        <password>
+            sql
+        </password>
+
+        <!--
+        <driver>
+            oracle.jdbc.driver.OracleDriver
+         </driver>
+        <url>
+            jdbc:oracle:thin:@9.59.207.60:1521:qdcsdb
+        </url>
+        <user>
+            cs
+        </user>
+        <password>
+            cs
+        </password>
+        -->
+    </connection>
+</easyMining>
+

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--实时扣税-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--设置回执信息-->
+    <activity name="resoft.tips.action.SetSingleReturn2001Info"/>
+    <!--校验核押结果-->
+    <!--  activity name="resoft.tips.action.CheckSign">
+        <properties>
+            <property name="resultNodePath" value="//CFX/MSG/SingleReturn2001/Result"/>
+            <property name="addWordNodePath" value="//CFX/MSG/SingleReturn2001/AddWord"/>
+        </properties>
+        <transition on="-1" to="return"/>
+    </activity>
+    -->
+    
+    <!--检查实时扣税表中是否已扣款成功-->
+    <activity name="resoft.tips.action.CheckRealSuccess">
+        <properties>
+            <property name="resultNodePath" value="//CFX/MSG/SingleReturn2001/Result"/>
+            <property name="addWordNodePath" value="//CFX/MSG/SingleReturn2001/AddWord"/>
+        </properties>
+        <transition on="-1" to="return"/>
+    </activity>
+    
+    <!--保存数据库-->
+    <activity name="resoft.tips.action.SaveDB3001">
+        <transition on="-1" to="return"/>
+    </activity>
+    
+    <!--检查是否已冲正-->
+    <activity name="resoft.tips.action.CheckRushApply">
+        <properties>
+            <property name="resultNodePath" value="//CFX/MSG/SingleReturn2001/Result"/>
+            <property name="addWordNodePath" value="//CFX/MSG/SingleReturn2001/AddWord"/>
+        </properties>
+        <transition on="-1" to="update"/>
+    </activity>
+    <!--检验账户是否签约(秦皇岛在神码验证)-->
+    <!--  <activity name="resoft.tips.action.CheckContract">
+        <properties>
+            <property name="resultNodePath" value="//CFX/MSG/SingleReturn2001/Result"/>
+            <property name="addWordNodePath" value="//CFX/MSG/SingleReturn2001/AddWord"/>
+        </properties>
+        <transition on="-1" to="update"/>
+    </activity>
+     -->
+    <!--与银行核心系统通讯进行扣款处理-->    
+    <activity name="resoft.tips.action.TransferAcctSX">
+    <!--activity name="resoft.tips.action.mock.TransferAcctMock"-->
+       <properties>
+            <property name="resultNodePath" value="//CFX/MSG/SingleReturn2001/Result"/>
+            <property name="addWordNodePath" value="//CFX/MSG/SingleReturn2001/AddWord"/>
+        </properties>
+       <transition on="-1" to="end"/>
+    </activity>
+    <!--设置TIPS返回信息-->
+    <activity name="resoft.tips.action.SetTips2001Response">
+        <transition on="-1" to="end"/>
+    </activity>
+    
+    <label name="update" />
+    <!-- 更新数据库中扣款状态 -->
+    <activity name="resoft.tips.action.UpdateDB3001">
+        <properties>
+            <property name="resultNodePath" value="//CFX/MSG/SingleReturn2001/Result"/>
+            <property name="addWordNodePath" value="//CFX/MSG/SingleReturn2001/AddWord"/>
+        </properties>
+        <transition on="-1" to="end" />
+    </activity>
+    <!--判断是否超时-->
+    <activity name="resoft.tips.action.CheckRealResult">
+        <transition on="-1" to="end"/>
+    </activity>
+    <label name="return"/>
+    <!--返回MQ回执-->
+    <!--设置报文头-->
+    <activity name="resoft.tips.action.SetHeadValue">
+        <properties>
+            <property name="msgNo" value="2001"/>
+        </properties>
+    </activity>
+    <!--设置打包格式-->
+
+    <activity name="resoft.tips.action.SetPackFile">
+        <properties>
+            <property name="packFile" value="./conf/pack/2001.xml"/>
+        </properties>
+    </activity>
+
+    <!--打印出要发送的XML-->
+
+    <activity name="resoft.tips.action.PrintPacket" />
+    <!--准备发送MQ-->
+
+    <activity name="resoft.tips.action.PrepareForSendMQ" />
+    <!--设置correlationId-->
+
+    <activity name="resoft.tips.action.SetCorrelationIdAsMessageId" />
+    <!--发送MQ-->
+ 
+    <activity name="resoft.tips.action.SendToMQ">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.SyncSendQueue}" />
+        </properties>
+        <transition on="-1" to="return" />
+    </activity> 
+    <label name="end"/>
+    <activity name="resoft.tips.action.AutoRushApply"/>
+    
+</transaction>

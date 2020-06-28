@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!-- 退出请求 -->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor" />
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor" />
+
+    <!--设置版本号、应用名等报文头信息-->
+    <activity name="resoft.tips.action.SetHeadValue">
+        <properties>
+            <property name="msgNo" value="9008"/>
+        </properties>
+    </activity>
+    <!--设置报文标识号-->
+    <activity name="resoft.tips.action.SetMsgId"/>
+    <!--设置登录口令-->
+    <activity name="resoft.tips.action.SetPassword">
+        <properties>
+            <property name="passwordNodePath" value="//CFX/MSG/LogoutInfo9008/Password" />
+        </properties>
+    </activity>
+    <!--设置打包格式-->
+    <activity name="resoft.tips.action.SetPackFile">
+        <properties>
+            <property name="packFile" value="./conf/pack/9008.xml"/>
+        </properties>
+    </activity>
+    <!--打印出要发送的XML-->
+    <activity name="resoft.tips.action.PrintPacket"/>
+    <!--准备发送MQ-->
+    <activity name="resoft.tips.action.PrepareForSendMQ"/>
+    <!--发送MQ-->
+    <activity name="resoft.tips.action.SendToMQ">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.SyncSendQueue}" />
+        </properties>
+        <transition on="-1" to="end"/>
+    </activity>
+    <!--接收MQ响应-->
+    <activity name="resoft.tips.action.ReceiveReplyFromTips">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.SyncRecvQueue}" />
+        </properties>
+        <transition on="-1" to="end" />
+    </activity>
+    <activity name="resoft.tips.action.UpdateExitTipsStatus"/>
+    <!--设置打包格式-->
+    <activity name="resoft.tips.action.SetPackFile">
+        <properties>
+            <property name="packFile" value="./conf/pack/9008Return.xml"/>
+        </properties>
+    </activity>
+    <label name="end" />
+</transaction>

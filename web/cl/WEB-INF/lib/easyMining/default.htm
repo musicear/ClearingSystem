@@ -1,0 +1,98 @@
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<link href="../stylecss/Normal.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.title {
+	font-family: "宋体";
+	font-size: 9px;
+	color: #EEEEEE;
+}
+.data {
+	font-family: "宋体";
+	font-size: 9px;
+	bgcolor: #FFFFFF;
+	background-color: #FFFFFF;
+}
+-->
+</style>
+</head>
+
+<body>
+#set ( $request = $reportSheet.getProperty("request") )
+#set ( $user = $request.getAttribute("user") )
+$user
+<table width="100%"  border="0">
+  <!--
+  #foreach ( $p in $headParagraphs )
+  -->
+  <tr>
+    <td align="$p.style.align"  style="font-family:'${p.style.fontFamily}';font-size=${p.style.fontSize}px ">$p.text</td>
+  </tr>
+  <!--
+  #end
+  -->  
+</table>
+<!--
+#set ( $width = $reportSheet.getProperty("width") )
+#if ( $width )
+   #set ( $tableWidth = "${width}px" )
+#else
+   #set ( $tableWidth = "100%" )
+#end
+-->
+$tableWidth
+<table width="${tableWidth}"  border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#999999">
+  <tr>
+    <!--
+	#set ( $elementList = $reportSheet.listAllVisibleElements() )
+	#foreach ( $element in $elementList )
+	-->
+	   <td height="43" align=center bgcolor="#eeeeee">$element.friendlyName</td>
+	<!--
+	#end
+	-->
+  </tr>
+  <!--
+  #foreach ( $rowMap in $data )
+  -->
+  <tr>
+    <!--
+	#foreach ( $cellData in $rowMap )
+	-->
+	  <td class="data">$cellData</td>
+	<!--
+	#end
+	-->
+  </tr>
+  <!--
+  #end
+  -->
+  #foreach ($footerRow in $footerRows)
+  <tr>
+    <!--
+    #foreach ($footerCell in $footerRow)
+    -->
+    <td colspan="$footerCell.colSpan" class="data" align="$footerCell.style.align">$footerCell.value</td>
+    <!--
+    #end
+    -->
+  </tr>
+  #end
+</table>
+$variableMap
+
+<table width="50%"  border="0" align="center">
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="center"><a href="javascript:history.back();"><img src="../images/return.gif" border=0></a></div></td>
+    <td><div align="center"><a href="../servlet/GenReport?reportType=xls">导出Excel</a></div></td>
+  </tr>
+</table>
+</body>
+</html>

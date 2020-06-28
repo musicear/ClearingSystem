@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--交易状态查询-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>    
+
+    <!--设置报文头--> 
+    <activity name="resoft.tips.action.SetHeadValue">
+        <properties>
+            <property name="msgNo" value="9003"/>
+        </properties>
+    </activity>
+    <!--设置MsgId及MsgRef-->
+    <activity name="resoft.tips.action.SetMsgId" />
+    <!--拼状查询报文-->
+    <activity name="resoft.tips.action.PrepareQueryMsg" />
+     <!--设置打包格式-->
+    <activity name="resoft.tips.action.SetPackFile">
+        <properties>
+            <property name="packFile" value="./conf/pack/9003.xml"/>
+        </properties>
+    </activity>
+    <!--打印出要发送的XML-->
+    <activity name="resoft.tips.action.PrintPacket"/>
+    <!--准备发送MQ-->
+    <activity name="resoft.tips.action.PrepareForSendMQ"/>
+    <!--设置发起的correlationId-->
+    <activity name="resoft.tips.action.SetCorrelationIdAsREQ" />
+    <!--发送MQ-->
+    <activity name="resoft.tips.action.SendToMQ">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.SyncSendQueue}" />
+        </properties>
+        <transition on="-1" to="return" />
+    </activity>
+    <!--接收MQ响应-->
+    <activity name="resoft.tips.action.ReceiveReplyFromTips">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.SyncRecvQueue}" />
+        </properties>
+     <transition on="-1" to="return" />
+    </activity>
+   <!-- 接收回执-->
+    <activity name="resoft.tips.action.ReceiveReply">
+        <transition on="-1" to="return" />
+    </activity>
+        <activity name="resoft.tips.action.SetPackFile">
+        <properties>
+            <property name="packFile" value="./conf/pack/9003Return.xml"/>
+        </properties>
+    </activity>
+    <label name="return" />
+</transaction>

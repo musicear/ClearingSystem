@@ -1,0 +1,19 @@
+<reportSheet>
+    <cube code="06"/>
+    <head>
+        <paragraph font-size="14" align="center">三方协议签订数量统计</paragraph>
+    </head>
+    
+	<variables>
+                <variable name="count_001" colCode="001" function="count"/>
+   	</variables>
+    <footer>
+     <col colSpan="1">合计总数目</col>
+     <col align="right">#count_001</col>
+   </footer>
+
+    <properties>
+        <property name="customConditionPage" value="/pages/staticProveinfoNum.jsp"/>
+        <property name="width" value="600"/>
+    </properties>
+</reportSheet>

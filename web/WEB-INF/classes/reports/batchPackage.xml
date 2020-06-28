@@ -1,0 +1,27 @@
+<reportSheet>
+    <cube code="03"/>
+    <head>
+        <paragraph font-size="14" align="center">批量扣税包查询</paragraph>
+    </head>
+    <fields>
+        <field friendlyName="征收机关名称"/>
+		<field friendlyName="委托日期"/>
+		<field friendlyName="包流水号"/>
+		<field friendlyName="总金额"/>
+		<field friendlyName="总笔数"/>
+		<field friendlyName="收款人名称"/>
+		<field friendlyName="回执期限"/>
+		<field friendlyName="开始扣款时间"/>
+		<field friendlyName="扣款完成时间"/>
+		<field friendlyName="是否止付"/>
+		<field friendlyName="回执日期"/>
+		<field friendlyName="回执包流水号"/>
+		<field friendlyName="成功笔数"/>
+		<field friendlyName="成功金额"/>
+		<field friendlyName="处理结果"/>
+    </fields>
+    <properties>
+        <property name="customConditionPage" value="/pages/batchPackage.jsp"/>
+        <property name="width" value="780"/>
+    </properties>
+</reportSheet>

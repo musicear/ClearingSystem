@@ -1,0 +1,25 @@
+<CFX>
+	<HEAD>
+		<VER/>
+		<SRC/>
+		<DES/>
+		<APP/>
+		<MsgNo/>
+		<MsgID/>
+		<MsgRef/>
+		<WorkDate/>
+	</HEAD>
+	<MSG>
+		<DeclareQuery2091>
+            <BankNo/>
+            <EntrustDate/>
+            <QueryNo/>
+            <PayOpBkCode/>
+            <BankName/>
+            <TaxOrgCode/>
+            <CorpCode/>
+            <TaxPayCode/>
+            <OuterLevyNo/>                			
+		</DeclareQuery2091>
+	</MSG>
+</CFX>

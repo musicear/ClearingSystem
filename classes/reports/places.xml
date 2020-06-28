@@ -1,0 +1,14 @@
+<reportSheet>
+    <cube code="01"/>
+    <head>
+        <paragraph font-size="14" align="center">µØÇø²éÑ¯</paragraph>
+    </head>
+    <fields>
+        <field code="001"/>
+        <field code="002"/>
+    </fields>
+    <properties>
+        <property name="customConditionPage" value="/pages/place.jsp"/>
+        <property name="width" value="600"/>
+    </properties>
+</reportSheet>

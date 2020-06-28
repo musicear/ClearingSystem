@@ -1,0 +1,174 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   GenReportServlet.java
+
+package org.zerone.easyMining.www.servlet;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.zerone.common.BeanFactory;
+import org.zerone.common.ObjectNotFoundException;
+import org.zerone.easyMining.domain.ReportSheet;
+import org.zerone.easyMining.engine.Query;
+import org.zerone.easyMining.engine.QueryException;
+import org.zerone.easyMining.www.ReportSheetPlugIn;
+import org.zerone.easyMining.www.ReportSheetPool;
+
+public class GenReportServlet extends HttpServlet
+{
+
+    public GenReportServlet()
+    {
+    }
+
+    public void service(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException
+    {
+        HttpSession session = request.getSession(false);
+        String reportType = request.getParameter("reportType");
+        if(reportType == null || reportType.equals(""))
+            reportType = "html";
+        else
+            reportType = reportType.toLowerCase();
+        String reportSheetKey = request.getParameter("reportSheetKey");
+        ReportSheet sheet;
+        if(reportSheetKey == null)
+        {
+            sheet = (ReportSheet)session.getAttribute("reportSheet");
+            reportSheetKey = ReportSheetPool.getInstance().put(sheet);
+        } else
+        {
+            sheet = ReportSheetPool.getInstance().get(reportSheetKey);
+        }
+        request.setAttribute("reportSheetKey", reportSheetKey);
+        if(sheet == null)
+        {
+            request.setCharacterEncoding("GBK");
+            request.setAttribute("message", "\u672A\u9009\u5B9A\u62A5\u8868\u6216\u767B\u5F55\u8D85\u65F6");
+            response.getWriter().println("\u672A\u9009\u5B9A\u62A5\u8868\u6216\u767B\u5F55\u8D85\u65F6");
+            return;
+        }
+        ReportSheetPlugIn plugIn = null;
+        try
+        {
+            plugIn = (ReportSheetPlugIn)BeanFactory.getBean("reportSheetPlugIn");
+        }
+        catch(ObjectNotFoundException e)
+        {
+            logger.info("\u672A\u627E\u5230\u5B9A\u4E49\u7684\u62A5\u8868\u63D2\u4EF6");
+        }
+        if(plugIn != null)
+            plugIn.process(sheet, request);
+        if(reportType.equals("html") && sheet.getCustomTemplateContent() != null)
+            reportType = "custom";
+        Query query = Query.createQuery(sheet);
+        int rowCount;
+        try
+        {
+            rowCount = getRowCount(request, query);
+        }
+        catch(QueryException e)
+        {
+            logger.error("\u751F\u6210\u62A5\u8868\u5931\u8D25", e);
+            String msg = "\u67E5\u8BE2\u6761\u4EF6\u9519\u8BEF\uFF0C\u8BF7\u8FD4\u56DE\u91CD\u65B0\u8F93\u5165";
+            request.setAttribute("message", msg);
+            request.getRequestDispatcher("../csjsp/JCShowMsg.jsp").forward(request, response);
+            return;
+        }
+        request.setAttribute("rowCount", new Integer(rowCount));
+        if(rowCount == 0)
+            reportType = "html";
+        ServletOutputStream outputStream = response.getOutputStream();
+        if(reportType.equals("html") || reportType.equals("custom"))
+            response.setContentType("text/html;charset=GBK");
+        else
+        if(reportType.equals("pdf"))
+            response.setContentType("application/pdf");
+        else
+        if(reportType.equals("flexCell"))
+            response.setContentType("text/xml;charset=GBK");
+        else
+        if(reportType.equals("chart"))
+        {
+            response.setContentType("image/jpeg");
+        } else
+        {
+            String extName = reportType;
+            if(extName.equals("csv"))
+                extName = "txt";
+            response.setHeader("Content-disposition", "attachment; filename=report." + extName);
+            response.setContentType("application/RFC822");
+        }
+        sheet.setProperty("request", request);
+        sheet.setProperty("session", session);
+        String strPageNo = request.getParameter("pageNo");
+        int pageNo = 1;
+        if(strPageNo != null && !strPageNo.equals(""))
+            pageNo = Integer.parseInt(strPageNo);
+        request.setAttribute("pageNo", new Integer(pageNo));
+        String strPageSize = request.getParameter("pageSize");
+        int pageSize = 50;
+        if(strPageSize != null && !strPageSize.equals(""))
+            pageSize = Integer.parseInt(strPageSize);
+        int firstResult = (pageNo - 1) * pageSize + 1;
+        long begin = System.currentTimeMillis();
+        if(!reportType.equals("xls") && !reportType.equals("csv") && !reportType.equals("flexcell") && !reportType.equals("pdf"))
+        {
+            query.setFirstResult(firstResult);
+            query.setMaxResults(pageSize);
+        }
+        query.setOutputStyle(reportType);
+        query.setOutputStream(outputStream);
+        try
+        {
+            query.execute();
+        }
+        catch(QueryException me)
+        {
+            logger.error("\u751F\u6210\u62A5\u8868\u5931\u8D25", me);
+            String msg = "\u67E5\u8BE2\u6761\u4EF6\u9519\u8BEF\uFF0C\u8BF7\u8FD4\u56DE\u91CD\u65B0\u8F93\u5165";
+            request.setAttribute("message", msg);
+            request.getRequestDispatcher("../csjsp/JCShowMsg.jsp").forward(request, response);
+            return;
+        }
+        long end = System.currentTimeMillis();
+        double time = (end - begin) / 1000L;
+        logger.info("Task {" + query.getCompletedSql() + "} completed in " + Double.toString(time) + "s.");
+        response.getOutputStream().flush();
+        response.getOutputStream().close();
+    }
+
+    private int getRowCount(HttpServletRequest request, Query query)
+        throws QueryException
+    {
+        String strRowCount = request.getParameter("rowCount");
+        if(strRowCount == null || strRowCount.equals(""))
+            strRowCount = (String)request.getAttribute("rowCount");
+        int rowCount;
+        if(strRowCount != null && !strRowCount.equals(""))
+            rowCount = Integer.parseInt(strRowCount);
+        else
+            rowCount = query.getRowCount();
+        return rowCount;
+    }
+
+    static Class _mthclass$(String x0)
+    {
+        return Class.forName(x0);
+        ClassNotFoundException x1;
+        x1;
+        throw new NoClassDefFoundError(x1.getMessage());
+    }
+
+    private static Log logger;
+
+    static 
+    {
+        logger = LogFactory.getLog(org.zerone.easyMining.www.servlet.GenReportServlet.class);
+    }
+}

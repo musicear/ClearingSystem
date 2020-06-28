@@ -1,0 +1,37 @@
+<CFX>
+	<HEAD>
+		<VER/>
+		<SRC/>
+		<DES/>
+		<APP/>
+		<MsgNo/>
+		<MsgID/>
+		<MsgRef/>
+		<WorkDate/>
+		<Reserve/>
+	</HEAD>
+	<MSG>
+		<BatchHead2102>
+            <PayBkCode/>
+            <EntrustDate/>
+            <PackNo/>
+            <OriTaxOrgCode/>
+            <OriEntrustDate/>
+            <OriPackNo/>
+            <AllNum/>
+            <AllAmt/>
+            <SuccNum/>
+            <SuccAmt/>
+            <Result/>
+            <AddWord/>
+		</BatchHead2102>
+        <BatchReturn2102  iterance="true">
+            <OriTraNo/>
+            <TraAmt/>
+            <TaxVouNo/>
+            <TaxDate/>
+            <Result/>
+            <AddWord/>             
+        </BatchReturn2102>
+    </MSG>
+</CFX>

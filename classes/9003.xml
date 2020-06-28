@@ -1,0 +1,22 @@
+<CFX>
+	<HEAD>
+		<VER/>
+		<SRC/>
+		<DES/>
+		<APP/>
+		<MsgNo/>
+		<MsgID/>
+		<MsgRef/>
+		<WorkDate/>
+	</HEAD>
+	<MSG>
+		<TraStatusCheck9003>
+            <SendOrgCode />            
+            <SearchType />	
+            <OriMsgNo />
+            <OriEntrustDate />
+            <OriPackNo />
+            <OriTraNo />	
+		</TraStatusCheck9003>
+	</MSG>
+</CFX>

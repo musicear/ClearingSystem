@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--批量队列接收后处理流程-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+
+    <!--解析文件-->
+    <activity name="resoft.tips.action.ProcessBatchFile"/>
+    <label name="return" />
+</transaction>

@@ -1,0 +1,29 @@
+<public:component tagName="xpMenuBar" lightweight="true">
+<public:attach event="onclick" onevent="MenuBarSwitcher()" />
+<public:attach event="ondblclick" onevent="MenuBarSwitcher()" />
+
+<script>
+function MenuBarSwitcher()
+{
+eobj = event.srcElement  ;
+//alert(eobj.outerHTML)
+gobj = eobj.parentElement.parentElement.all.tags("dd")[0]
+if(gobj != null)
+{
+	if(gobj.style.display == "")
+	{
+		gobj.style.display = "none"
+		eobj.parentElement.className= "on"
+	}
+	else
+		{
+		gobj.style.display = ""
+		eobj.parentElement.className= ""
+		
+		}
+}
+}
+
+
+</script>
+</public:component>

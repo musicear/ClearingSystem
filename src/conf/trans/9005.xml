@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--接收TIPS发来的连接测试-->
+<transaction>
+    <!--设置连接测试成功信息-->
+    <activity name="resoft.tips.action.ConnTestFromTips"/>
+	<!--设置报文头-->
+    <activity name="resoft.tips.action.SetHeadValue">
+        <properties>
+            <property name="msgNo" value="9120"/>
+            <property name="desNodeCode" value="TIPSNode"></property>            
+        </properties>
+    </activity>
+	<activity name="resoft.tips.action.SetPackFile">
+        <properties>
+            <property name="packFile" value="./conf/pack/9120.xml"/>
+        </properties>
+    </activity>
+    <!--打印出要发送的XML-->
+    <activity name="resoft.tips.action.PrintPacket"/>
+    <!--准备发送MQ-->
+    <activity name="resoft.tips.action.PrepareForSendMQ"/>
+    <!--设置correlationId-->
+    <activity name="resoft.tips.action.SetCorrelationIdAsMessageId"/>
+    <!--发送MQ-->
+    <activity name="resoft.tips.action.SendToMQ">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.SyncSendQueue}" />
+        </properties>        
+    </activity>
+</transaction>

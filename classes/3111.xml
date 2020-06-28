@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--与银行税票明细对账通知-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--记录到数据库-->
+    <activity name="resoft.tips.action.SaveTaxCheck">
+        <transition on="-1" to="end" />
+    </activity>
+    <label name="return"/>
+    <!--设置报文头-->
+    <activity name="resoft.tips.action.SetHeadValue">
+        <properties>
+            <property name="msgNo" value="2111"/>
+        </properties>
+    </activity>
+    <!--设置报文标识号-->
+    <activity name="resoft.tips.action.SetMsgId" />
+    <!--设置"与银行税票明细对账回执"信息-->
+    <activity name="resoft.tips.action.SetPayCheckReturn" />
+    <!--设置打包格式-->
+    <activity name="resoft.tips.action.SetPackFile">
+        <properties>
+            <property name="packFile" value="./conf/pack/2111.xml"/>
+        </properties>
+    </activity>
+    <!--准备发送MQ-->
+    <activity name="resoft.tips.action.PrepareForSendMQ" />
+    <!--打印出要发送的XML-->
+    <activity name="resoft.tips.action.PrintPacket" />
+    <!--设置correlationId-->
+    <activity name="resoft.tips.action.SetCorrelationIdAsMessageId" />
+    <!--发送MQ-->
+    <activity name="resoft.tips.action.SendToMQ">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.BatchSendQueue}"/>
+        </properties>
+        <transition on="-1" to="end" />
+    </activity>
+    <!--前置与TIPS首先核对-->
+    <activity name="resoft.tips.chqsh.ProcessCheckAcctWithTips"/>
+   
+    <!--判断是否完成全部对账-->
+    <!--  
+    <activity name="resoft.tips.chqsh.CheckIfAcctAll">
+    	<transition on="-1" to="end" />
+    </activity>
+    -->
+    <activity name="resoft.tips.action.CommWithBank">
+        <properties>
+            <property name="className" value="${commWithBank.requestBankChkInfo}" />
+        </properties>
+        <transition on="-1" to="return" />
+    </activity>
+    
+    <!--前置与和核心核对-->
+    <activity name="resoft.tips.action.ProcessCheckAcctWithBank">
+    	<properties>
+            <property name="checkInfoReader" value="${commWithBank.checkInfoReader}"/>
+        </properties>
+    </activity>
+    <!-- 向AdjustAcct表中添加需要处理的错误信息 -->
+    <!-- activity name="resoft.tips.chqsh.ProcessCheckAcctWrongMsg"/-->
+    <!-- 与Tuxedo核心冲帐 -->
+    <!-- activity name="resoft.tips.chqsh.ProcessCheckAcctChongZhang"/-->
+
+    <!-- 进行一个TIPS工作日的程序处理 -->
+    <activity name="resoft.tips.chqsh.ProcessTipsWork" />
+    
+    <label name="end" />
+</transaction>

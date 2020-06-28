@@ -1,0 +1,25 @@
+<CFX>
+	<HEAD>
+		<VER/>
+		<SRC/>
+		<DES/>
+		<APP/>
+		<MsgNo/>
+		<MsgID/>
+		<MsgRef/>
+		<WorkDate/>
+		<Reserve/>
+	</HEAD>
+	<MSG>
+        <DelApply2123>
+            <TaxOrgCode/>
+			<EntrustDate/>
+            <OriStopNo/>
+            <OriPackNo/>
+            <OriTraNo/>
+            <OriEntrustDate/>
+			<StopAnswer/>
+			<AddWord/>
+        </DelApply2123>
+    </MSG>
+</CFX>

@@ -1,0 +1,20 @@
+<reportSheet>
+    <cube code="04"/>
+    <head>
+        <paragraph font-size="14" align="center">冲正查询</paragraph>
+    </head>
+    <fields>
+        <field friendlyName="征收机关名称"/>
+		<field friendlyName="委托日期"/>
+		<field friendlyName="冲正申请序号"/>
+		<field friendlyName="原委托日期"/>
+		<field friendlyName="原交易流水号"/>
+		<field friendlyName="冲正原因"/>
+		<field friendlyName="冲正应答"/>
+		<field friendlyName="冲正附言"/>
+    </fields>
+    <properties>
+        <property name="customConditionPage" value="/pages/rushApply.jsp"/>
+        <property name="width" value="700"/>
+    </properties>
+</reportSheet>

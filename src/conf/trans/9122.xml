@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--通用处理结果通知-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--解析各要素-->
+    <activity name="resoft.tips.action.ProcessMsgReturnInfo" />
+    <!--接收9122报文-->
+    <activity name="resoft.tips.action.UsualuseDelResult" />
+</transaction>

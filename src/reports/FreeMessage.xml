@@ -1,0 +1,14 @@
+<reportSheet>
+    <cube code="09"/>
+    <head>
+        <paragraph font-size="14" align="center">自由报文接收</paragraph>
+    </head>
+    <fields>
+        <field friendlyName="发送时间"/>
+		<field friendlyName="内容"/>
+    </fields>
+    <properties>
+        <property name="customConditionPage" value="/pages/freeMessage.jsp"/>
+        <property name="width" value="700"/>
+    </properties>
+</reportSheet>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--删除签约信息-->        
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--检查签约是否删除-->
+    <activity name="resoft.tips.chqsh.CheckProveDelete"/>
+</transaction>

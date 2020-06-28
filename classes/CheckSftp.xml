@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--连接测试请求-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>    
+	
+	<!-- SFTP检索文件 -->
+	<activity name="resoft.tips.action2.CheckSftp">
+		<transition on="-1" to="return" />
+	</activity>
+	
+
+   
+    
+    <label name="return" />
+</transaction>

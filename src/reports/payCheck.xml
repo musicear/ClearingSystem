@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="GBK"?>
+<reportSheet>
+    <cube code="01"/>
+    <head>
+        <paragraph font-size="14" align="center">对账结果查询</paragraph>
+    </head>
+    <fields>
+    <field friendlyName="对账日期"/>
+		<field friendlyName="对账批次"/>
+		<field friendlyName="对账类型"/>
+		<field friendlyName="笔数"/>
+		<field friendlyName="金额"/>	
+		<field friendlyName="付款行行号"/>
+		<field friendlyName="本包序号"/>
+		<field friendlyName="本包笔数"/>
+		<field friendlyName="本包金额"/>
+		<field friendlyName="帐平笔数"/>
+		<field friendlyName="帐平金额"/>
+		<field friendlyName="不平笔数"/>
+		<field friendlyName="不平金额"/>
+    </fields>
+      
+    <properties>
+        <property name="customConditionPage" value="/pages/payCheck.jsp"/>
+        <property name="width" value="780"/>
+    </properties>
+</reportSheet>

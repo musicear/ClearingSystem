@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="GBK"?>
+<reportSheet>
+    <cube code="13"/>
+    <head>
+        <paragraph font-size="14" align="center">对账明细查询</paragraph>
+    </head>
+    <fields>
+    <field friendlyName="对账日期"/>
+		<field friendlyName="对账批次"/>
+		<field friendlyName="付款开户行行号"/>
+		<field friendlyName="付款账号"/>	
+		<field friendlyName="交易金额"/>
+		<field friendlyName="税票号码"/>
+		<field friendlyName="纳税人名称"/>
+		<field friendlyName="协议书号"/>
+		<field friendlyName="是否对账成功"/>
+	
+    </fields>
+    
+    <variables>
+                <variable name="sum_005" colCode="005" function="sum"/>
+   </variables>
+    <footer>
+     <col colSpan="4">合计金额</col>
+     <col align="right">#sum_005</col>
+   </footer>
+      
+    <properties>
+        <property name="customConditionPage" value="/pages/payCheckDetail.jsp"/>
+        <property name="width" value="780"/>
+    </properties>
+</reportSheet>

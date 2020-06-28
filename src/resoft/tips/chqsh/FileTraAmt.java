@@ -1,0 +1,428 @@
+package resoft.tips.chqsh;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.zerone.jdbc.QueryUtil;
+
+import resoft.basLink.Configuration;
+import resoft.basLink.util.DBUtil;
+import resoft.tips.chqxh.MoneyUtil;
+import resoft.tips.util.FTPUtil;
+import resoft.xlink.core.Action;
+import resoft.xlink.core.Message;
+
+/**
+ * 查询对账资金，并打印
+ * @author fanchengwei
+ *
+ */
+public class FileTraAmt implements Action {
+
+	private static final Log logger = LogFactory.getLog(FileTraAmt.class);
+	private static Configuration conf = Configuration.getInstance();
+	private String ReturnFileName = "";
+	private String tmpPath = conf.getProperty("BankSysConfig", "TempFilePath");
+	private String UserId = "";
+	private String PayeeBankNo = "";
+	private String BranchNo = "";
+	private String cardInfo = "";
+	private String allAmt = "";
+	private String allNum = "";
+	private String WorkDate = "";
+	private String ChkDate = "";
+	private String PreTipsWorkDate = "";
+	private String CheckOrder = "";
+	private Calendar date = Calendar.getInstance();
+	private String sql = "";
+	private String sql_bank = "";
+	private String PayOpBkCode = "";
+	private String rcvMsg = "";
+	private int sumAccont = 0;
+	private String sumAmt = "";
+	//yangyuanxu add
+	private String bankpayacct = "";
+	private String paybankcode = "";
+	private String paybankname = "";
+	private String paybanknameDW = "";
+	private String a_bankpayacct = "";
+	private String a_paybankcode = "";
+	private String a_paybankname = "";
+	private String a_paybanknameDW = "";
+	List queryList = null;
+	Map map = null;
+	SendMsgToBankSystem send = new SendMsgToBankSystem();
+	public FileTraAmt()
+	{
+	}
+	
+    public int execute(Message msg) throws SQLException 
+    {
+    	WorkDate = msg.getString("WorkDate").trim();
+    	CheckOrder = msg.getString("CheckOrder").trim();
+    	UserId = msg.getString("UserId").trim();
+    	PayeeBankNo = msg.getString("PayeeBankNo").trim();
+    	BranchNo = msg.getString("BranchNo").trim();
+    	int count = 0;
+    	if(BranchNo == null || UserId == null || PayeeBankNo == null )
+    	{
+    		logger.info("非法的请求,字段不全!");
+			msg.set("AddWord", "非法的请求,字段不全！");
+			msg.set("ReturnResult", "N");
+			return FAIL;
+    	}
+    	/**
+    	 * 只有清算中心才有权利打印全行的清算划款单
+    	 * 网点不能打印各个支行的对账结果单
+    	 */
+    /*	if(!BranchNo.equals("9998") || !BranchNo.equals("8501")) {
+    		
+    		msg.set("AddWord", "您不具备此项权利！");
+			msg.set("ReturnResult", "N");
+			return FAIL;    		
+    	}
+    */
+    	//yangyuanxu add
+    	String statu = this.getPayeeBankNo(BranchNo);
+    	if(statu == null || (!PayeeBankNo.equals(statu) && !BranchNo.equals("0001"))){
+    		msg.set("AddWord", "您不具备此项权利！");
+			msg.set("ReturnResult", "N");
+			return FAIL;    		
+    	}
+    	
+    	ReturnFileName = "HKDZ" + System.currentTimeMillis()+ BranchNo;    	
+    	if(WorkDate.equals("")){    		
+    		try{
+	    		WorkDate = DBUtil.queryForString("select workdate from sysstatus");
+	    		PreTipsWorkDate = DBUtil.queryForString("select preworkdate from sysstatus");
+    		}catch(Exception e){
+    			logger.info("查询数据库出错");
+    			msg.set("AddWord", "查询数据库出错");
+    			msg.set("ReturnResult", "N");
+    			return FAIL;
+    		}
+	    	try{
+	    		count = DBUtil.queryForInt("select count(*) from paycheck where chkdate='"+ WorkDate +"' and PayeeBankNo='"+PayeeBankNo+"'");
+	    		logger.info("count = " + count);
+	    	}catch(Exception e){
+	    		msg.set("AddWord", "查询数据库出错");
+				msg.set("ReturnResult", "N");
+				logger.info("查询数据库出错");
+				return FAIL;
+	    	}
+	    	if(count > 0){
+	    		ChkDate = WorkDate;
+	    		try{
+        			sql = "select distinct chkacctord from paycheck where chkdate='"+ ChkDate +"' and PayeeBankNo='"+PayeeBankNo+"' order by chkacctord";
+    	    		queryList =  QueryUtil.queryRowSet(sql);
+    	    		map = (Map)queryList.get(queryList.size()-1);
+    	    		CheckOrder = (String)map.get("chkacctord");
+    			}catch(Exception e){
+    				msg.set("AddWord", "查询对账批次出错！！");
+    				msg.set("ReturnResult", "N");
+    				logger.info("查询对账批次出错");
+    				return FAIL;
+    			}
+	    	}else{
+	    		ChkDate = PreTipsWorkDate;
+	    		try{
+        			sql = "select distinct chkacctord from paycheck where chkdate='"+ ChkDate +"' and PayeeBankNo='"+PayeeBankNo+"' order by chkacctord";
+    	    		queryList =  QueryUtil.queryRowSet(sql);
+    	    		map = (Map)queryList.get(queryList.size()-1);
+    	    		CheckOrder = (String)map.get("chkacctord");
+    			}catch(Exception e){
+    				msg.set("AddWord", "查询对账批次出错！！");
+    				msg.set("ReturnResult", "N");
+    				logger.info("查询对账批次出错");
+    				return FAIL;
+    			}
+	    	}
+    	}else{
+    		ChkDate = WorkDate.substring(0, 8);
+    		if(CheckOrder.equals("")){
+	    		try{
+	    			count = DBUtil.queryForInt("select count(*) from paycheck where chkdate='"+ ChkDate +"' and PayeeBankNo='"+PayeeBankNo+"'");
+	    		}catch(Exception e){
+	    			msg.set("AddWord", "查询数据库出错");
+					msg.set("ReturnResult", "N");
+					logger.info("查询数据库出错");
+					return FAIL;
+	    		}
+	    		if(count == 0){
+	    			msg.set("AddWord", "当前工作日期没有对账！");
+					msg.set("ReturnResult", "N");
+					return FAIL;
+	    		}else{
+	    			try{
+	        			sql = "select distinct chkacctord from paycheck where chkdate='"+ ChkDate +"' and PayeeBankNo='"+PayeeBankNo+"'";
+	    	    		queryList =  QueryUtil.queryRowSet(sql);
+	    	    		map = (Map)queryList.get(queryList.size()-1);
+	    	    		CheckOrder = (String)map.get("chkacctord");
+	    			}catch(Exception e){
+	    				e.printStackTrace();
+	    				msg.set("AddWord", "查询对账批次出错！！");
+	    				logger.info("查询对账批次出错！！");
+	    				msg.set("ReturnResult", "N");
+	    				return FAIL;
+	    			}
+	    		}
+    		}
+    	}
+    	/**
+    	 * 上面的操作已经取到了Tips工作日期和对账批次
+    	 */
+		//查询对账信息
+    	sql = "select * from paycheck where chkdate='"+ ChkDate +"' and chkacctord='"+ CheckOrder +"' and PayeeBankNo='"+PayeeBankNo+"'";
+    	//yangyuanxu add
+    	sql_bank = "select * from bank_relation where PayeeBankNo='"+PayeeBankNo+"'";
+    	List queryList = null;
+    	//yangyuanxu add
+    	List list_bank = null;
+		Map row = null;
+		//yangyuanxu add
+		Map row_bank = null;
+		logger.info("sql = " + sql);
+		try{
+			queryList = QueryUtil.queryRowSet(sql);
+			list_bank = QueryUtil.queryRowSet(sql_bank);
+			logger.info("收款行查询语句为："+list_bank);
+		}catch(Exception e){
+			logger.info("查询数据库出错");
+			msg.set("AddWord", "查询数据库出错");
+			msg.set("ReturnResult", "N");
+			return FAIL;
+		}
+		//yangyuanxu add
+		if(list_bank.size() == 0 || list_bank == null){
+			msg.set("AddWord", "当前收款行行号输入错误！");
+			msg.set("ReturnResult", "N");
+			return FAIL;
+		}
+		if(queryList.size() == 0 || queryList == null){
+			msg.set("AddWord", "当前Tips工作日期尚未进行对账或者日期非法，请重新输入日期！");
+			msg.set("ReturnResult", "N");
+			return FAIL;
+		}else{
+			row = (Map)queryList.get(0);
+			//yangyuanxu add
+			row_bank = (Map)list_bank.get(0);
+			allAmt = (String)row.get("allAmt");
+			allNum = (String)row.get("allNum");
+			//yangyuanxu add
+			bankpayacct = (String)row_bank.get("bankpayacct"); //付款单位帐号
+			paybankcode = (String)row_bank.get("paybankcode"); //付款行行号
+			paybankname = (String)row_bank.get("paybankname"); //付款开户银行名称
+			paybanknameDW= (String)row_bank.get("paybanknameDW"); //付款单位名称
+			a_bankpayacct = (String)row_bank.get("a_bankpayacct");//收款单位帐号
+			a_paybankcode = (String)row_bank.get("a_paybankcode");//收款行行号
+			a_paybankname = (String)row_bank.get("a_paybankname");//收款开户银行名称
+			a_paybanknameDW = (String)row_bank.get("a_paybanknameDW");//收款单位名称
+			
+			String printTimes = "";
+			if(row.get("PRINTTIMES").toString().trim().equals("") || row.get("PRINTTIMES").toString().trim() == null){
+				printTimes = "1";
+			}else{
+				printTimes = ((String)row.get("PRINTTIMES")).trim();
+			}
+			try{
+				DBUtil.executeUpdate("update paycheck set PRINTTIMES='"+ (Integer.parseInt(printTimes)+1) +"' where chkdate='"+ ChkDate +"' and chkacctord='"+ CheckOrder +"' and PayeeBankNo='"+PayeeBankNo+"'");
+			}catch(Exception e){
+				msg.set("AddWord", "更新数据库中打印次数出错！");
+				msg.set("ReturnResult", "N");
+			}
+//			
+			if(allAmt==null||"".equals(allAmt))
+				allAmt="0.00"; 
+			
+			File f = new File(tmpPath, ReturnFileName);
+			Writer writer = null;
+			try{
+				writer = new FileWriter(f);
+				writer.write(InitTraAmtCard(BranchNo,allNum,ChkDate,allAmt,UserId,CheckOrder,ChkDate+printTimes,bankpayacct,paybankcode,paybankname,paybanknameDW,a_bankpayacct,a_paybankcode,a_paybankname,a_paybanknameDW));			
+				writer.flush();
+				writer.close();
+				this.ftpUpload(ReturnFileName);
+				msg.set("AddWord", "成功");
+				msg.set("ReturnResult", "Y");
+				msg.set("ReturnFileName", ReturnFileName);
+			}catch(Exception e){
+				logger.info("写入文件出错！！");
+				msg.set("AddWord", "写入文件出错");
+				msg.set("ReturnResult", "N");
+				e.printStackTrace();
+				return FAIL;
+			}
+		}
+    	return SUCCESS;
+    }
+	
+	public String InitTraAmtCard(String BranchNo,String allNum,String iadac_dat,String allAmt,String UserId,String CheckOrder,String TipsWorkDate,String BankPayAcct,String PayBankCode,String PayBankName,String PayBankNameDW,String a_BankPayAcct,String a_PayBankCode,String a_PayBankName,String a_PayBankNameDW){
+		String forMat = "　　　　　　　　　　";
+		String upTraAmt = "";
+		String buf = "";
+        int count_DW=0;
+        int count_N=0;
+        String PayBankNameDW_buf="";
+		String PayBankName_buf="";
+        count_DW=PayBankNameDW.getBytes().length;
+        count_N=PayBankName.getBytes().length;
+        for(int i=count_DW;i<33;i++){
+        	PayBankNameDW_buf=PayBankNameDW_buf+" ";
+        }
+        for(int i=count_N;i<33;i++){
+        	PayBankName_buf=PayBankName_buf+" ";
+        }
+        //String cq_PayBankNameDW="　 ";
+		//String cq_PayBankName="                         ";
+		//String fh_PayBankName="                 ";
+		//String fh_PayBankNameDW="　                ";
+		
+		
+		//if(BranchNo.equals("9998")){
+			//PayBankNameDW_buf=cq_PayBankNameDW;
+			//PayBankName_buf=cq_PayBankName;
+		//}else{
+		//	PayBankNameDW_buf=fh_PayBankNameDW;
+		//	PayBankName_buf=fh_PayBankName;
+		//}
+		int count = 0;
+		String WorkDate = TipsWorkDate.substring(0, 4) + "年" + TipsWorkDate.substring(4, 6) + "月" + TipsWorkDate.substring(6, 8) + "日";
+
+		if(CheckOrder.equals("1001")){
+			CheckOrder += "（日间）";
+		}else{
+			CheckOrder += "（日切）";
+		}
+		upTraAmt = MoneyUtil.amountToChinese(Double.parseDouble(allAmt));
+		buf = "";
+		count = 0;
+		allAmt=MakeUpTwoDot(allAmt);
+		for(int i=allAmt.length();i>0;i--){
+			buf = allAmt.substring(i-1, i);
+			count++;
+			if(buf.equals(".")){
+				count = 0;
+			}
+			if(count == 3 && i != 1){
+				count = 0;
+				allAmt = allAmt.substring(0, i-1) + "," + allAmt.substring(i-1);
+			}
+		}
+		cardInfo = "\n";
+		cardInfo += "                                       资金清算划款凭证" + "\n\n";
+		cardInfo += forMat.substring(0, 3) + "　Tips工作日期：" + WorkDate+ "                   批次：" + CheckOrder;
+		cardInfo += forMat.substring(0, 3) + "\n";
+		cardInfo += forMat.substring(0, 3) + "　付款单位全称："+PayBankNameDW+PayBankNameDW_buf+"收款单位全称：" +a_PayBankNameDW +"\n";
+		cardInfo += forMat.substring(0, 3) + "　付款单位帐号："+BankPayAcct+"                  收款单位帐号："+a_BankPayAcct+"\n";
+		cardInfo += forMat.substring(0, 3) + "　付款开户银行："+PayBankName+PayBankName_buf+"收款开户银行："+a_PayBankName+ "\n";
+		cardInfo += forMat.substring(0, 3) + "　付款行行号：  "+PayBankCode+"                     收款行行号："+a_PayBankCode+ "\n";	
+		cardInfo += forMat.substring(0, 3) + "　金额人民币（小写）：￥" + allAmt + "\n";
+		cardInfo += forMat.substring(0, 3) + "　金额人民币（大写）：" + upTraAmt + "\n";
+		cardInfo += forMat.substring(0, 3) + "　划款原因：税收收入划缴国库" + "\n";
+		cardInfo += forMat.substring(0, 3) + "　摘要："+PayBankCode+"，" + allNum + "，" + iadac_dat + "，" + CheckOrder.substring(0, 4) + "\n";
+		cardInfo += forMat.substring(0, 3) + "　科目（借）：28000" + "\n";
+		cardInfo += forMat.substring(0, 3) + "　科目（贷）：110" + "\n";
+		cardInfo += forMat.substring(0, 3) + "　会计：　　　　　　　　　　复核：　　　　　　　记账：" + "\n";
+		cardInfo += forMat.substring(0, 3) + "      打印日期：" + date.get(Calendar.YEAR) + "年" + (Integer.parseInt("" + date.get(Calendar.MONTH))+ 1) + "月" + date.get(Calendar.DAY_OF_MONTH) + "日         第" + TipsWorkDate.substring(8).trim() + "次打印           柜员号： " + UserId;
+		cardInfo += "          " + "\n";
+		return cardInfo;	
+	}
+
+	public String InitTraAmtCard(String sumAccont,String sumAmt,String ChkDate,String ChkAcctOrd,String UserId){
+		String forMat = "　　　　　　　　　　";
+		String upTraAmt = "";
+		String buf = "";
+		int count = 0;
+		String WorkDate = ChkDate.substring(0, 4) + "年" + ChkDate.substring(4, 6) + "月" + ChkDate.substring(6) + "日";
+
+		if(ChkAcctOrd.equals("1001")){
+			ChkAcctOrd += "（日间）";
+		}else{
+			ChkAcctOrd += "（日切）";
+		}
+		upTraAmt = MoneyUtil.amountToChinese(Double.parseDouble(sumAmt));
+		buf = "";
+		count = 0;
+		
+		sumAmt=MakeUpTwoDot(sumAmt);
+		for(int i=sumAmt.length();i>0;i--){
+			buf = sumAmt.substring(i-1, i);
+			count++;
+			if(buf.equals(".")){
+				count = 0;
+			}
+			if(count == 3 && i != 1){
+				count = 0;
+				sumAmt = sumAmt.substring(0, i-1) + "," + sumAmt.substring(i-1);
+			}
+		}
+		cardInfo = "\n\n";
+		cardInfo += "                                       资金清算划款单" + "\n\n\n";
+		cardInfo += forMat.substring(0, 5) + "      Tips工作日期：" + WorkDate+ "                               批次：" + ChkAcctOrd;
+		cardInfo += forMat.substring(0, 5) + "\n\n";
+		cardInfo += forMat.substring(0, 5) + "　总笔数：" + sumAccont + "\n";
+		cardInfo += forMat.substring(0, 5) + "　金额人民币（小写）：￥" + sumAmt + "\n";
+		cardInfo += forMat.substring(0, 5) + "　金额人民币（大写）：" + upTraAmt + "\n";
+		cardInfo += "\n";
+		cardInfo += forMat.substring(0, 5) + "      打印日期：" + date.get(Calendar.YEAR) + "年" + date.get(Calendar.MONTH) + "月" + date.get(Calendar.DAY_OF_MONTH) + "日";
+		cardInfo += "                                    柜员号： " + UserId;
+		cardInfo += "          " + "\n";
+		return cardInfo;	
+	}
+	
+	private String MakeUpTwoDot(String sumAmt2) {
+		// TODO Auto-generated method stub
+		String sumAmt3="";
+		int count=0;
+		String buff = "";
+		for(int i=sumAmt2.length();i>0;i--){
+			buff = sumAmt2.substring(i-1, i);
+			count++;
+			if(buff.equals("."))
+			{
+				if(count==2)
+				{
+					sumAmt3=sumAmt2+"0";
+					return sumAmt3;
+				}
+				if(count==3)
+					return sumAmt2;
+			}
+		}
+		
+		return sumAmt2+".00";
+	}
+
+	//yangyuanxu add 
+	public String getPayeeBankNo(String BranchNo) throws SQLException{
+		String PayeeBankNo = "";
+		PayeeBankNo=DBUtil.queryForString("select PayeeBankNo from bank_relation where bankorgcode='"+BranchNo+"'");	
+		PayeeBankNo=PayeeBankNo.trim();
+		return PayeeBankNo;
+	}	
+	
+	public void ftpUpload(String filename) throws Exception{
+		FTPUtil ftp = new FTPUtil();
+		ftp.setServer(conf.getProperty("SXBankFtp", "FtpServer"));
+		ftp.setPort(Integer.parseInt(conf.getProperty("SXBankFtp", "FtpPort")));
+		ftp.setPath(conf.getProperty("SXBankFtp", "FtpPath"));
+		ftp.setUser(conf.getProperty("SXBankFtp", "FtpUser"));
+		ftp.setPassword(conf.getProperty("SXBankFtp", "FtpPassword"));
+		ftp.setLocalpath(conf.getProperty("SXBankFtp", "TempFilePath"));
+		ftp.upload(filename);
+	}
+	
+	public static void main(String args[]) throws Exception
+	{
+		Message msg = null;
+		FileTraAmt ft = new FileTraAmt();
+		ft.execute(msg);
+	}
+}

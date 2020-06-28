@@ -1,0 +1,21 @@
+<CFX>
+	<HEAD>
+		<VER/>
+		<SRC/>
+		<DES/>
+		<APP/>
+		<MsgNo/>
+		<MsgID/>
+		<MsgRef/>
+		<WorkDate/>
+	</HEAD>
+	<MSG>
+		<FreeFormat9105>
+            <SrcNodeCode/>
+			<DesNodeCode/>
+			<SendOrgCode/>
+			<RcvOrgCode/>
+			<Content/>
+		</FreeFormat9105>        
+    </MSG>
+</CFX>

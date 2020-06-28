@@ -1,0 +1,23 @@
+<transaction>
+    <transactionInterceptor name="db" class="junit.core.mock.DBTransactionInterceptor"/>
+    <actionInterceptor name="log" class="junit.core.mock.LogActionInterceptor"/>
+    <onException name="junit.core.mock.ExceptionAction" />
+    <!--
+    <activity name="resoft.xlink.impl.IfAction">
+        <properties>
+            <property name="expression" value="${amt}>5000" />
+        </properties>
+        <transition on="-1" to="end" />
+    </activity>
+    -->
+    <activity name="junit.core.mock.MockAction">
+        <properties>
+            <property name="name" value="${name}"/>
+            <property name="age" value="28"/>
+        </properties>
+        <transition on="-1" to="end"/>
+        <transition on="0" to="end"/>
+    </activity>
+    <label name="end"/>
+    <activity name="junit.core.mock.EndAction"/>
+</transaction>

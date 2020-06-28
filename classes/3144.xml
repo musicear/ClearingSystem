@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--商行支付退款请求回执文件处理-->
+<transaction>       
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--记录到数据库-->
+    <activity name="resoft.tips.action2.SaveDB3144">
+        <transition on="-1" to="return" />
+    </activity>
+    
+    <label name="return" />
+   
+</transaction>

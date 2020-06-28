@@ -1,0 +1,47 @@
+<CFX>
+	<HEAD>
+		<VER/>
+		<SRC/>
+		<DES/>
+		<APP/>
+		<MsgNo/>
+		<MsgID/>
+		<MsgRef/>
+		<WorkDate/>
+		<Reserve/>
+	</HEAD>
+	<MSG>
+		<DeHead2090>
+            <BankNo/>
+            <EntrustDate/>
+            <LevyNo/>
+		</DeHead2090>
+        <Declare2090>
+            <TaxPayCode/>
+            <TaxOrgCode/>
+            <PayOpBkCode/>
+            <PayAcct/>
+            <HandOrgName/>
+            <LevyState/>
+            <OuterLevyNo/>
+            <TraAmt/>
+            <DetailNum/>
+            <TaxTypeList2090 iterance="true">
+                <ProjectId/>
+                <TaxTypeCode/>
+                <TaxStartDate/>
+                <TaxEndDate/>
+                <TaxType/>
+                <TaxTypeAmt/>
+                <DetailNum/>
+                <TaxSubjectList2090 iterance="true">
+                    <DetailNo/>
+                    <TaxSubjectCode/>
+                    <TaxNumber/>
+                    <TaxAmt/>
+                    <FactTaxAmt/>                        
+                </TaxSubjectList2090>
+            </TaxTypeList2090>
+        </Declare2090>
+    </MSG>
+</CFX>

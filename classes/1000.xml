@@ -1,0 +1,17 @@
+<CFX>
+    <HEAD>
+        <VER/>
+        <SRC/>
+    </HEAD>
+    <MSG>
+        <SingleReturn2001>
+            <Result/>
+        </SingleReturn2001>
+        <BatchHead2102 iterance="true">
+            <Result/>
+            <Test  iterance="true">
+                <Title/>
+            </Test>
+        </BatchHead2102>
+    </MSG>
+</CFX>

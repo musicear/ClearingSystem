@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--三方协议查询与删除-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <activity name="resoft.tips.chqsh.ProveCheck">
+    	<transition on="1" to="select"/>
+    	<transition on="0" to="delete"/>
+    </activity>	
+    <label name="select"/> 
+    <activity name="resoft.tips.chqsh.QueryProveInfo" >
+         <transition on="0" to="end" />
+    </activity>
+    <label name="delete"/> 
+    <!--检查签约是否删除-->
+    <activity name="resoft.tips.chqsh.CheckProveDelete">
+        <transition on="-1" to="end"/>
+    </activity>
+  	<!--三方协议删除-->
+    <activity name="resoft.tips.chqsh.RemoveProveInfo"/>
+    <label name="end"/> 
+</transaction>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--连接测试请求-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>    
+	
+
+	
+	<!-- 检索是否有连接测试信息 -->
+	<activity name="resoft.tips.action2.AnaBactchFin">
+		<transition on="-1" to="return" />
+	</activity>
+	
+   
+    
+    <label name="return" />
+</transaction>

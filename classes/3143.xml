@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--国库资金清算处理结果-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--更新划款申请回执的信息-->
+    <activity name="resoft.tips.action2.Process3143">
+        <transition on="-1" to="return"/>
+    </activity>
+    <label name="return"/>
+</transaction>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="GBK"?>
+<reportSheet>
+    <cube code="17"/>
+    <head>
+        <paragraph font-size="14" align="center">划款申请明细查询</paragraph>
+    </head>
+    <fields>
+    	<field friendlyName="委托日期"/>
+    	<field friendlyName="包流水号"/>
+        <field friendlyName="凭证编码"/>
+		<field friendlyName="凭证日期"/>
+		<field friendlyName="付款人账号"/>
+		<field friendlyName="付款人名称"/>
+		<field friendlyName="收款人账号"/>
+		<field friendlyName="收款人名称"/>
+		<field friendlyName="支付方式"/>
+		<field friendlyName="金额"/>
+		<field friendlyName="所属年度"/>
+		<!--field friendlyName="银行交易流水号"/-->
+    </fields>
+ <variables>
+                <variable name="sum_010" colCode="010" function="sum"/>
+   </variables>
+    <footer>
+     <col colSpan="9">合计交易金额</col>
+     <col align="right">#sum_010</col>
+   </footer>
+    <properties>
+        <property name="customConditionPage" value="/pages/payOrder.jsp"/>
+        <property name="width" value="780"/>
+    </properties>
+</reportSheet>

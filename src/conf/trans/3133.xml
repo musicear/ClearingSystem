@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--直接支付额度回执包处理-->
+<transaction>       
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    
+     <activity name="resoft.tips.action2.SaveDB313X">
+    	<properties>
+            <property name="msgNo" value="3133"/>            
+        </properties>
+    </activity>
+
+   
+</transaction>

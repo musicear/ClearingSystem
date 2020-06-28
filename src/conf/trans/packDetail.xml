@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--批量包中的明细扣税子流程-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--检查是否有单笔止付-->
+    <activity name="resoft.tips.action.CheckDetailDelApply">
+        <transition on="-1" to="update"/>
+    </activity>
+    <!--检验账户是否签约-->
+    <!--  <activity name="resoft.tips.action.CheckContract">
+        <properties>
+            <property name="resultNodePath" value="Result"/>
+            <property name="addWordNodePath" value="AddWord"/>
+        </properties>
+        <transition on="-1" to="update"/>
+    </activity>-->
+    <!--进行账务处理-->
+    <activity name="resoft.tips.action.TransferAcctSX">
+    <!--activity name="resoft.tips.action.mock.TransferAcctMock"-->
+        <properties>
+            <property name="resultNodePath" value="Result"/>
+            <property name="addWordNodePath" value="AddWord"/>
+        </properties>
+       <transition on="-1" to="update"/>
+    </activity>
+    <label name="update" />
+    <!--更新批量包明细数据库状态-->
+    <activity name="resoft.tips.action.UpdatePackDetail" />
+</transaction>

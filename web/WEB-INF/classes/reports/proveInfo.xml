@@ -1,0 +1,28 @@
+<reportSheet>
+    <cube code="06"/>
+    <head>
+        <paragraph font-size="14" align="center">三方协议查询</paragraph>
+    </head>
+    <fields>
+		<field friendlyName="征收机关名称"/>
+		<field friendlyName="纳税人编码"/>
+		<field friendlyName="付款帐户"/>
+		<field friendlyName="缴款单位名称"/>
+		<field friendlyName="有效状态"/>
+		<field friendlyName="协议书号"/>
+		<field friendlyName="签订时间（发送时间）"/>
+		<field friendlyName="纳税人名称"/> 
+    </fields>
+	<variables>
+                <variable name="count_009" colCode="009" function="count"/>
+   	</variables>
+    <footer>
+     <col colSpan="2">合计总数目</col>
+     <col align="right">#count_009</col>
+   </footer>
+
+    <properties>
+        <property name="customConditionPage" value="/pages/proveInfo.jsp"/>
+        <property name="width" value="600"/>
+    </properties>
+</reportSheet>

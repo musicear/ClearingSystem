@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--止付-->
+<transaction>       
+    <!--记录到数据库-->
+    <activity name="resoft.tips.action.SaveDB1123">        
+        <transition on="-1" to="return" />
+    </activity>
+    <!--检测批量扣款信息的扣款状态-->
+    <activity name="resoft.tips.action.CheckBatchStatus">
+        <transition on="-1" to="return" />
+    </activity>
+    <label name="return" />
+    <!--设置报文头-->
+    <activity name="resoft.tips.action.SetHeadValue">
+        <properties>
+            <property name="msgNo" value="2123"/>
+        </properties>
+    </activity>
+    <!--设置打包格式-->
+    <activity name="resoft.tips.action.SetPackFile">
+        <properties>
+            <property name="packFile" value="./conf/pack/2123.xml"/>
+        </properties>
+    </activity>
+    <!--打印出要发送的XML-->
+    <activity name="resoft.tips.action.PrintPacket"/>
+    <!--准备发送MQ-->
+    <activity name="resoft.tips.action.PrepareForSendMQ"/>
+    <!--设置correlationId-->
+    <activity name="resoft.tips.action.SetCorrelationIdAsMessageId"/>
+    <!--发送MQ-->
+    <activity name="resoft.tips.action.SendToMQ">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.BatchSendQueue}"/>
+        </properties>      
+    </activity>
+</transaction>

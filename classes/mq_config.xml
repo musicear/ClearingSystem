@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="GB2312"?>
+<properties>
+	<!-- 生产配置 -->
+	<!--  
+    <category name="sync">
+        <property name="className" value="resoft.tips.mq.SyncListener" />
+        <property name="QueueManager" value="QM_TIPS_613220000026_01" />
+        <property name="Queue" value="PBC.613220000026.ONLINE.OUT" />
+        <property name="charsetName" value="GBK" />
+    </category>
+    <category name="batch">
+        <property name="className" value="resoft.tips.mq.BatchListener" />
+        <property name="QueueManager" value="QM_TIPS_613220000026_01" />
+        <property name="Queue" value="PBC.613220000026.BATCH.OUT" />
+        <property name="charsetName" value="GBK" />
+    </category>
+    -->
+    
+    <!-- 仿真测试配置 -->
+    <category name="sync">
+	    <property name="className" value="resoft.tips.mq.SyncListener" />
+	    <property name="QueueManager" value="QM_TIPSEMLU" />
+	    <property name="Queue" value="PBC.402100000010.ONLINE.OUT" />
+	    <property name="charsetName" value="GBK" />
+    </category>
+    <category name="batch">
+        <property name="className" value="resoft.tips.mq.BatchListener" />
+        <property name="QueueManager" value="QM_TIPSEMLU" />
+        <property name="Queue" value="PBC.402100000010.BATCH.OUT" />
+        <property name="charsetName" value="GBK" />
+    </category>
+    
+</properties>

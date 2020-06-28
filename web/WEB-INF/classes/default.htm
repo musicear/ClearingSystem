@@ -1,0 +1,187 @@
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<link href="../stylesheets/Normal.css" rel="stylesheet" type="text/css">
+<script src="../stylesheets/commons.js"></script>
+</head>
+
+<body>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" background="../images/obj_6.gif">
+          <tr>
+            <td height="26" class="tt"><font color="#666666">
+			<!--
+			#set ( $session = $reportSheet.getProperty("session") )
+			#set ( $request = $reportSheet.getProperty("request") )
+            #set ( $user = $session.getAttribute("user") )
+			-->
+
+			</font></td>
+            <td class="tt">
+              <div align="right"><font color="#666666"></font></div>
+            </td>
+          </tr>
+</table>
+#set ( $rowCount = $request.getAttribute("rowCount") )
+#if ( $rowCount <= 0 )
+   <DIV align=center>
+    <p>&nbsp;</p>    
+  <TABLE cellSpacing=0 cellPadding=0 width=448 border=0>
+    <TBODY> 
+    <TR> 
+      <TD width=382 background="../images/tishi_4.gif" height="31"> 
+        <div align="center">信息提示</div>
+      </TD>
+    </TR>
+    <TR> 
+      <TD background=../images/tishi_5.gif height="182"> 
+        <DIV align=center>
+          <table width="90%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td>没有您要查询的数据。请重新输入条件进行查询 </td>
+            </tr>
+            <tr>
+              <td><p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p></td>
+            </tr>
+            <tr>
+              <td>
+                <div align="center">
+                  <input type=image src="../images/return.gif"   name="back" value=" 返 回 " onClick="history.back();return false;">
+                </div>
+              </td>
+            </tr>
+          </table>
+          </DIV>
+      </TD>
+    </TR>
+    </TBODY> 
+  </TABLE>   
+#else
+<p>&nbsp;</p>
+
+<table width="100%"  border="0">
+  <!--
+  #foreach ( $p in $headParagraphs )
+  -->
+  <tr>
+    <td align="$p.style.align"  style="font-family:'${p.style.fontFamily}';font-size=${p.style.fontSize}px ">$p.text</td>
+  </tr>
+  <!--
+  #end
+  -->  
+  <tr>
+     <td></td>
+  </tr>
+</table>
+#set ( $width = $reportSheet.getProperty("width") )
+#if ( $width )
+   #set ( $tableWidth = "${width}px" )
+#else
+   #set ( $tableWidth = "100%" )
+#end
+<table width="${tableWidth}"  border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#999999">
+  <tr>
+	#set ( $elementList = $reportSheet.listAllVisibleElements() )
+	#foreach ( $element in $elementList )
+	   <td align=center bgcolor="#eeeeee">$element.column.friendlyName</td>
+	#end
+  </tr>
+  #foreach ( $rowMap in $data )
+  <tr> 
+  #set ($i = 0) 
+  #foreach ( $cellData in $rowMap ) 
+    #set ($element = $elementList.get($i)) 
+	#set ($align = $element.style.align)
+    <td bgcolor="#FFFFFF" align="$align"> 
+	#if ($element.column.hasDecoration())
+	  $element.column.decoration.replaceAll("#this",$cellData) 
+	#else 
+	  $cellData 
+	#end 
+	</td> 
+    #set ($i = $i + 1) 
+	#end 
+  </tr> 
+  #end 
+
+  #if ($footerCells.size()>0)
+  <tr>
+    #foreach ($footerCell in $footerCells)
+    <td colspan="$footerCell.colSpan" align="$footerCell.style.align"  bgcolor="#FFFFFF">$footerCell.value</td>
+    #end
+  </tr>
+  #end
+</table>
+#set ( $pageSize = 50 )
+#if($request.getAttribute("pageSize"))
+ #set ($pageSize = $request.getAttribute("pageSize"))
+#end
+
+
+#set ( $pageCount = $rowCount / $pageSize )
+#if ( $rowCount % $pageSize >0 ) 
+ #set ( $pageCount = $pageCount + 1 )
+#end  
+
+#set ( $pageNo = $request.getAttribute("pageNo") )
+#if ( !$pageNo )
+  #set ( $pageNo = 1 )
+#end
+#if ($pageCount>1)
+<table width="300" border="0">  
+  <tr>
+    <td>共$pageCount页 当前第$pageNo页</td>
+    <td><div align="center">
+	   #if ( $pageNo==1 )
+	   	 首页
+	   #else
+	   	 <a href="../servlet/GenReport?pageNo=1&&pageSize=$pageSize&&rowCount=$rowCount">首页</a>
+	   #end	   
+	   </div></td>
+    <td><div align="center">
+		#set ( $prior = $pageNo - 1 )
+		#if ( $prior >0 ) 
+		    <a href="../servlet/GenReport?pageNo=$prior&&pageSize=$pageSize&&rowCount=$rowCount">上一页</a>
+		#else
+			上一页
+		#end		
+		</div></td>
+    <td><div align="center">
+		#set ( $next = $pageNo + 1 )
+		#if ( $next <= $pageCount ) 
+		    <a href="../servlet/GenReport?pageNo=$next&&pageSize=$pageSize&&rowCount=$rowCount">下一页</a>
+		#else
+			下一页
+		#end		
+		</div></td>
+    <td><div align="center">
+	   #if ( $pageNo>=$pageCount )
+	   	 末页
+	   #else
+	   	 <a href="../servlet/GenReport?pageNo=$pageCount&&pageSize=$pageSize&&rowCount=$rowCount">末页</a>   
+	   #end	   
+	   </div></td>
+  </tr>
+</table>
+#end
+
+<div align="right"></div>
+<div align="right"></div>
+<table width="50%"  border="0" align="center">
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="center"><a href="javascript:history.back();"><img src="../images/return.gif" border=0></a></div></td>
+    <td><div align="center"><a href="javascript:document.execCommand('Print');"><img src="../images/print.gif" border=0></a></div></td>
+    <td><div align="center"><a href="../servlet/GenReport?reportType=xls"><img src="../images/excel.gif" border="0"></a></div></td>
+  </tr>
+</table>
+#end
+</body>
+</html>

@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="byName">
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName">
+            <value>oracle.jdbc.driver.OracleDriver</value>
+        </property>
+        <property name="url">
+            <value>jdbc:oracle:thin:@127.0.0.1:1521:tips</value>
+        </property>
+        <property name="username">
+            <value>tips</value>
+        </property>
+        <property name="password">
+            <value>tips</value>
+        </property>
+    </bean>
+    <bean id="dialect" class="org.zerone.easyMining.dialect.ORADialect"/>
+
+    <bean id="authenticate" class="resoft.common.impl.AuthenticateImpl" singleton="true"/>
+    <bean id="entityManager" class="resoft.common.service.EntityManager">
+        <property name="dataSource">
+            <ref local="dataSource"/>
+        </property>
+        <property name="dialect">
+            <ref local="dialect"/>
+        </property>
+    </bean>
+    <bean id="tableDefineDao" class="resoft.common.impl.TableDefineDaoImpl"/>
+    <!--用户管理-->
+    <bean id="userDao" class="resoft.common.impl.UserDaoImpl"/>
+    <!--用户组管理-->
+    <bean id="roleDao" class="resoft.common.impl.RoleDaoImpl"/>
+    <!--权限管理-->
+    <bean id="moduleDao" class="resoft.common.impl.ModuleDaoImpl"/>
+    <!--机构管理-->
+    <bean id="organizationDao" class="resoft.common.impl.OrganizationDaoImpl"/>
+
+</beans>

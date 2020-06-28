@@ -1,0 +1,11 @@
+<!--对账-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--对账-->
+    <!-- activity name="resoft.tips.chqxh.test2035"-->
+    <activity name="resoft.tips.action.mock.TransferAcctMock">
+        <transition on="-1" to="return"/>
+    </activity>
+	<label name="return"/>
+</transaction>

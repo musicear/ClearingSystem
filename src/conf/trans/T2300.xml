@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!--银行申报查询请求-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--转换柜面请求为2091银行申报查询请求,发送TIPS，接收TIPS返回1008应答-->
+    <activity name="resoft.tips.action.SetHeadValue">
+        <properties>
+            <property name="msgNo" value="2091"/>
+        </properties>
+    </activity>
+    <!--设置MsgId及MsgRef-->
+    <activity name="resoft.tips.action.SetMsgId"/>
+    <!--设置委托日期-->
+    <activity name="resoft.tips.action.SetEntrustDate">
+        <properties>
+            <property name="entrustNodePath" value="//CFX/MSG/DeclareQuery2091/EntrustDate"/>
+        </properties>
+    </activity>
+    <!--设置发起机构代码-->
+    <activity name="resoft.tips.action.SetBankNo">
+        <properties>
+            <property name="bankNoNodePath" value="//CFX/MSG/DeclareQuery2091/BankNo"/>
+        </properties>
+    </activity>
+    <!--设置查询序号-->
+    <activity name="resoft.tips.action.SetTraNo">
+        <properties>
+            <property name="traNoNodePath" value="//CFX/MSG/DeclareQuery2091/QueryNo" />
+        </properties>
+    </activity>
+    <!--设置申报查询要素-->
+    <activity name="resoft.tips.action.SetDeclareQueryInfo"/>
+    <!--设置打包格式-->
+    <activity name="resoft.tips.action.SetPackFile">
+        <properties>
+            <property name="packFile" value="./conf/pack/2091.xml"/>
+        </properties>
+    </activity>
+    <!--打印出要发送的XML-->
+    <activity name="resoft.tips.action.PrintPacket"/>
+    <!--准备发送MQ-->
+    <activity name="resoft.tips.action.PrepareForSendMQ"/>
+    <!--设置发起的correlationId-->
+    <activity name="resoft.tips.action.SetCorrelationIdAsREQ"/>
+    <!--发送MQ-->
+    <activity name="resoft.tips.action.SendToMQ">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.SyncSendQueue}" />
+        </properties>
+        <transition on="-1" to="returnToGuiMian"/>
+    </activity>
+    <!--接收MQ响应-->
+    <activity name="resoft.tips.action.ReceiveReplyFromTips">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.SyncRecvQueue}" />
+        </properties>
+        <transition on="-1" to="returnToGuiMian"/>
+    </activity>        
+    
+    
+    <!--解析TIPS返回信息，转换成2090银行申报请求,发送TIPS-->    
+    <activity name="resoft.tips.action.TrasnsBankShenBaoInfo" >
+    	<transition on="-1" to="returnToGuiMian"/>
+    </activity>       
+    <activity name="resoft.tips.action.SetHeadValue">
+        <properties>
+            <property name="msgNo" value="2090"/>
+        </properties>
+    </activity>
+    <!--设置查询序号-->
+    <activity name="resoft.tips.action.SetTraNo">
+        <properties>
+            <property name="traNoNodePath" value="//CFX/MSG/RealHead1009/LevyNo" />
+        </properties>
+    </activity>
+    <!--设置MsgId及MsgRef-->
+    <activity name="resoft.tips.action.SetMsgId"/>
+    <!--打印出要发送的XML-->
+    <activity name="resoft.tips.action.PrintPacket"/>
+    <!--准备发送MQ-->
+    <activity name="resoft.tips.action.PrepareForSendMQ"/>
+    <!--设置发起的correlationId-->
+    <activity name="resoft.tips.action.SetCorrelationIdAsREQ"/>
+    <!--发送MQ-->
+    <activity name="resoft.tips.action.SendToMQ">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.SyncSendQueue}" />
+        </properties>
+        <transition on="-1" to="returnToGuiMian"/>
+    </activity>
+    <!--接收MQ响应-->
+    <activity name="resoft.tips.action.ReceiveReplyFromTips">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.SyncRecvQueue}" />
+        </properties>
+        <transition on="-1" to="returnToGuiMian"/>
+    </activity>
+    <!-- 保存申报信息 -->
+    <activity name="resoft.tips.action.SaveDeclareInfo">        
+        <transition on="-1" to="returnToGuiMian"/>
+    </activity>        
+    
+	<label name="returnToGuiMian"/>                
+    <!--将TIPS申报请求应答返回柜面-->
+    <activity name="resoft.tips.action.SetPackFile">
+        <properties>
+            <property name="packFile" value="./conf/pack/T2300Return.xml"/>
+        </properties>
+    </activity>
+    
+</transaction>

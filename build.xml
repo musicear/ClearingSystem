@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="GB2312"?>
+<project basedir="./src" default="deploy"> 
+    <property name="dir.src" value="."/>
+    <property name="dir.classes" value="../classes"/>
+    <property name="dir.lib" value="../lib"/>
+    <path id="libs">
+        <fileset dir="${dir.lib}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+    <target name="init">
+        <mkdir dir="${dir.classes}"/>
+    </target>
+    <target name="compile" depends="init">
+        <javac destdir="${dir.classes}" failonerror="true" debuglevel="lines,vars,source" debug="true">
+            <src path="${dir.src}"/>
+            <classpath refid="libs"/>
+        </javac>
+        <copy todir="${dir.classes}/">
+            <fileset file="${dir.src}/*.*"/>
+        </copy>
+        <copy todir="${dir.classes}/conf/">
+            <fileset dir="${dir.src}/conf/"/>
+        </copy>
+    </target>
+    <target name="deploy" depends="compile">
+    </target>
+
+    <target name="clean">
+        <delete dir="${dir.classes}"/>
+    </target>
+</project>

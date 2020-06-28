@@ -1,0 +1,10 @@
+<!--记账冲帐-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--记账冲帐-->
+    <activity name="resoft.tips.cqsh.test2033">
+        <transition on="-1" to="return"/>
+    </activity>
+	<label name="return"/>
+</transaction>

@@ -1,0 +1,14 @@
+<CFX>
+    <HEAD>
+        <SRC/>
+        <DES/>
+    </HEAD>
+    <MSG>
+        <BusinessCode/>
+        <TransCode/>
+    </MSG>
+    <PRI>
+        <pri1/>
+        <pri2/>
+    </PRI>
+</CFX>

@@ -1,0 +1,10 @@
+<!--运行参数通知-->
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--保存运行参数信息-->
+    <activity name="resoft.tips.action.SaveDB9106">
+        <transition on="-1" to="return"/>
+    </activity>
+	<label name="return"/>
+</transaction>

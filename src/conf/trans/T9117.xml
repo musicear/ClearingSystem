@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="GB2312"?>
+<transaction>
+    <transactionInterceptor class="resoft.basLink.interceptors.DbTransactionInterceptor"/>
+    <actionInterceptor class="resoft.basLink.interceptors.LoggerModuleInterceptor"/>
+    <!--接收重发核对包请求-->
+    <activity name="resoft.tips.action2.ReSendPack">
+       <transition on="-1" to="return" />
+    </activity>
+    
+    <activity name="resoft.tips.action.SetHeadValue">
+        <properties>
+            <property name="msgNo" value="9117"/>
+        </properties>
+    </activity>
+    
+    <!--设置MsgId及MsgRef-->
+    <activity name="resoft.tips.action2.SetMsgId">
+    	<transition on="-1" to="return" />
+    </activity>
+     <!--设置打包格式-->
+    <activity name="resoft.tips.action.SetPackFile">
+        <properties>
+            <property name="packFile" value="./conf/pack/9117.xml"/>
+        </properties>
+    </activity>
+    <!--打印出要发送的XML-->
+    <activity name="resoft.tips.action.PrintPacket"/>
+    <!--准备发送MQ-->
+    <activity name="resoft.tips.action.PrepareForSendMQ"/>
+    <!--设置发起的correlationId-->
+    <activity name="resoft.tips.action2.SetCorrelationIdAsREQ" />
+    <!--发送MQ-->
+    <activity name="resoft.tips.action.SendToMQ">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.SyncSendQueue}" />
+        </properties>
+    </activity>
+    <!--接收MQ响应-->
+    <activity name="resoft.tips.action.ReceiveReplyFromTips">
+        <properties>
+            <property name="queueManagerName" value="${MQ.QueueManager}"/>
+            <property name="queueName" value="${MQ.SyncRecvQueue}" />
+        </properties>
+    </activity>
+    <label name="return" />
+    <!-- 保存申报信息 -->
+    <!--activity name="resoft.tips.action2.GetReturnMessage"/-->     
+    <!--接收返回的信息-->
+    <activity name="resoft.tips.action2.Return9117" />   
+  	 <!--设置打包格式-->
+    <activity name="resoft.tips.action.SetPackFile">
+        <properties>
+            <property name="packFile" value="./conf/pack/T9117Return.xml"/>
+        </properties>
+    </activity>
+</transaction>
