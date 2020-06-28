@@ -18,7 +18,8 @@ import resoft.xlink.impl.DefaultMessage;
 public class TestSendMQFangZhen { 
     public static void main(String[] args) throws IOException {
     	
-        SendToMQ action = new SendToMQ();
+    	System.out.println(System.getProperty("java.library.path"));
+    	SendToMQ action = new SendToMQ();
         action.setQueueManagerName("QM_TIPSEMLU");        
         action.setQueueName("PBC.402100000010.BATCH.OUT");
         
@@ -30,17 +31,19 @@ public class TestSendMQFangZhen {
         //File f=new File("D:\\3102.xml");        
         //File f=new File("c:\\temp\\test\\5103.xml");
         //File f=new File("c:\\temp\\test\\5102.xml");
-        File f=new File("c:\\temp\\test\\3143.xml");
-        
+        //File f=new File("c:\\temp\\test\\3143.xml");
+        String fileName = TestSendMQFangZhen.class.getClassLoader().getResource("3143.xml").getPath();
+        System.out.println("fileName = " + fileName );
+        File f = new File( fileName );
         byte[] bytes = new byte[(int) f.length()];
-        InputStream is = new FileInputStream(f);
+        InputStream is = new FileInputStream(f);       
         is.read(bytes);
         msg.set("±¨ÎÄÄÚÈÝ",new String(bytes));
         msg.set("strEncData",new String(bytes));
         msg.set("correlationId","20070710064910634739");
         msg.set("correlationId","REQ\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");
         msg.set("//CFX/HEAD/MsgID","123");
-        msg.set("//CFX/HEAD/MsgNo","123");
+        msg.set("//CFX/HEAD/MsgNo","456");
         action.execute(msg);
 
     }

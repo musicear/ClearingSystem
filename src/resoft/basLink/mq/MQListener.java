@@ -13,6 +13,7 @@ import com.ibm.mq.MQGetMessageOptions;
 import com.ibm.mq.MQMessage;
 import com.ibm.mq.MQQueue;
 import com.ibm.mq.MQQueueManager;
+import com.ibm.mq.constants.CMQC;
 
 import EDU.oswego.cs.dl.util.concurrent.Executor;
 import EDU.oswego.cs.dl.util.concurrent.PooledExecutor;
@@ -63,7 +64,7 @@ class MQListener implements Runnable {
         }
         MQQueue queue;
         try {
-            queue = qMgr.accessQueue(queueName, MQC.MQOO_INPUT_AS_Q_DEF | MQC.MQOO_INQUIRE);
+            queue = qMgr.accessQueue(queueName, CMQC.MQOO_INPUT_AS_Q_DEF | CMQC.MQOO_INQUIRE);
         } catch (MQException e) {
             logger.error("error to access queue:" + queueName, e);
             throw e;

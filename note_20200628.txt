@@ -1,0 +1,5 @@
+1. Linux随机数需要增熵，否则会造成random异常，Oracle连不上
+      1、安装熵服务
+             sudo yum install rng-tools
+      2、启动熵服务
+            sudo systemctl start rngd

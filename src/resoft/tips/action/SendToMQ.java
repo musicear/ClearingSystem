@@ -29,7 +29,13 @@ public class SendToMQ implements Action {
         
         String correlationId = (String) msg.get("correlationId");        
         logger.info("sendtomqmsg:" + packet);
+        MQEnvironment.properties.put(CMQC.TRANSPORT_PROPERTY,
+        		CMQC.TRANSPORT_MQSERIES_BINDINGS);
+        //MQEnvironment.CCSID =819;
+        //MQEnvironment.userID = "mqm";
+        //MQEnvironment.password = "Yang12345";
         MQEnvironment.addConnectionPoolToken();
+        
         try { 
         	if(qmName==null)
         		qmName=conf.getProperty("MQ", "QueueManager");

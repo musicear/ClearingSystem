@@ -26,7 +26,6 @@
 	<classpathentry kind="lib" path="lib/jce-jdk13-127.jar"/>
 	<classpathentry kind="lib" path="lib/jconfig.jar"/>
 	<classpathentry kind="lib" path="lib/jconn3d.jar"/>
-	<classpathentry kind="lib" path="lib/jdbc_informix.jar"/>
 	<classpathentry kind="lib" path="lib/jdom.jar"/>
 	<classpathentry kind="lib" path="lib/jmx/jmxri.jar"/>
 	<classpathentry kind="lib" path="lib/jmx/jmxtools.jar"/>
@@ -219,9 +218,9 @@
 	<classpathentry kind="lib" path="web/WEB-INF/lib/velocity-tools-view.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/webwork-2.2.5.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/xwork.jar"/>
-	<classpathentry kind="lib" path="lib/ojdbc8.jar"/>
 	<classpathentry kind="lib" path="lib/commons-dbcp2-2.7.0.jar"/>
 	<classpathentry kind="lib" path="lib/c3p0-0.9.5.5.jar"/>
 	<classpathentry kind="lib" path="lib/mchange-commons-java-0.2.19.jar"/>
+	<classpathentry kind="lib" path="lib/jdbc/ojdbc8.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

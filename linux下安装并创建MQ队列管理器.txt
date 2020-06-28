@@ -1,0 +1,124 @@
+
+----------------------------------------------创建用户及用户组-----------------------------
+
+[root@localhost ~]# mkdir /var/mqm
+[root@localhost ~]# groupadd mqm
+[root@localhost ~]# useradd -g mqm -d /var/mqm mqm
+[root@localhost ~]# passwd mqm
+mqm的home目录当然也可以另外设置，不过IBM建议我们把mqm的home目录设置为/var/mqm。
+
+
+----------------------------------------------创建MQ文件保存路径----------------------------
+
+[root@localhost ~]# mkdir /opt/mqm
+[root@localhost ~]# mkdir -p /var/mqm/{log,errors,qmgrs}
+[root@localhost ~]# chown mqm:mqm /opt/mqm
+[root@localhost ~]# chown -R mqm:mqm /var/mqm
+
+----------------------------------------------MQ安装----------------------------------------
+
+一、以root用户登录，解压安装包,版本为7.0.1
+
+# tar -zxvf CZJ3ZML_linux_x86_64.tar.gz
+
+二、解决#./mqlicense.sh -text_only授权报错问题具体问题如下：
+
+装入 /home/MQ/lap/jre/jre/bin/classic/libjvm.so: cannot restore segment prot after reloc: Permission denied 时出错
+
+
+/usr/local/jdk1.6.0_17/bin/../jre/lib/i386/client/libjvm.so: cannot restore segment prot after reloc: 权限不够 查看自己的jvm,eclipse都是有可执行权限的,网上找了下,据说是问题是安全级别和防火墙导致的。
+
+解决该问题方案如下：
+
+#vi /etc/sysconfig/selinux
+
+改动内容为：注释#SELINUX=enforcing 并 添加SELINUX=disabled 该文件其余内容不变。
+
+保存重启linux(reboot)之后，重新执行#./mqlicense.sh -text_only
+
+Licensed Materials - Property of IBM 
+                 
+ 5724-H72 
+
+ (C) Copyright IBM Corporation 1994, 2009 All rights reserved.
+
+US Government Users Restricted Rights - Use, duplication or disclosure
+restricted by GSA ADP Schedule Contract with IBM Corp.
+
+
+国际程序许可协议
+
+第一部分 -- 通用条款
+
+下载、安装、复制、访问、单击“接受”按钮，或以其他方式使用程序，即
+表明被许可方同意本协议的条款。如果您代表被许可方接受此类条款，则您
+陈述并保证您拥有完全的授权以使该被许可方接受此类条款的约束。如果您
+不同意此类条款，
+
+- 则请勿下载、安装、复制、访问、单击“接受”按钮，或使用程序；并
+且
+
+- 立即将未使用的介质、文档和权利证明退还至提供方，以便获得您所支
+付金额的退款。如果下载了程序，那么请销毁程序的所有副本。
+
+
+按 Enter 键继续查看本许可协议或按 "1" 接受本协议，按 
+"2" 拒绝本协议，按 "3" 打印本协议，按 "4" 阅读非 
+IBM 条款，按 "5" 用英语查看，或按 "99" 回到上一屏
+幕。
+1
+
+Agreement accepted:  Proceed with install.
+
+录入"1"之后报该信息，说明授权已生效。
+
+三、安装rpm包
+
+rpm -ivh MQSeriesRuntime-7.0.1-3.x86_64.rpm
+rpm -ivh MQSeriesSDK-7.0.1-3.x86_64.rpm 
+rpm -ivh MQSeriesServer-7.0.1-3.x86_64.rpm
+rpm -ivh MQSeriesClient-7.0.1-3.x86_64.rpm 
+rpm -ivh MQSeriesSamples-7.0.1-3.x86_64.rpm 
+rpm -ivh MQSeriesJava-7.0.1-3.x86_64.rpm 
+rpm -ivh MQSeriesMan-7.0.1-3.x86_64.rpm 
+rpm -ivh MQSeriesMsg_es-7.0.1-3.x86_64.rpm 
+rpm -ivh MQSeriesMsg_Zh_CN-7.0.1-3.x86_64.rpm 
+
+**********************************************如下代码只需修改两个地方    *******************************************
+**********************************************队列管理器名称和侦听端口    *******************************************
+**********************************************实现远程机能直接连接MQ      *******************************************
+**********************************************远程连接MQ后再手工配置各项  *******************************************
+四、创建队列管理器
+
+su - mqm (切换到mqm用户下)
+
+1. crtmqm -q QM_301_370000  在发送方A创建队列管理器QM_A.
+	dltmqm QM_301_370000 删除队列管理器 (创建不满意时可用)
+	dspmq 显示队列管理器
+	endmqm QmgrName 受控停止	endmqm -i QM_301_370000 立即停止	endmqm -p QM_301_370000 强制停止
+
+2. strmqm  QM_301_370000 启动QM_name	
+
+3. runmqsc QM_301_370000 进入队列管理层
+
+4. ALTER QMGR FORCE CCSID(1381) --修改队列管理器字符集(1381为中文字符集)，重启队列管理之后有效
+
+直接连接设置步骤（所有设置都是在目的远程队列管理器上设置）： 
+    1、队列管理器需要定义一个用于连接队列管理器的服务器连接通道。与5.3版本不同的是，这个通道不一定是SYSTEM.ADMIN.SVRCONN。该通道的名字可以随意定义，在设置远程管理的时候在 WebSphere MQ 资源管理器中指定即可。需要注意的是，启动WebSphere MQ 资源管理器的机器上的当前用户可能没有访问队列管理器对象的权限，导致 MQ 资源管理器无法管理远程队列管理器。简单的方法是在定义服务器连接通道的时候设置该通道的 MCAUSER 属性为mqm组中的用户。 
+DEFINE CHANNEL(SYSTEM.ADMIN.SVRCONN) CHLTYPE(SVRCONN) TRPTYPE(TCP) MCAUSER('mqm')
+
+2、队列管理器需要定义一个名为 SYSTEM.MQEXPLORER.REPLY.MODEL 的临时模型队列以和MQ 资源管理器通信，一般都已经存在。建立时会提示已经存在 
+DEFINE QM(SYSTEM.MQEXPLORER.REPLY.MODEL) DEFTYPE(TEMPDYN)
+
+3、队列管理器需要启动侦听： 
+DEFINE LISTENER(TCP301.LISTENER) TRPTYPE(TCP) PORT(14301)
+
+4. 启动刚刚建立的侦听
+START LISTENER(TCP301.LISTENER)
+STOP LISTENER(TCP301.LISTENER)
+
+5.设置通道自动启动 队列->选择传输队列(右键)->属性->控件选为队列管理器->选'触发'->触发器数据改为本身队列管理器中发送方通道名称->启动队列固定写为'SYSTEM.CHANNEL.INITQ'
+
+6.设置监听自动启动 侦听器->侦听器属性(右键)->控件(下拉)属性由'手动'改为'队列管理器'，重启队列管理器即可。
+
+
