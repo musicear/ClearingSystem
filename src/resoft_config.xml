@@ -112,16 +112,49 @@
            <property name="SendOrgCode" value="102100009980" />
     </category>
 	
+	<category name="CAServeer">
+		<!--密钥配置文件位置 -->
+       	<property name="keyPath" value="D:/workspace/tipsBase/key/ServerConfig/dsign.properties"/>
+        <!--密钥DN -->
+        <property name="DN" value="C=CN, O=PBC Test CA, OU=PBC, OU=Server, CN=9.108.34.36"/>
+	</category>
+	
+	
+	<category name="SM2Server">
+	
+		<!--密钥配置文件位置 -->
+		<property name="keyType" value="pem"/>
+		<property name="pemKey" value="D:\\workspace\\gmcert_test\\test.cert.pem"/>
+        <property name="cerKey" value="D:/workspace/Tips_qhd/target/test.sm2.cer"/>
+		<property name="priKey" value="D:/workspace/Tips_qhd/target/test.sm2.pri"/>
+		
+	</category>
+	
+	
+	<category name="NetSignServer">
+	
+		<!--签名服务器地址 -->
+		<property name="ip" value="10.1.220.199"/>
+		<property name="port" value="8090"/>
+        
+	</category>
+	
+	
     <!--其他设置-->
     <category name="general">
         <property name="globalPropertiesReader" value="resoft.basLink.util.GlobalPropertiesReaderImpl" />
         <!--临时文件存放位置-->
         <property name="tmpPath" value="c:\\temp"/>
-        <!--密钥配置文件位置 -->
-        <property name="keyPath" value="/home/tips/tips_qz/classes/key/ServerConfig/dsign.properties"/>
-        <!--密钥DN -->
-        <property name="DN" value="C=CN, O=PBC CA, OU=113101000@1, OU=Server, CN=9.108.33.103"/>
-        <!-- 银行节点代码 -->
+        <!--核签方式,加密机 -->
+        <!-- property name="SignerImpl" value="resoft.tips.util.NetSignServerImpl"/ -->
+        
+		<!--核签方式,SM2软签 -->
+        <property name="SignerImpl" value="resoft.tips.util.SM2ServerImpl"/>
+        <!--核签程序,CA软签 -->
+		<!-- property name="SignerImpl" value="resoft.tips.util.CAServerImpl"/ -->
+		
+	
+		<!-- 银行节点代码 -->
         <property name="BankSrcNodeCode" value="613033500001"/>      
         <!-- 银行机构代码 -->
         <property name="BankSrcOrgCode" value="313653000013"/> 

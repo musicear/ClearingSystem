@@ -1,11 +1,9 @@
 package resoft.junit;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.util.Date;
 import java.util.HashMap;
 
-import junit.framework.TestCase;
 import resoft.basLink.util.DBUtil;
 
 /**

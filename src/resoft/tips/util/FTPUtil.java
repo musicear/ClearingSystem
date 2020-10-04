@@ -1,11 +1,11 @@
 package resoft.tips.util;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.ConnectException;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.net.ftp.FTPClient;
@@ -30,6 +30,17 @@ public class FTPUtil {
 		
 	}
 	
+	private void closeQuietly(Closeable fos)
+	{
+		try {
+			if( fos != null )
+				fos.close();
+		}
+		catch(Exception e)
+		{
+			;
+		}
+	}
 	/**
      * @param ftp
      */
@@ -69,7 +80,7 @@ public class FTPUtil {
 		ftpClient.retrieveFile(filename, fos);
 		}
 		finally {
-			IOUtils.close(fos);
+			closeQuietly(fos);
 			ftpClient.disconnect();
 		}
 		logger.info("文件" + filename+"下载成功,保存本地文件名:" + localfilename);
@@ -97,7 +108,7 @@ public class FTPUtil {
 		ftpClient.storeFile(filename, fis);
 		}
 		finally {
-			IOUtils.close(fis);
+			closeQuietly(fis);
 			ftpClient.disconnect();
 		}
 		
